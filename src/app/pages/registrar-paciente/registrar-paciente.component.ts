@@ -1,22 +1,28 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IUser } from 'src/app/auth/models/auth.models';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import Swal from 'sweetalert2';
+import { DatepickerService } from '../services/datepicker.service';
 
 @Component({
   selector: 'app-registrar-paciente',
   templateUrl: './registrar-paciente.component.html',
   styleUrl: './registrar-paciente.component.scss'
 })
-export class RegistrarPacienteComponent {
+export class RegistrarPacienteComponent implements OnInit{
 
   constructor(
     private _fb: FormBuilder,
     private _router: Router,
-    private _authService: AuthService
+    private _authService: AuthService,
+    private _datePickerService:  DatepickerService
   ) {}
+
+  ngOnInit(): void {
+    this._datePickerService.loadScript();
+  }
  
   public myForm:FormGroup  = this._fb.group({
       name: ['', [Validators.required]],  

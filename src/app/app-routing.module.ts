@@ -11,6 +11,7 @@ const routes: Routes = [
     path: 'pages',
     loadChildren: () => import('./pages/pages.module').then( (e) => e.PagesModule )
   },
+  /*
   {
     path: '',
     redirectTo: 'auth',
@@ -20,7 +21,7 @@ const routes: Routes = [
     path: '**',
     redirectTo: 'auth',
     pathMatch: 'full'
-  },
+  },*/
 
 
 ];
