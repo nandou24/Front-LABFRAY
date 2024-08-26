@@ -1,7 +1,7 @@
 $(function () {
         $('.datepicker_input').datepicker({
             format: "dd/mm/yyyy",
-            language: "es",
+            language: 'es',
             autoclose: true,
             todayHighlight: true
         })

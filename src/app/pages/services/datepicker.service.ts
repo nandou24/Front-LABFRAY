@@ -20,19 +20,25 @@ export class DatepickerService {
     datepickerJq.type = 'text/javascript';
     datepickerJq.async = true;
 
+    let datepickerLan = document.createElement('script');
+    datepickerLan.src = 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/locales/bootstrap-datepicker.es.min.js';
+    datepickerLan.type = 'text/javascript';
+    datepickerLan.async = true;
+
     let Id_datepicker = document.createElement('script');
     Id_datepicker.src = 'js/id_datepicker.js';
     Id_datepicker.type = 'text/javascript';
     Id_datepicker.async = true;
 
     let css_datepicker = document.createElement('link');
-    css_datepicker.href = 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/css/bootstrap-datepicker.min.css';
+    css_datepicker.href = 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/css/bootstrap-datepicker3.standalone.min.css';
     css_datepicker.rel = 'stylesheet';
 
     document.getElementsByTagName('head')[0].appendChild(jqueryScript);
     document.getElementsByTagName('head')[0].appendChild(datepickerJq);
     document.getElementsByTagName('head')[0].appendChild(Id_datepicker);
     document.getElementsByTagName('head')[0].appendChild(css_datepicker);
+    document.getElementsByTagName('head')[0].appendChild(datepickerLan);
   
   }
 
