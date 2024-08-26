@@ -21,7 +21,7 @@ export class DatepickerService {
     datepickerJq.async = true;
 
     let Id_datepicker = document.createElement('script');
-    Id_datepicker.src = 'public/js/id_datepicker.js';
+    Id_datepicker.src = 'js/id_datepicker.js';
     Id_datepicker.type = 'text/javascript';
     Id_datepicker.async = true;
 
@@ -30,9 +30,9 @@ export class DatepickerService {
     css_datepicker.rel = 'stylesheet';
 
     document.getElementsByTagName('head')[0].appendChild(jqueryScript);
-    document.getElementsByTagName('head')[1].appendChild(datepickerJq);
-    document.getElementsByTagName('head')[2].appendChild(Id_datepicker);
-    document.getElementsByTagName('head')[3].appendChild(css_datepicker);
+    document.getElementsByTagName('head')[0].appendChild(datepickerJq);
+    document.getElementsByTagName('head')[0].appendChild(Id_datepicker);
+    document.getElementsByTagName('head')[0].appendChild(css_datepicker);
   
   }
 
