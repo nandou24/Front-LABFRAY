@@ -18,7 +18,7 @@ const routes: Routes = [
         path: 'favorites',
         //component: FavoritesComponent,
         //canActivate: [PagesGuard]
-      },*/
+      },
       {
         path: '',
         redirectTo: 'characteres',
@@ -28,7 +28,7 @@ const routes: Routes = [
         path: '**',
         redirectTo: 'characteres',
         pathMatch: 'full'
-      }
+      }*/
     ]
   }
 

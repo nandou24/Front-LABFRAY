@@ -36,9 +36,9 @@ export class DatepickerService {
 
     document.getElementsByTagName('head')[0].appendChild(jqueryScript);
     document.getElementsByTagName('head')[0].appendChild(datepickerJq);
-    document.getElementsByTagName('head')[0].appendChild(Id_datepicker);
-    document.getElementsByTagName('head')[0].appendChild(css_datepicker);
     document.getElementsByTagName('head')[0].appendChild(datepickerLan);
+    document.getElementsByTagName('head')[0].appendChild(css_datepicker);
+    document.getElementsByTagName('body')[0].appendChild(Id_datepicker);
   
   }
 
