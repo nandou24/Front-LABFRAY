@@ -15,10 +15,13 @@ export class RegistrarPacienteComponent implements OnInit{
 
   constructor(
     private _fb: FormBuilder,
+    private _fb_phone: FormBuilder,
     private _router: Router,
     private _authService: AuthService,
-    private _datePickerService:  DatepickerService
-  ) {}
+    private _datePickerService:  DatepickerService,
+  ) {
+    this.phoneData = [];
+  }
 
   ngOnInit(): void {
     this._datePickerService.loadScript();
@@ -29,7 +32,19 @@ export class RegistrarPacienteComponent implements OnInit{
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       rol: ['',[Validators.required]]
-    });
+  });
+
+  public phoneForm:FormGroup  = this._fb_phone.group({
+    phoneNumber: ['', [Validators.required, Validators.maxLength(11)]],  
+    descriptionPhone: ['', [Validators.required]],
+  });
+
+  public phoneData: any;
+
+  addPhoneItem():void{
+    this.phoneData.push(this.phoneForm.value);
+    this.phoneForm.reset();
+  }
 
   userRegister(){
   

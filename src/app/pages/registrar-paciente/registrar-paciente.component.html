@@ -1,4 +1,4 @@
-<form class="container mt-4 mb-4">
+<form class="container mt-4 mb-4" [formGroup]="myForm">
 
   <div class="row mt-2 mb-2">
       <H5>DATOS PERSONALES</H5>
@@ -99,25 +99,30 @@
       <H5>DATOS DE CONTACTO</H5>
   </div>
 
+  <form [formGroup]="phoneForm">
+
+  
   <div class="row mt-4 mb-2">
 
     <div class="col-lg-2">
       <label for="telfPaciente" class="col-form-label">Teléfono</label>
     </div>
     <div class="col-lg-2">
-      <input type="text" id="telfPaciente" class="form-control">
+      <input type="text" id="telfPaciente" class="form-control" formControlName="phoneNumber">
     </div>
     <div class="col-lg-1">
       <label for="telfDes" class="col-form-label">Descripción</label>
     </div>
     <div class="col-lg-3">
-      <input type="text" id="telfDes" class="form-control">
+      <input type="text" id="telfDes" class="form-control" formControlName="descriptionPhone">
     </div>
     <div class="col-lg-2">
-      <button class="btn btn-primary" onclick="insertarFila()">Agregar</button>
+      <button class="btn btn-primary" (click)="addPhoneItem()">Agregar</button>
     </div>
 
   </div>
+
+</form>
 
   <div class="row mt-2">
 
@@ -133,7 +138,10 @@
         </thead>
 
         <tbody>
-
+          <tr *ngFor="let item of phoneData">
+            <td><span>{{item.phoneNumber}}</span></td>
+            <td><span>{{item.descriptionPhone}}</span></td>
+          </tr>
         </tbody>
 
       </table>

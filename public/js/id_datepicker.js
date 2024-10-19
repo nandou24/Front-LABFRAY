@@ -7,6 +7,7 @@ $(function () {
         })
 });
 
+/*
 function insertarFila(){
     let phoneTable = document.getElementById('phoneTable');
     let row = phoneTable.insertRow(-1);
@@ -23,4 +24,5 @@ function insertarFila(){
 function deleteRow(r) {
     var i = r.parentNode.parentNode.rowIndex;
     document.getElementById("phoneTable").deleteRow(i);
-  }
+}
+*/
