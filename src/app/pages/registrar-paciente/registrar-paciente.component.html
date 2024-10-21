@@ -67,9 +67,9 @@
     <div class="col-lg-2">
 
       <div class="input-group">
-        <input type="text" class="datepicker_input form-control" id='fechaNac'>
+        <input type="text" class="datepicker_input form-control" id='fechaNac' formControlName="fechaNacimiento">
         <span class="input-group-text">
-          <i class="bi bi-calendar"></i>
+          <i class="bi bi-calendar"></i>0
         </span>
       </div>
     
@@ -79,7 +79,7 @@
       <label for="Edad" class="col-form-label">Edad</label>
     </div>
     <div class="col-lg-1">
-      <input type="text" id="Edad" class="form-control" disabled >
+      <input type="text" id="Edad" class="form-control" [value]="edad" disabled >
     </div>
 
     <div class="col-lg-1">  
@@ -99,34 +99,30 @@
       <H5>DATOS DE CONTACTO</H5>
   </div>
 
-  <form [formGroup]="phoneForm">
 
-  
   <div class="row mt-4 mb-2">
 
     <div class="col-lg-2">
       <label for="telfPaciente" class="col-form-label">Teléfono</label>
     </div>
     <div class="col-lg-2">
-      <input type="text" id="telfPaciente" class="form-control" formControlName="phoneNumber">
+      <input type="text" id="telfPaciente" class="form-control" [(ngModel)]="newPhone.phoneNumber"  [ngModelOptions]="{standalone: true}" >
     </div>
     <div class="col-lg-1">
       <label for="telfDes" class="col-form-label">Descripción</label>
     </div>
     <div class="col-lg-3">
-      <input type="text" id="telfDes" class="form-control" formControlName="descriptionPhone">
+      <input type="text" id="telfDes" class="form-control" [(ngModel)]="newPhone.descriptionPhone" [ngModelOptions]="{standalone: true}" >
     </div>
     <div class="col-lg-2">
       <button class="btn btn-primary" (click)="addPhoneItem()">Agregar</button>
     </div>
 
   </div>
-
-</form>
-
-  <div class="row mt-2">
-
-    <table id="phoneTable" class="table table-sm">
+  
+  <div class="row mt-2" id="phoneTable" >
+   
+    <table class="table table-sm">
 
         <thead>
           <tr>
@@ -137,18 +133,17 @@
           </tr>
         </thead>
 
-        <tbody>
-          <tr *ngFor="let item of phoneData">
-            <td><span>{{item.phoneNumber}}</span></td>
-            <td><span>{{item.descriptionPhone}}</span></td>
+        <tbody formArrayName="phones">
+          <tr *ngFor="let item of phones.controls; let i = index" [formGroupName]="i">
+            <td><span>{{i+1}}</span></td>
+            <td><span>{{item.get('phoneNumber')?.value}}</span></td>
+            <td><span>{{item.get('descriptionPhone')?.value}}</span></td>
+            <td><button class="btn btn-warning" (click)="removeItem(i)">Eliminar</button></td>
           </tr>
         </tbody>
 
       </table>
 
   </div>
-
-  
-
 
 </form>
