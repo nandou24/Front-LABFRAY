@@ -188,7 +188,7 @@
     <div class="col-lg-2">
       <input type="text" id="telfPaciente" class="form-control" formControlName="phoneNumber">
       <span class="text-danger" *ngIf="fieldIsInvalidReactive('phoneNumber')">
-        Por favor ingrese un teléfono
+        Por favor ingrese un teléfono correcto
       </span> 
     </div>
     <div class="col-lg-1">
@@ -227,8 +227,12 @@
             <td><button class="btn btn-warning" (click)="removeItem(i)">Eliminar</button></td>
           </tr>
         </tbody>
-
+        
       </table>
+      <span class="text-danger" *ngIf="!validarArrayTelefono() && formSubmitted">
+        Por favor ingrese al menos un número teléfono
+      </span> 
+
 
   </div>
 
@@ -242,7 +246,7 @@
     </div>
 
     <div class="col col-4 text-center">
-    <button class="btn btn-success">CREAR CLIENTE</button>
+    <button class="btn btn-success" (click)="registraPaciente()">CREAR CLIENTE</button>
     </div>
 
   </div>

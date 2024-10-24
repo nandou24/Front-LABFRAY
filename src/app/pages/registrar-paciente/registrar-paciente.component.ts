@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { IUser } from 'src/app/auth/models/auth.models';
-import { AuthService } from 'src/app/auth/services/auth.service';
+import { IPaciente } from '../models/pages.models';
 import Swal from 'sweetalert2';
 import { DatepickerService } from '../services/datepicker.service';
 import { UbigeosService } from '../services/ubigeos.service';
+import { PacienteService } from '../services/paciente.service';
 
 @Component({
   selector: 'app-registrar-paciente',
@@ -17,7 +17,7 @@ export class RegistrarPacienteComponent implements OnInit{
   constructor(
     private _fb: FormBuilder,
     private _router: Router,
-    private _authService: AuthService,
+    private _pagesService: PacienteService,
     private _datePickerService:  DatepickerService,
     private _ubigeoService: UbigeosService
   ) { }
@@ -41,12 +41,10 @@ export class RegistrarPacienteComponent implements OnInit{
       // Obtener y cargar las provincias según el departamento seleccionado
       this.provincias = this._ubigeoService.getProvincia(departamentoId);
       this.distritos = this._ubigeoService.getDistrito(departamentoId,'01')
-
       // Reiniciar el select de provincias
       this.myForm.get('provinciaCliente')?.setValue('01');  // Limpia la selección de provincias
     });
   }
-
     
   onProvinciaChange(): void {
     this.myForm.get('provinciaCliente')?.valueChanges.subscribe(provinciaId => {
@@ -71,8 +69,8 @@ export class RegistrarPacienteComponent implements OnInit{
       distritoCliente: ['',[Validators.required]],
       direcCliente:[''],
       mailCliente: ['', [Validators.email]],
-      phoneNumber:['',[Validators.required, Validators.pattern('^[0-9]+$')]],
-      descriptionPhone: ['', [Validators.required]],
+      phoneNumber:['',[Validators.pattern('^[0-9]+$')]],
+      descriptionPhone: ['',[Validators.required]],
       phones: this._fb.array([])
   });
 
@@ -86,23 +84,24 @@ export class RegistrarPacienteComponent implements OnInit{
   }
 
   addPhoneItem():void{
-    if (this.newPhone.phoneNumber && this.newPhone.descriptionPhone) {
+
+    if(this.myForm.get('phoneNumber')?.valid && this.myForm.get('descriptionPhone')?.valid){
 
       const nuevoTelefonoFormGroup = this._fb.group({
-        phoneNumber: [this.newPhone.phoneNumber, [Validators.required, Validators.pattern('^[0-9]+$')]],
-        descriptionPhone: [this.newPhone.descriptionPhone, [Validators.required]]
+        phoneNumber: [this.myForm.get('phoneNumber')?.value, [Validators.required, Validators.pattern('^[0-9]+$')]],
+        descriptionPhone: [this.myForm.get('descriptionPhone')?.value, [Validators.required]]
       });
 
       this.phones.push(nuevoTelefonoFormGroup);
-
-      this.newPhone = {phoneNumber:'', descriptionPhone:''}
+      this.myForm.get('phoneNumber')?.reset();
+      this.myForm.get('descriptionPhone')?.reset();
 
     }
+
   }
 
   removeItem(index:number){
     this.phones.removeAt(index)
-    //console.log(this.phones)
   }
 
   onFechaNacimientoInput(event: Event): void {
@@ -115,6 +114,7 @@ export class RegistrarPacienteComponent implements OnInit{
       //console.log('Formato de fecha válido:', fechaNacimiento);
       this.edad = this.calcularEdad(fechaNacimiento);
     }
+    
   }
 
   // Ejemplo de función para validar el formato dd-mm-yyyy
@@ -153,23 +153,52 @@ export class RegistrarPacienteComponent implements OnInit{
     return `${years} años, ${months} meses, y ${days} días`;
   }
 
-  userRegister(){
+  validarArrayTelefono(): boolean{
+    
+    const telefonos = this.myForm.get('phones') as FormArray;
+    if((telefonos.length >= 1)){
+      return true
+    }
+    return false
+
+  }
+
+
+  public formSubmitted: boolean = false;
+
+  registraPaciente(){
+
+    this.formSubmitted = true;
   
-    const body: IUser = this.myForm.value;
-    console.log("capturando valores en component.ts")
+    if(this.validarArrayTelefono() == true){
 
-    this._authService.registerUser(body).subscribe((res) => {
-      if (res !== 'ERROR') {
-        Swal.fire({
-          title: 'Woho!',
-          text: 'Usuario Registrado',
-          icon: 'success',
-          confirmButtonText: 'Ok',
-        });
+    const fecha1 = this.myForm.get('fechaNacimiento')?.value
+    const [dia, mes, anio] = fecha1.split('/'); // Separar día, mes y año
+    const fechaFormateada = `${anio}-${mes}-${dia}`
 
-        this._router.navigateByUrl('/auth/login');
-      }
-    });
+    // Actualizar el campo en el formulario con la fecha formateada
+    this.myForm.get('fechaNacimiento')?.setValue(fechaFormateada);
+
+      console.log('Procede registro')
+      const body: IPaciente = this.myForm.value; //capturando los valores del component.ts
+      console.log("capturando valores en component.ts")
+
+      this._pagesService.registrarPaciente(body).subscribe((res) => {
+        if (res !== 'ERROR') {
+          Swal.fire({
+            title: 'Woho!',
+            text: 'Paciente Registrado',
+            icon: 'success',
+            confirmButtonText: 'Ok',
+          });
+
+          this._router.navigateByUrl('/auth/login');
+        }
+      });
+    }else{
+      console.log('No Procede')
+    }
+
   }
 
   fieldIsInvalidReactive(field: any) {
