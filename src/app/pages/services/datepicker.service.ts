@@ -34,13 +34,6 @@ export class DatepickerService {
     css_datepicker.href = 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/css/bootstrap-datepicker3.standalone.min.css';
     css_datepicker.rel = 'stylesheet';
 
-    /*
-    document.getElementsByTagName('head')[0].appendChild(jqueryScript);
-    document.getElementsByTagName('head')[0].appendChild(datepickerJq);
-    document.getElementsByTagName('head')[0].appendChild(datepickerLan);
-    document.getElementsByTagName('head')[0].appendChild(css_datepicker);
-    document.getElementsByTagName('body')[0].appendChild(Id_datepicker);
-    */
     document.body.appendChild(jqueryScript);
     document.body.appendChild(datepickerJq);
     document.body.appendChild(datepickerLan);
