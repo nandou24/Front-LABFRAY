@@ -1,4 +1,4 @@
-<form class="container mt-4 mb-4" [formGroup]="myForm">
+<form class="container mt-4 mb-4" [formGroup]="myForm" (ngSubmit)="registraPaciente()">
 
   <div class="row mt-2 mb-2">
       <H5>DATOS PERSONALES</H5>
@@ -179,7 +179,7 @@
   </div>
 
 
-
+<!--
   <div class="row mt-4 mb-2">
 
     <div class="col-lg-2">
@@ -201,11 +201,75 @@
       </span> 
     </div>
     <div class="col-lg-2">
-      <button class="btn btn-primary" (click)="addPhoneItem()">Agregar</button>
+      <button class="btn btn-primary" type="button" (click)="addPhoneItem()">Agregar</button>
     </div>
 
-  </div>
+  </div>-->
+<!--
+  <div class="row mt-4 mb-2">
+    <div class="col-lg-2">
+      <label for="telfPaciente" class="col-form-label">Teléfono</label>
+    </div>
+    <div class="col-lg-2">
+      <input type="text" id="telfPaciente" class="form-control" [formControl]="phoneNumberControl">
+      <span class="text-danger" *ngIf="phoneNumberControl.invalid && phoneNumberControl.touched">
+        <ng-container *ngIf="phoneNumberControl.hasError('required')">
+          Por favor ingrese un teléfono.
+        </ng-container>
+        <ng-container *ngIf="phoneNumberControl.hasError('pattern')">
+          El número solo debe contener dígitos.
+        </ng-container>
+      </span>
+    </div>
   
+    <div class="col-lg-1">
+      <label for="telfDes" class="col-form-label">Descripción</label>
+    </div>
+    <div class="col-lg-4">
+      <input type="text" id="telfDes" class="form-control" [formControl]="descriptionPhoneControl">
+      <span class="text-danger" *ngIf="descriptionPhoneControl.invalid && descriptionPhoneControl.touched">
+        Por favor ingrese una descripción (Ejemplo: Celular mamá, Trabajo hermano, etc)
+      </span>
+    </div>
+  
+    <div class="col-lg-2">
+      <button class="btn btn-primary" type="button" (click)="addPhoneItem()">Agregar</button>
+    </div>
+  </div>-->
+  
+  <div class="row mt-4 mb-2">
+    <div class="col-lg-2">
+      <label for="telfPaciente" class="col-form-label">Teléfono</label>
+    </div>
+    <div class="col-lg-2">
+      <input type="text" id="telfPaciente" class="form-control" formControlName="phoneNumber">
+      <span class="text-danger" *ngIf="myForm.get('phoneNumber')?.invalid && myForm.get('phoneNumber')?.touched">
+        <!-- Mensaje específico según el error -->
+        <ng-container *ngIf="myForm.get('phoneNumber')?.hasError('required')">
+          Por favor ingrese un teléfono.
+        </ng-container>
+        <ng-container *ngIf="myForm.get('phoneNumber')?.hasError('pattern')">
+          El número solo debe contener dígitos.
+        </ng-container>
+      </span>
+    </div>
+  
+    <div class="col-lg-1">
+      <label for="telfDes" class="col-form-label">Descripción</label>
+    </div>
+    <div class="col-lg-4">
+      <input type="text" id="telfDes" class="form-control" formControlName="descriptionPhone">
+      <span class="text-danger" *ngIf="myForm.get('descriptionPhone')?.invalid && myForm.get('descriptionPhone')?.touched">
+        <!-- Mensaje de error -->
+        Por favor ingrese una descripción (Ejemplo: Celular mamá, Trabajo hermano, etc)
+      </span>
+    </div>
+  
+    <div class="col-lg-2">
+      <button class="btn btn-primary" type="button" (click)="addPhoneItem()">Agregar</button>
+    </div>
+  </div>
+
   <div class="row mt-2" id="phoneTable" >
    
     <table class="table table-sm">
@@ -224,13 +288,13 @@
             <td><span>{{i+1}}</span></td>
             <td><span>{{item.get('phoneNumber')?.value}}</span></td>
             <td><span>{{item.get('descriptionPhone')?.value}}</span></td>
-            <td><button class="btn btn-warning" (click)="removeItem(i)">Eliminar</button></td>
+            <td><button class="btn btn-warning" type="button" (click)="removeItem(i)">Eliminar</button></td>
           </tr>
         </tbody>
         
       </table>
       <span class="text-danger" *ngIf="!validarArrayTelefono() && formSubmitted">
-        Por favor ingrese al menos un número teléfono
+        Por favor ingrese al menos un número teléfono y descripción
       </span> 
 
 
@@ -246,7 +310,8 @@
     </div>
 
     <div class="col col-4 text-center">
-    <button class="btn btn-success" (click)="registraPaciente()">CREAR CLIENTE</button>
+    <button class="btn btn-success" type="submit" [disabled]="myForm.invalid">CREAR CLIENTE</button>
+
     </div>
 
   </div>

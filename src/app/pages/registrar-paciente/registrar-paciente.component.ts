@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IPaciente } from '../models/pages.models';
 import Swal from 'sweetalert2';
@@ -69,9 +69,9 @@ export class RegistrarPacienteComponent implements OnInit{
       distritoCliente: ['',[Validators.required]],
       direcCliente:[''],
       mailCliente: ['', [Validators.email]],
-      phoneNumber:['',[Validators.pattern('^[0-9]+$')]],
-      descriptionPhone: ['',[Validators.required]],
-      phones: this._fb.array([])
+      //phoneNumber:[''],
+      //descriptionPhone: [''],
+      phones: this._fb.array([], Validators.required)
   });
 
   public newPhone = {
@@ -83,9 +83,10 @@ export class RegistrarPacienteComponent implements OnInit{
     return this.myForm.get('phones') as FormArray;
   }
 
+  /*
   addPhoneItem():void{
 
-    if(this.myForm.get('phoneNumber')?.valid && this.myForm.get('descriptionPhone')?.valid){
+    if(this.myForm.get('phoneNumber')?.value && this.myForm.get('descriptionPhone')?.value){
 
       const nuevoTelefonoFormGroup = this._fb.group({
         phoneNumber: [this.myForm.get('phoneNumber')?.value, [Validators.required, Validators.pattern('^[0-9]+$')]],
@@ -98,7 +99,36 @@ export class RegistrarPacienteComponent implements OnInit{
 
     }
 
+  }*/
+
+    phoneNumberControl = new FormControl('', [Validators.required, Validators.pattern('^[0-9]+$')]);
+    descriptionPhoneControl = new FormControl('', Validators.required);
+
+  addPhoneItem(): void {
+    // Primero, verifica si los campos `phoneNumber` y `descriptionPhone` están completos y válidos.
+    const phoneNumberControl = this.myForm.get('phoneNumber');
+    const descriptionPhoneControl = this.myForm.get('descriptionPhone');
+  
+    if (phoneNumberControl?.valid && descriptionPhoneControl?.valid) {
+      const nuevoTelefonoFormGroup = this._fb.group({
+        phoneNumber: [phoneNumberControl.value, [Validators.required, Validators.pattern('^[0-9]+$')]],
+        descriptionPhone: [descriptionPhoneControl.value, Validators.required]
+      });
+  
+      // Agrega el nuevo grupo al array `phones`
+      this.phones.push(nuevoTelefonoFormGroup);
+  
+      // Limpia los campos `phoneNumber` y `descriptionPhone` después de agregar el teléfono
+      phoneNumberControl.reset();
+      descriptionPhoneControl.reset();
+    } else {
+      // Marca los controles como "touched" para mostrar mensajes de error si están incompletos
+      phoneNumberControl?.markAsTouched();
+      descriptionPhoneControl?.markAsTouched();
+    }
+
   }
+
 
   removeItem(index:number){
     this.phones.removeAt(index)
@@ -156,6 +186,7 @@ export class RegistrarPacienteComponent implements OnInit{
   validarArrayTelefono(): boolean{
     
     const telefonos = this.myForm.get('phones') as FormArray;
+
     if((telefonos.length >= 1)){
       return true
     }
@@ -200,10 +231,10 @@ export class RegistrarPacienteComponent implements OnInit{
     }
 
   }
-
+  
   fieldIsInvalidReactive(field: any) {
     return (
-      this.myForm.controls[field].errors && this.myForm.controls[field].touched
+      this.myForm.controls[field].errors && this.myForm.controls[field].touched && this.phones.length > 0
     );
   }
 
