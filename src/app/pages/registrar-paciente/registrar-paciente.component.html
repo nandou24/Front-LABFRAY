@@ -21,7 +21,21 @@
         <label for="nroDoc" class="col-form-label">Nro. Documento</label>
       </div>
       <div class="col-lg-2">
-        <input type="text" id="nroDoc" class="form-control" formControlName="nroDoc">
+        <input type="text" id="nroDoc" class="form-control"
+        formControlName="nroDoc"
+        [ngClass]="{
+          'is-valid': myForm.get('nroDoc')?.valid && formSubmitted,
+          'is-invalid': myForm.get('nroDoc')?.invalid && formSubmitted
+        }">
+        
+        <div *ngIf="myForm.get('nroDoc')?.invalid && formSubmitted" class="invalid-feedback">
+          Número de documento es obligatorio
+        </div>
+        <!--
+        <span class="text-danger" *ngIf="fieldIsInvalidReactive('nroDoc')">
+          Número de documento es obligatorio
+        </span>-->
+
       </div>
 
   </div>
@@ -32,10 +46,23 @@
       <label for="nombrePaciente" class="col-form-label">Nombres</label>
     </div>
     <div class="col-lg-4">
-      <input type="text" id="nombrePaciente" class="form-control" formControlName="nombreCliente">
+      <input type="text" id="nombrePaciente" class="form-control" 
+          formControlName="nombreCliente"
+          [ngClass]="{
+            'is-valid': myForm.get('nombreCliente')?.valid && formSubmitted,
+            'is-invalid': myForm.get('nombreCliente')?.invalid && formSubmitted
+          }">
+
+      <div *ngIf="myForm.get('nombreCliente')?.invalid && formSubmitted" class="invalid-feedback">
+        Por favor ingrese el nombre
+      </div>
+      <!--
+      <div *ngIf="myForm.get('nombreCliente')?.valid && formSubmitted" class="valid-feedback">
+        Looks good!
+      </div>
       <span class="text-danger" *ngIf="fieldIsInvalidReactive('nombreCliente')">
         Por favor ingrese el nombre
-      </span>
+      </span>-->
     </div>
 
   </div>
@@ -46,10 +73,20 @@
       <label for="apePatPaciente" class="col-form-label">Apellido Paterno</label>
     </div>
     <div class="col-lg-4">
-      <input type="text" id="apePatPaciente" class="form-control" formControlName="apePatCliente">
+      <input type="text" id="apePatPaciente" class="form-control"
+      formControlName="apePatCliente"
+      [ngClass]="{
+        'is-valid': myForm.get('apePatCliente')?.valid && formSubmitted,
+        'is-invalid': myForm.get('apePatCliente')?.invalid && formSubmitted
+      }">
+      
+      <div *ngIf="myForm.get('apePatCliente')?.invalid && formSubmitted" class="invalid-feedback">
+        Por favor ingrese el apellido paterno
+      </div>
+      <!--
       <span class="text-danger" *ngIf="fieldIsInvalidReactive('apePatCliente')">
         Por favor ingrese el apellido paterno
-      </span>
+      </span>-->
     </div>
 
   </div>
@@ -60,10 +97,20 @@
       <label for="apeMatPaciente" class="col-form-label">Apellido Materno</label>
     </div>
     <div class="col-lg-4">
-      <input type="text" id="apeMatPaciente" class="form-control" formControlName="apeMatCliente">
+      <input type="text" id="apeMatPaciente" class="form-control"
+      formControlName="apeMatCliente"
+      [ngClass]="{
+        'is-valid': myForm.get('apeMatCliente')?.valid && formSubmitted,
+        'is-invalid': myForm.get('apeMatCliente')?.invalid && formSubmitted
+      }">
+
+      <div *ngIf="myForm.get('apeMatCliente')?.invalid && formSubmitted" class="invalid-feedback">
+        Por favor ingrese el apellido materno
+      </div>
+      <!--
       <span class="text-danger" *ngIf="fieldIsInvalidReactive('apeMatCliente')">
         Por favor ingrese el apellido materno
-      </span>
+      </span>-->
     </div>
 
   </div>
@@ -73,16 +120,28 @@
     <div class="col-lg-2">  
       <label for="fechaNac" class="col-form-label">Fecha nacimiento</label>
     </div>
-    <div class="col-lg-2">
+    <div class="col-lg-3">
 
       <div class="input-group">
-        <input type="text" class="datepicker_input form-control" id='fechaNac' formControlName="fechaNacimiento" (input)="onFechaNacimientoInput($event)">
+        <input type="text"
+              class="datepicker_input form-control"
+              id='fechaNac'
+              formControlName="fechaNacimiento"
+              (input)="onFechaNacimientoInput($event)"
+              [ngClass]="{
+                'is-valid': myForm.get('fechaNacimiento')?.valid && formSubmitted,
+                'is-invalid': myForm.get('fechaNacimiento')?.invalid && formSubmitted
+              }">
         <span class="input-group-text">
           <i class="bi bi-calendar"></i>
         </span>
-        <span class="text-danger" *ngIf="fieldIsInvalidReactive('fechaNacimiento')">
+        <div *ngIf="myForm.get('fechaNacimiento')?.invalid && formSubmitted" class="invalid-feedback">
           Por favor ingrese la fecha de nacimiento
-        </span>
+        </div>
+        <!--
+        <span class="text-danger" id="spanFN" *ngIf="fieldIsInvalidReactive('fechaNacimiento')">
+          Por favor ingrese la fecha de nacimiento
+        </span>-->
       </div>
     
     </div>
@@ -102,14 +161,24 @@
       <label for="Sexo" class="col-form-label">Sexo</label>
     </div>
     <div class="col-lg-2">
-      <select class="form-select" id="Sexo" formControlName="sexoCliente">
+      <select class="form-select" id="Sexo"
+      formControlName="sexoCliente"
+      [ngClass]="{
+        'is-valid': myForm.get('sexoCliente')?.valid && formSubmitted,
+        'is-invalid': myForm.get('sexoCliente')?.invalid && formSubmitted
+      }">
         <option value="0">Seleccionar</option>
         <option value="1">Masculino</option>
         <option value="2">Femenino</option>
       </select>
+
+      <div *ngIf="myForm.get('sexoCliente')?.invalid && formSubmitted" class="invalid-feedback">
+        Por favor seleccione sexo
+      </div>
+      <!--
       <span class="text-danger" *ngIf="fieldIsInvalidReactive('sexoCliente')">
         Por favor seleccione sexo
-      </span>  
+      </span>  -->
     </div>
 
   </div>
@@ -142,12 +211,22 @@
       <label for="distritoCliente" class="col-form-label">Distrito</label>
     </div>
     <div class="col-lg-3">
-      <select class="form-select" id="distritoCliente" formControlName="distritoCliente">
+      <select class="form-select" id="distritoCliente"
+      formControlName="distritoCliente"
+      [ngClass]="{
+        'is-valid': myForm.get('distritoCliente')?.valid && formSubmitted,
+        'is-invalid': myForm.get('distritoCliente')?.invalid && formSubmitted
+      }">
         <option *ngFor="let distri of distritos" [value]="distri.id_Ditrito">{{distri.nombre}}</option>
       </select>
+
+      <div *ngIf="myForm.get('distritoCliente')?.invalid && formSubmitted" class="invalid-feedback">
+        Por favor seleccione distrito
+      </div>
+      <!--
       <span class="text-danger" *ngIf="fieldIsInvalidReactive('distritoCliente')">
         Por favor seleccione distrito
-      </span> 
+      </span> -->
     </div>
 
   </div>
@@ -170,57 +249,80 @@
       <label for="correoCliente" class="col-form-label">e-mail</label>
     </div>
     <div class="col-lg-6">
-      <input type="text" id="correoCliente" class="form-control" formControlName="mailCliente">
+      <input type="text" id="correoCliente" class="form-control" formControlName="mailCliente"
+      [ngClass]="{
+        'is-invalid': myForm.get('mailCliente')?.invalid && formSubmitted
+      }">
+      
+      <div *ngIf="myForm.get('mailCliente')?.invalid && formSubmitted" class="invalid-feedback">
+        Por favor ingrese un e-mail correcto
+      </div>
+      <!--
       <span class="text-danger" *ngIf="fieldIsInvalidReactive('mailCliente')">
         Por favor ingrese un e-mail correcto
-      </span> 
+      </span> -->
     </div>
 
   </div>
 
+  <!--
+  [ngClass]="{
+    'is-valid': phoneNumberControl.valid,
+    'is-invalid': phoneNumberControl.invalid
+  }"-->
 
-<!--
-  <div class="row mt-4 mb-2">
-
-    <div class="col-lg-2">
-      <label for="telfPaciente" class="col-form-label">Teléfono</label>
-    </div>
-    <div class="col-lg-2">
-      <input type="text" id="telfPaciente" class="form-control" formControlName="phoneNumber">
-      <span class="text-danger" *ngIf="fieldIsInvalidReactive('phoneNumber')">
-        Por favor ingrese un teléfono correcto
-      </span> 
-    </div>
-    <div class="col-lg-1">
-      <label for="telfDes" class="col-form-label">Descripción</label>
-    </div>
-    <div class="col-lg-4">
-      <input type="text" id="telfDes" class="form-control" formControlName="descriptionPhone">
-      <span class="text-danger" *ngIf="fieldIsInvalidReactive('descriptionPhone')">
-        Por favor ingrese una descripción (Ejemplo: Celular mamá, Trabajo hermano, etc)
-      </span> 
-    </div>
-    <div class="col-lg-2">
-      <button class="btn btn-primary" type="button" (click)="addPhoneItem()">Agregar</button>
-    </div>
-
-  </div>-->
-<!--
   <div class="row mt-4 mb-2">
     <div class="col-lg-2">
       <label for="telfPaciente" class="col-form-label">Teléfono</label>
     </div>
     <div class="col-lg-2">
-      <input type="text" id="telfPaciente" class="form-control" [formControl]="phoneNumberControl">
+      <!--Se usan [form control] para que no haga conflicto con el form-->
+      <input type="text" id="telfPaciente" class="form-control"
+      [formControl]="phoneNumberControl"
+      
+      [ngClass]="{
+        'is-invalid': addPhone && !phones.valid,
+        'is-valid': addPhone && phones.valid}"
+      >
+
+      <div *ngIf="addPhone && phones.valid && addPhone" class="invalid-feedback">
+        <ng-container *ngIf="phoneNumberControl.hasError('required')">
+          Por favor ingrese un teléfono.
+        </ng-container>
+        <ng-container *ngIf="phoneNumberControl.hasError('pattern')">
+          Solo debe contener números.
+        </ng-container>
+      </div>
+      <!--
       <span class="text-danger" *ngIf="phoneNumberControl.invalid && phoneNumberControl.touched">
         <ng-container *ngIf="phoneNumberControl.hasError('required')">
           Por favor ingrese un teléfono.
         </ng-container>
         <ng-container *ngIf="phoneNumberControl.hasError('pattern')">
-          El número solo debe contener dígitos.
+          Solo debe contener números.
         </ng-container>
-      </span>
+      </span>-->
     </div>
+
+    <!--
+    <div class="col-lg-2">
+      <input type="text" id="telfPaciente" class="form-control"
+             [formControl]="phoneNumberControl"
+             [ngClass]="{
+               'is-invalid': isFieldInvalid(index, 'phoneNumber'),
+               'is-valid': addPhone && !isFieldInvalid(index, 'phoneNumber')
+             }">
+             
+      <div *ngIf="isFieldInvalid(index, 'phoneNumber')" class="invalid-feedback">
+        <ng-container *ngIf="phoneNumberControl.hasError('required')">
+          Por favor ingrese un teléfono.
+        </ng-container>
+        <ng-container *ngIf="phoneNumberControl.hasError('pattern')">
+          Solo debe contener números.
+        </ng-container>
+      </div>
+    </div>-->
+
   
     <div class="col-lg-1">
       <label for="telfDes" class="col-form-label">Descripción</label>
@@ -235,45 +337,10 @@
     <div class="col-lg-2">
       <button class="btn btn-primary" type="button" (click)="addPhoneItem()">Agregar</button>
     </div>
-  </div>-->
-  
-  <div class="row mt-4 mb-2">
-    <div class="col-lg-2">
-      <label for="telfPaciente" class="col-form-label">Teléfono</label>
-    </div>
-    <div class="col-lg-2">
-      <input type="text" id="telfPaciente" class="form-control" formControlName="phoneNumber">
-      <span class="text-danger" *ngIf="myForm.get('phoneNumber')?.invalid && myForm.get('phoneNumber')?.touched">
-        <!-- Mensaje específico según el error -->
-        <ng-container *ngIf="myForm.get('phoneNumber')?.hasError('required')">
-          Por favor ingrese un teléfono.
-        </ng-container>
-        <ng-container *ngIf="myForm.get('phoneNumber')?.hasError('pattern')">
-          El número solo debe contener dígitos.
-        </ng-container>
-      </span>
-    </div>
-  
-    <div class="col-lg-1">
-      <label for="telfDes" class="col-form-label">Descripción</label>
-    </div>
-    <div class="col-lg-4">
-      <input type="text" id="telfDes" class="form-control" formControlName="descriptionPhone">
-      <span class="text-danger" *ngIf="myForm.get('descriptionPhone')?.invalid && myForm.get('descriptionPhone')?.touched">
-        <!-- Mensaje de error -->
-        Por favor ingrese una descripción (Ejemplo: Celular mamá, Trabajo hermano, etc)
-      </span>
-    </div>
-  
-    <div class="col-lg-2">
-      <button class="btn btn-primary" type="button" (click)="addPhoneItem()">Agregar</button>
-    </div>
   </div>
-
-  <div class="row mt-2" id="phoneTable" >
-   
+  
+  <div class="row mt-2 form-group" id="phoneTable" >
     <table class="table table-sm">
-
         <thead>
           <tr>
             <th scope="col">N°</th>
@@ -293,6 +360,14 @@
         </tbody>
         
       </table>
+
+
+
+      <div *ngIf="!validarArrayTelefono() && formSubmitted" class="invalid-feedback">
+        Por favor ingrese al menos un número teléfono y descripción 1
+      </div>
+
+    
       <span class="text-danger" *ngIf="!validarArrayTelefono() && formSubmitted">
         Por favor ingrese al menos un número teléfono y descripción
       </span> 
@@ -310,8 +385,7 @@
     </div>
 
     <div class="col col-4 text-center">
-    <button class="btn btn-success" type="submit" [disabled]="myForm.invalid">CREAR CLIENTE</button>
-
+    <button class="btn btn-success" type="submit">CREAR CLIENTE</button>
     </div>
 
   </div>

@@ -29,6 +29,8 @@ export class RegistrarPacienteComponent implements OnInit{
     this.distritos = this._ubigeoService.getDistrito('15','01')
     this.onDepartamentoChange();
     this.onProvinciaChange();
+    // Exponer el método globalmente para que pueda ser llamado desde JavaScript
+    (window as any).clearFechaNacimientoError = this.clearFechaNacimientoError.bind(this);
   }
  
   departamentos: any[] = [];
@@ -83,50 +85,42 @@ export class RegistrarPacienteComponent implements OnInit{
     return this.myForm.get('phones') as FormArray;
   }
 
-  /*
-  addPhoneItem():void{
 
-    if(this.myForm.get('phoneNumber')?.value && this.myForm.get('descriptionPhone')?.value){
+  phoneNumberControl = new FormControl('', [Validators.required, Validators.pattern('^[0-9]+$')]);
+  descriptionPhoneControl = new FormControl('', Validators.required);
 
-      const nuevoTelefonoFormGroup = this._fb.group({
-        phoneNumber: [this.myForm.get('phoneNumber')?.value, [Validators.required, Validators.pattern('^[0-9]+$')]],
-        descriptionPhone: [this.myForm.get('descriptionPhone')?.value, [Validators.required]]
-      });
-
-      this.phones.push(nuevoTelefonoFormGroup);
-      this.myForm.get('phoneNumber')?.reset();
-      this.myForm.get('descriptionPhone')?.reset();
-
-    }
-
-  }*/
-
-    phoneNumberControl = new FormControl('', [Validators.required, Validators.pattern('^[0-9]+$')]);
-    descriptionPhoneControl = new FormControl('', Validators.required);
+  public addPhone: boolean = false;
 
   addPhoneItem(): void {
+
+    this.addPhone = true;  // Activar validaciones al hacer clic en "Agregar"
     // Primero, verifica si los campos `phoneNumber` y `descriptionPhone` están completos y válidos.
-    const phoneNumberControl = this.myForm.get('phoneNumber');
-    const descriptionPhoneControl = this.myForm.get('descriptionPhone');
+    const phoneNumber = this.phoneNumberControl // this.myForm.get('phoneNumber');
+    const descriptionPhone = this.descriptionPhoneControl // this.myForm.get('descriptionPhone');
   
-    if (phoneNumberControl?.valid && descriptionPhoneControl?.valid) {
+    if (phoneNumber?.valid && descriptionPhone?.valid) {
       const nuevoTelefonoFormGroup = this._fb.group({
-        phoneNumber: [phoneNumberControl.value, [Validators.required, Validators.pattern('^[0-9]+$')]],
-        descriptionPhone: [descriptionPhoneControl.value, Validators.required]
+        phoneNumber: [phoneNumber.value],
+        descriptionPhone: [descriptionPhone.value]
       });
   
       // Agrega el nuevo grupo al array `phones`
       this.phones.push(nuevoTelefonoFormGroup);
   
       // Limpia los campos `phoneNumber` y `descriptionPhone` después de agregar el teléfono
-      phoneNumberControl.reset();
-      descriptionPhoneControl.reset();
+      this.phoneNumberControl.reset();
+      this. descriptionPhoneControl.reset();
     } else {
       // Marca los controles como "touched" para mostrar mensajes de error si están incompletos
-      phoneNumberControl?.markAsTouched();
-      descriptionPhoneControl?.markAsTouched();
+      this.phoneNumberControl?.markAsTouched();
+      this.descriptionPhoneControl?.markAsTouched();
     }
 
+  }
+
+  // Método para obtener si un control dentro del FormArray es inválido y submitted es true
+  isFieldInvalid(index: number, fieldName: string): boolean {
+    return (this.phones.at(index).get(fieldName)?.invalid ?? false) && this.addPhone;
   }
 
 
@@ -134,11 +128,11 @@ export class RegistrarPacienteComponent implements OnInit{
     this.phones.removeAt(index)
   }
 
+
   onFechaNacimientoInput(event: Event): void {
     const inputValue = event.target as HTMLInputElement;
     const fechaNacimiento = inputValue.value;  // Obtener el valor actual del input
     //console.log('Valor del input cambiado:', fechaNacimiento);
-
     // Aquí puedes realizar cualquier validación o transformación del valor de la fecha
     if (this.validarFormatoFecha(fechaNacimiento)) {
       //console.log('Formato de fecha válido:', fechaNacimiento);
@@ -146,6 +140,13 @@ export class RegistrarPacienteComponent implements OnInit{
     }
     
   }
+
+  clearFechaNacimientoError() {
+    this.myForm.get('fechaNacimiento')?.setErrors(null);
+    this.myForm.get('fechaNacimiento')?.markAsTouched();
+    this.myForm.get('fechaNacimiento')?.markAsDirty();
+  }
+
 
   // Ejemplo de función para validar el formato dd-mm-yyyy
   validarFormatoFecha(fecha: string): boolean {
@@ -181,13 +182,14 @@ export class RegistrarPacienteComponent implements OnInit{
 
     // Devolver el resultado en años, meses y días
     return `${years} años, ${months} meses, y ${days} días`;
+
   }
 
   validarArrayTelefono(): boolean{
     
     const telefonos = this.myForm.get('phones') as FormArray;
 
-    if((telefonos.length >= 1)){
+    if((telefonos.length > 0)){
       return true
     }
     return false
@@ -203,8 +205,13 @@ export class RegistrarPacienteComponent implements OnInit{
   
     if(this.validarArrayTelefono() == true){
 
-    const fecha1 = this.myForm.get('fechaNacimiento')?.value
-    const [dia, mes, anio] = fecha1.split('/'); // Separar día, mes y año
+    const fechaNacimientoInput = document.getElementById('fechaNac') as HTMLInputElement;
+    const fechaSeleccionada = fechaNacimientoInput.value;
+    console.log(fechaSeleccionada)
+   
+    //const fecha1 = this.myForm.get('fechaNacimiento')?.value
+    //console.log(fecha1)
+    const [dia, mes, anio] = fechaSeleccionada.split('/'); // Separar día, mes y año
     const fechaFormateada = `${anio}-${mes}-${dia}`
 
     // Actualizar el campo en el formulario con la fecha formateada
@@ -212,6 +219,7 @@ export class RegistrarPacienteComponent implements OnInit{
 
       console.log('Procede registro')
       const body: IPaciente = this.myForm.value; //capturando los valores del component.ts
+      
       console.log("capturando valores en component.ts")
 
       this._pagesService.registrarPaciente(body).subscribe((res) => {
@@ -232,10 +240,15 @@ export class RegistrarPacienteComponent implements OnInit{
 
   }
   
+  /*
   fieldIsInvalidReactive(field: any) {
     return (
-      this.myForm.controls[field].errors && this.myForm.controls[field].touched && this.phones.length > 0
+      this.myForm.controls[field].errors && this.myForm.controls[field].touched
     );
   }
+
+  fieldIsInvalidReactive(field: any): boolean {
+      return this.myForm.controls[field].invalid && this.formSubmitted;
+  }*/
 
 }

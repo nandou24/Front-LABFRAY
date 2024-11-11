@@ -18,6 +18,9 @@ $(document).ready(function() {
       // Mostrar la edad en el elemento HTML
       //document.getElementById('edadCalculada').value = `${edad} años`;
       document.getElementById('edadCalculada').value = `${edad.years} años, ${edad.months} meses, y ${edad.days} días`;
+
+      //borrar errores
+      window.clearFechaNacimientoError();
     });
   
     // Función para calcular la edad
