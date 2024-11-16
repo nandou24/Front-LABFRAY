@@ -29,6 +29,7 @@ export class RegistrarPacienteComponent implements OnInit{
     this.distritos = this._ubigeoService.getDistrito('15','01')
     this.onDepartamentoChange();
     this.onProvinciaChange();
+    this.ultimosClientes();
     // Exponer el método globalmente para que pueda ser llamado desde JavaScript
     (window as any).clearFechaNacimientoError = this.clearFechaNacimientoError.bind(this);
   }
@@ -59,6 +60,7 @@ export class RegistrarPacienteComponent implements OnInit{
   }
 
   public myForm:FormGroup  = this._fb.group({
+      hc:'',
       tipoDoc: ['0', [Validators.required]],
       nroDoc: ['', [Validators.required]],
       nombreCliente: ['',[Validators.required]],
@@ -110,6 +112,9 @@ export class RegistrarPacienteComponent implements OnInit{
       // Limpia los campos `phoneNumber` y `descriptionPhone` después de agregar el teléfono
       this.phoneNumberControl.reset();
       this. descriptionPhoneControl.reset();
+
+      this.addPhone = false;
+
     } else {
       // Marca los controles como "touched" para mostrar mensajes de error si están incompletos
       this.phoneNumberControl?.markAsTouched();
@@ -117,12 +122,6 @@ export class RegistrarPacienteComponent implements OnInit{
     }
 
   }
-
-  // Método para obtener si un control dentro del FormArray es inválido y submitted es true
-  isFieldInvalid(index: number, fieldName: string): boolean {
-    return (this.phones.at(index).get(fieldName)?.invalid ?? false) && this.addPhone;
-  }
-
 
   removeItem(index:number){
     this.phones.removeAt(index)
@@ -136,9 +135,8 @@ export class RegistrarPacienteComponent implements OnInit{
     // Aquí puedes realizar cualquier validación o transformación del valor de la fecha
     if (this.validarFormatoFecha(fechaNacimiento)) {
       //console.log('Formato de fecha válido:', fechaNacimiento);
-      this.edad = this.calcularEdad(fechaNacimiento);
+      this.edad = this.calcularEdad();
     }
-    
   }
 
   clearFechaNacimientoError() {
@@ -157,7 +155,10 @@ export class RegistrarPacienteComponent implements OnInit{
 
   public edad: string = '';
 
-  calcularEdad(fechaNacimiento: string): string {
+  calcularEdad(): string {
+
+    const fechaNacimiento = this.myForm.get('fechaNacimiento')?.value;
+
     const [day, month, year] = fechaNacimiento.split('/').map(Number);  // Dividir la fecha en partes
 
     const birthDate = new Date(year, month - 1, day);  // Crear una fecha con el valor ingresado
@@ -196,59 +197,206 @@ export class RegistrarPacienteComponent implements OnInit{
 
   }
 
+  public hc: string = '';
 
   public formSubmitted: boolean = false;
 
   registraPaciente(){
 
+       this.formSubmitted = true;
+    
+      if(this.myForm.valid && this.validarArrayTelefono()){
+
+        Swal.fire({
+          title: '¿Estás seguro?',
+          text: '¿Deseas confirmar la creación de este paciente?',
+          icon: 'question',
+          showCancelButton: true,
+          confirmButtonText: 'Sí, confirmar',
+          cancelButtonText: 'Cancelar',
+        }).then((result) => {
+          
+          if (result.isConfirmed) {
+
+            const fechaNacimientoInput = document.getElementById('fechaNac') as HTMLInputElement;
+            const fechaSeleccionada = fechaNacimientoInput.value;
+            console.log(fechaSeleccionada)
+          
+            const [dia, mes, anio] = fechaSeleccionada.split('/'); // Separar día, mes y año
+            const fechaFormateada = `${anio}-${mes}-${dia}`
+
+            // Actualizar el campo en el formulario con la fecha formateada
+            this.myForm.get('fechaNacimiento')?.setValue(fechaFormateada);
+
+            console.log('Procede registro')
+            const body: IPaciente = this.myForm.value; //capturando los valores del component.ts
+            
+            console.log("capturando valores en component.ts")
+
+            this._pagesService.registrarPaciente(body).subscribe((res) => {
+              if (res !== 'ERROR') {
+                Swal.fire({
+                  title: 'Confirmado',
+                  text: 'Paciente Registrado',
+                  icon: 'success',
+                  confirmButtonText: 'Ok',
+                });
+                this.ultimosClientes();
+                this.myForm.reset();
+                this.formSubmitted = false;
+                //this._router.navigateByUrl('/auth/login');
+              }else{
+                this.myForm.get('fechaNacimiento')?.setValue(fechaSeleccionada);
+              }
+            });
+          }
+        })
+      }else{
+        console.log('No Procede')
+      }
+
+  }
+  
+  
+  //Buscar Paciente
+
+  terminoBusqueda: any;
+  pacientes: IPaciente[] = [];
+
+  // Método para buscar clientes
+  buscarClientes(): void {
+    if (this.terminoBusqueda.length >= 3) { 
+      this._pagesService.getPatient(this.terminoBusqueda).subscribe((res: IPaciente[]) => {
+        this.pacientes = res;
+      });
+    }if (this.terminoBusqueda.length > 0) {
+      this.pacientes = [];
+    }else{
+      this.ultimosClientes();
+    }
+  }
+  
+  // Método últimos 20* pacientes
+  ultimosClientes(): void {
+    this._pagesService.getLastPatients().subscribe((res: IPaciente[]) => {
+      this.pacientes = res;
+    });
+  }
+
+  //Carga los datos en los campos
+  cargarCliente(paciente: IPaciente): void {
+    this.myForm.patchValue({ 
+      hc: paciente.hc,
+      tipoDoc: paciente.tipoDoc,
+      nroDoc: paciente.nroDoc,
+      nombreCliente: paciente.nombreCliente,
+      apePatCliente: paciente.apePatCliente,
+      apeMatCliente: paciente.apeMatCliente,
+      fechaNacimiento: this.formatearFecha(paciente.fechaNacimiento),
+      sexoCliente: paciente.sexoCliente,
+      departamentoCliente: paciente.departamentoCliente,
+      provinciaCliente: paciente.provinciaCliente,
+      distritoCliente: paciente.distritoCliente,
+      direcCliente: paciente.direcCliente,
+      mailCliente: paciente.mailCliente
+    });
+    this.edad = this.calcularEdad();
+    // Limpiar el FormArray antes de llenarlo
+    this.phones.clear();
+
+    // Agregar cada teléfono al FormArray
+    paciente.phones.forEach((phone: any) => {
+      this.phones.push(this.crearTelefonoGroup(phone));
+    });
+  }
+
+  private crearTelefonoGroup(phone: any): FormGroup {
+    return this._fb.group({
+      phoneNumber: [phone.phoneNumber],
+      descriptionPhone: [phone.descriptionPhone]
+    });
+  }
+
+
+  // Función para formatear la fecha en dd/mm/YYYY
+  formatearFecha(fecha: Date | string): string {
+
+    const fechaStr = typeof fecha === 'string' ? fecha : fecha.toISOString();
+    const [anio, mes, dia] = fechaStr.split('T')[0].split('-');
+    // Retorna en formato `dd/mm/yyyy`
+    return `${dia}/${mes}/${anio}`;
+  }
+
+  filaSeleccionada: number | null = null;
+
+  seleccionarFila(index: number): void {
+    this.filaSeleccionada = index; // Guarda el índice de la fila seleccionada
+  }
+
+  //Botón nuevo cliente
+  nuevoCliente(): void {
+    this.myForm.reset(); // Reinicia todos los campos del formulario
+    this.formSubmitted = false; // Restablece el estado de validación del formulario 
+    this.phones.clear();// Limpia el FormArray de teléfonos, si es necesario
+    this.myForm.patchValue({
+      tipoDoc: '0',
+      sexoCliente: '0',
+      departamentoCliente: '15',
+      provinciaCliente: '01',
+      distritoCliente: '',
+    });
+    this.edad = '';
+    this.filaSeleccionada = null;
+  }
+
+  //actualizar cliente
+  actualizarCliente(): void {
+
     this.formSubmitted = true;
   
-    if(this.validarArrayTelefono() == true){
+    if(this.myForm.valid && this.validarArrayTelefono()){
 
-    const fechaNacimientoInput = document.getElementById('fechaNac') as HTMLInputElement;
-    const fechaSeleccionada = fechaNacimientoInput.value;
-    console.log(fechaSeleccionada)
-   
-    //const fecha1 = this.myForm.get('fechaNacimiento')?.value
-    //console.log(fecha1)
-    const [dia, mes, anio] = fechaSeleccionada.split('/'); // Separar día, mes y año
-    const fechaFormateada = `${anio}-${mes}-${dia}`
-
-    // Actualizar el campo en el formulario con la fecha formateada
-    this.myForm.get('fechaNacimiento')?.setValue(fechaFormateada);
-
-      console.log('Procede registro')
-      const body: IPaciente = this.myForm.value; //capturando los valores del component.ts
+      Swal.fire({
+        title: '¿Estás seguro?',
+        text: '¿Deseas confirmar la actualización de este paciente?',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'Sí, confirmar',
+        cancelButtonText: 'Cancelar',
+      }).then((result) => {
       
-      console.log("capturando valores en component.ts")
+        const fechaNacimientoInput = document.getElementById('fechaNac') as HTMLInputElement;
+        const fechaSeleccionada = fechaNacimientoInput.value;
+        console.log(fechaSeleccionada)
+      
+        const [dia, mes, anio] = fechaSeleccionada.split('/'); // Separar día, mes y año
+        const fechaFormateada = `${anio}-${mes}-${dia}`
+    
+        // Actualizar el campo en el formulario con la fecha formateada
+        this.myForm.get('fechaNacimiento')?.setValue(fechaFormateada);
 
-      this._pagesService.registrarPaciente(body).subscribe((res) => {
-        if (res !== 'ERROR') {
-          Swal.fire({
-            title: 'Woho!',
-            text: 'Paciente Registrado',
-            icon: 'success',
-            confirmButtonText: 'Ok',
-          });
+        const body: IPaciente = this.myForm.value; //capturando los valores del component.ts
 
-          this._router.navigateByUrl('/auth/login');
-        }
-      });
+        this._pagesService.actualizarPaciente(body.hc,body).subscribe((res) => {
+          if (res !== 'ERROR') {
+            Swal.fire({
+              title: 'Confirmado',
+              text: 'Paciente Actualizado',
+              icon: 'success',
+              confirmButtonText: 'Ok',
+            });
+            this.ultimosClientes();
+            this.myForm.reset();
+            this.formSubmitted = false;
+            this.nuevoCliente();
+          }else{
+            this.myForm.get('fechaNacimiento')?.setValue(fechaSeleccionada);
+          }
+        });
+      })
     }else{
-      console.log('No Procede')
+      console.log('No Procede Actualización')
     }
-
   }
   
-  /*
-  fieldIsInvalidReactive(field: any) {
-    return (
-      this.myForm.controls[field].errors && this.myForm.controls[field].touched
-    );
-  }
-
-  fieldIsInvalidReactive(field: any): boolean {
-      return this.myForm.controls[field].invalid && this.formSubmitted;
-  }*/
-
 }

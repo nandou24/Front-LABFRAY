@@ -1,4 +1,5 @@
 export interface IPaciente {
+    hc: string,
     tipoDoc: string,
     nroDoc: string,
     nombreCliente: string,
@@ -20,4 +21,10 @@ export interface IPacientePostDTO {
     ok: boolean;
     msg?: string;
     errors?: string;
-  }
+}
+
+export interface IGetLastPatients {
+    ok: boolean;
+    search: String;
+    pacientes: IPaciente[];
+}
