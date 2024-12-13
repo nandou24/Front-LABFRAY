@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IPaciente } from '../models/pages.models';
 import Swal from 'sweetalert2';
@@ -32,6 +32,9 @@ export class RegistrarPacienteComponent implements OnInit{
     this.ultimosClientes();
     // Exponer el método globalmente para que pueda ser llamado desde JavaScript
     (window as any).clearFechaNacimientoError = this.clearFechaNacimientoError.bind(this);
+    this.myForm.get('tipoDoc')?.valueChanges.subscribe(() =>{
+      this.myForm.get('nroDoc')?.updateValueAndValidity();
+    })
   }
  
   departamentos: any[] = [];
@@ -62,10 +65,18 @@ export class RegistrarPacienteComponent implements OnInit{
   public myForm:FormGroup  = this._fb.group({
       hc:'',
       tipoDoc: ['0', [Validators.required]],
-      nroDoc: ['', [Validators.required]],
-      nombreCliente: ['',[Validators.required]],
-      apePatCliente:['',[Validators.required]],
-      apeMatCliente:['',[Validators.required]],
+      nroDoc: ['', [Validators.required,
+                    documentValidator('tipoDoc')
+                  ]],
+      nombreCliente: ['',[Validators.required,
+                          Validators.pattern(/^[a-zA-ZÀ-ÿ\u00f1\u00d1\s]+$/)
+                        ]],
+      apePatCliente:['',[Validators.required,
+                          Validators.pattern(/^[a-zA-ZÀ-ÿ\u00f1\u00d1\s]+$/)
+                        ]],
+      apeMatCliente:['',[Validators.required,
+                          Validators.pattern(/^[a-zA-ZÀ-ÿ\u00f1\u00d1\s]+$/)
+                        ]],
       fechaNacimiento: ['', Validators.required],
       sexoCliente:['0',[Validators.required, Validators.pattern('^[12]$')]],
       departamentoCliente: ['15'],
@@ -88,7 +99,7 @@ export class RegistrarPacienteComponent implements OnInit{
   }
 
 
-  phoneNumberControl = new FormControl('', [Validators.required, Validators.pattern('^[0-9]+$')]);
+  phoneNumberControl = new FormControl('', [Validators.required, Validators.pattern('^[0-9]{9,11}$')]);
   descriptionPhoneControl = new FormControl('', Validators.required);
 
   public addPhone: boolean = false;
@@ -399,4 +410,33 @@ export class RegistrarPacienteComponent implements OnInit{
     }
   }
   
+}
+
+export function documentValidator(tipoDocControlName: string): ValidatorFn {
+  return (control: AbstractControl) => {
+    const parent = control.parent; // Accede al formulario completo
+    if (!parent) return null; // Verifica si existe un formulario padre
+
+    const tipoDoc = parent.get(tipoDocControlName)?.value; // Obtén el valor de tipoDoc
+    const nroDoc = control.value; // Obtén el valor del número de documento
+
+    if (tipoDoc === '0') {
+      // DNI: exactamente 8 dígitos numéricos
+      if (!/^\d{8}$/.test(nroDoc)) {
+        return { invalidDNI: true };
+      }
+    } else if (tipoDoc === '1') {
+      // CE: máximo 13 caracteres alfanuméricos
+      if (!/^[a-zA-Z0-9]{1,13}$/.test(nroDoc)) {
+        return { invalidCE: true };
+      }
+    } else if (tipoDoc === '2') {
+      // Pasaporte: máximo 16 caracteres alfanuméricos
+      if (!/^[a-zA-Z0-9]{1,16}$/.test(nroDoc)) {
+        return { invalidPasaporte: true };
+      }
+    }
+
+    return null; // Es válido
+  };
 }

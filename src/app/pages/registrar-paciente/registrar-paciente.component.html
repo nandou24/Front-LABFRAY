@@ -34,8 +34,29 @@
             }">
             
             <div *ngIf="myForm.get('nroDoc')?.invalid && formSubmitted" class="invalid-feedback">
-              Número de documento es obligatorio
+              <!--//Número de documento es obligatorio-->
+              <small *ngIf="myForm.get('nroDoc')?.errors?.['required']">El número de documento es obligatorio.</small>
+              <small *ngIf="myForm.get('nroDoc')?.errors?.['invalidDNI']">
+                El DNI debe tener exactamente 8 dígitos.
+              </small>
+              <small *ngIf="myForm.get('nroDoc')?.errors?.['invalidCE']">
+                El CE debe tener un máximo de 13 caracteres alfanuméricos.
+              </small>
+              <small *ngIf="myForm.get('nroDoc')?.errors?.['invalidPasaporte']">
+                El Pasaporte debe tener un máximo de 16 caracteres alfanuméricos.
+              </small>
+
             </div>
+            <!--
+            <div *ngIf="myForm.get('nroDoc')?.errors?.['invalidDNI']" class="invalid-feedback">
+              El DNI debe tener 8 dígitos
+            </div>
+            <div *ngIf="myForm.get('nroDoc')?.errors?.['invalidCE']" class="invalid-feedback">
+              El CE debe tener un máximo de 13 carácteres
+            </div>
+            <div *ngIf="myForm.get('nroDoc')?.errors?.['invalidPasaporte']" class="invalid-feedback">
+              El Pasaporte debe tener un máximo de 16 carácteres
+            </div>-->
           </div>
 
           <div class="col-lg-1">
@@ -63,6 +84,9 @@
             <div *ngIf="myForm.get('apePatCliente')?.invalid && formSubmitted" class="invalid-feedback">
               Por favor ingrese el apellido paterno
             </div>
+            <div *ngIf="myForm.get('apePatCliente')?.errors?.['pattern']" class="invalid-feedback">
+              Solo se permiten letras y espacios.
+            </div>
           </div>
 
         </div>
@@ -82,6 +106,9 @@
 
             <div *ngIf="myForm.get('apeMatCliente')?.invalid && formSubmitted" class="invalid-feedback">
               Por favor ingrese el apellido materno
+            </div>
+            <div *ngIf="myForm.get('apeMatCliente')?.errors?.['pattern']" class="invalid-feedback">
+              Solo se permiten letras y espacios.
             </div>
           </div>
 
@@ -103,6 +130,10 @@
             <div *ngIf="myForm.get('nombreCliente')?.invalid && formSubmitted" class="invalid-feedback">
               Por favor ingrese el nombre
             </div>
+            <div *ngIf="myForm.get('nombreCliente')?.errors?.['pattern']" class="invalid-feedback">
+              Solo se permiten letras y espacios.
+            </div>
+
           </div>
 
         </div>
@@ -261,7 +292,7 @@
                 Por favor ingrese un teléfono.
               </ng-container>
               <ng-container *ngIf="phoneNumberControl.hasError('pattern')">
-                Solo debe contener números.
+                Solo debe contener 9 - 11 números.
               </ng-container>
             </div>
           </div>
