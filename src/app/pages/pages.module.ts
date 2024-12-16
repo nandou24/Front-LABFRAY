@@ -6,12 +6,14 @@ import { SharedModule } from '../shared/shared.module';
 import { PagesComponent } from './pages.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { MantPruebaLabComponent } from './mant-prueba-lab/mant-prueba-lab.component';
 
 
 @NgModule({
   declarations: [
     PagesComponent,
-    MantPacienteComponent
+    MantPacienteComponent,
+    MantPruebaLabComponent
   ],
   imports: [
     CommonModule,

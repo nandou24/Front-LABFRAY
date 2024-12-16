@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { PagesComponent } from './pages.component';
 import { MantPacienteComponent } from './mant-paciente/mant-paciente.component';
+import { MantPruebaLabComponent } from './mant-prueba-lab/mant-prueba-lab.component';
 
 const routes: Routes = [
 
@@ -10,8 +11,13 @@ const routes: Routes = [
     component: PagesComponent,
     children: [
       {
-        path: 'registrarPaciente',
+        path: 'mantPaciente',
         component: MantPacienteComponent,
+        /*canActivate: [PagesGuard]*/
+      },
+      {
+        path: 'mantPruebaLab',
+        component: MantPruebaLabComponent,
         /*canActivate: [PagesGuard]*/
       },
       /*{

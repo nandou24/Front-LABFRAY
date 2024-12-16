@@ -1,0 +1,381 @@
+<div class="row">
+
+    <div class="col-12 col-lg-6">
+        <div class="container">
+          <form class="mt-4 mb-4" [formGroup]="myFormPruebaLab" (ngSubmit)="registraPruebaLab()">
+            <div class="row mt-2 mb-2">
+                <H5>PRUEBA DE LABORATORIO</H5>
+            </div>
+
+            <div class="row mt-2"> 
+      
+                <div class="col-lg-3">
+                  <label for="codPruebaLab" class="col-form-label">CÓDIGO</label>
+                </div>
+                <div class="col-lg-3">
+                  <input type="text" id="codPruebaLab" class="form-control readonly-style" formControlName="codPrueba" readonly>
+                </div>
+      
+            </div>
+
+            <div class="row mt-2">
+
+                <div class="col-lg-3">  
+                  <label for="areaLab" class="col-form-label">Area de Laboratorio</label>
+                </div>
+                <div class="col-lg-3">
+                  <select class="form-select" id="areaLab"
+                  formControlName="sexoCliente"
+                  [ngClass]="{
+                    'is-valid': myFormPruebaLab.get('sexoCliente')?.valid && formSubmitted,
+                    'is-invalid': myFormPruebaLab.get('sexoCliente')?.invalid && formSubmitted
+                  }">
+                    <option value="0">Seleccionar</option>
+                    <option value="1">BIOQUÍMICA</option>
+                    <option value="2">HEMATOLOGÍA</option>
+                    <option value="3">INMUNOLOGÍA</option>
+                    <option value="4">MICROBIOLOGÍA</option>
+                    <option value="5">TOXICOLOGÍA</option>
+                    <option value="6">BIOLOGÍA MOLECULAR</option>
+                    <option value="7">OTROS</option>
+
+                  </select>
+      
+                  <!--
+                  <div *ngIf="myForm.get('sexoCliente')?.invalid && formSubmitted" class="invalid-feedback">
+                    Por favor seleccione sexo
+                  </div>-->
+                </div>
+      
+            </div>
+
+            <div class="row mt-2">
+
+                <div class="col-lg-3">
+                  <label for="nombrePruebaLab" class="col-form-label">Nombre de Prueba</label>
+                </div>
+                <div class="col-lg-4">
+                  <input type="text" id="nombrePruebaLab" class="form-control text-uppercase" 
+                      formControlName="nombrePruebaLab"
+                      [ngClass]="{
+                        'is-valid': myFormPruebaLab.get('nombrePruebaLab')?.valid && formSubmitted,
+                        'is-invalid': myFormPruebaLab.get('nombrePruebaLab')?.invalid && formSubmitted
+                      }">
+      
+                  <div *ngIf="myFormPruebaLab.get('nombrePruebaLab')?.invalid && formSubmitted" class="invalid-feedback">
+                    Por favor ingrese el nombre
+                  </div>
+                  <div *ngIf="myFormPruebaLab.get('nombrePruebaLab')?.errors?.['pattern']" class="invalid-feedback">
+                    Solo se permiten letras y espacios.
+                  </div>
+      
+                </div>
+      
+            </div>
+
+            
+            <div class="row mt-2">
+
+                <div class="col-lg-3">
+                  <label for="condPreAnaliticas" class="col-form-label">Condiciones Pre Analíticas</label>
+                </div>
+                <div class="col-lg-4">
+                    <textarea class="form-control text-uppercase" id="condPreAnaliticas" rows="5"
+                        formControlName="condPreAnaliticas"
+                        [ngClass]="{
+                            'is-valid': myFormPruebaLab.get('condPreAnaliticas')?.valid && formSubmitted,
+                            'is-invalid': myFormPruebaLab.get('condPreAnaliticas')?.invalid && formSubmitted
+                        }">
+
+                    </textarea>
+      
+                  <div *ngIf="myFormPruebaLab.get('condPreAnaliticas')?.invalid && formSubmitted" class="invalid-feedback">
+                    Por favor ingrese el nombre
+                  </div>
+                  <div *ngIf="myFormPruebaLab.get('condPreAnaliticas')?.errors?.['pattern']" class="invalid-feedback">
+                    Solo se permiten letras y espacios.
+                  </div>
+      
+                </div>
+      
+            </div>
+
+            <div class="row mt-2">
+
+                <div class="col-lg-3">  
+                  <label for="compuestaPrueba" class="col-form-label">Compuesta</label>
+                </div>
+                <div class="col-lg-3">
+                  <select class="form-select" id="compuestaPrueba"
+                  formControlName="compuestaPrueba"
+                  [ngClass]="{
+                    'is-valid': myFormPruebaLab.get('compuestaPrueba')?.valid && formSubmitted,
+                    'is-invalid': myFormPruebaLab.get('compuestaPrueba')?.invalid && formSubmitted
+                  }">
+                    <option value="0">Seleccionar</option>
+                    <option value="1">SI</option>
+                    <option value="2">NO</option>
+                  </select>
+      
+                  <!--
+                  <div *ngIf="myForm.get('sexoCliente')?.invalid && formSubmitted" class="invalid-feedback">
+                    Por favor seleccione sexo
+                  </div>-->
+                </div>
+      
+            </div>            
+
+
+            <div class="row mt-2">
+
+                <div class="col-lg-3">
+                  <label for="metodoPruebaLab" class="col-form-label">Método</label>
+                </div>
+                <div class="col-lg-4">
+                  <input type="text" id="metodoPruebaLab" class="form-control text-uppercase" 
+                      formControlName="metodoPruebaLab"
+                      [ngClass]="{
+                        'is-valid': myFormPruebaLab.get('metodoPruebaLab')?.valid && formSubmitted,
+                        'is-invalid': myFormPruebaLab.get('metodoPruebaLab')?.invalid && formSubmitted
+                      }">
+      
+                  <div *ngIf="myFormPruebaLab.get('metodoPruebaLab')?.invalid && formSubmitted" class="invalid-feedback">
+                    Por favor ingrese el nombre
+                  </div>
+                  <div *ngIf="myFormPruebaLab.get('metodoPruebaLab')?.errors?.['pattern']" class="invalid-feedback">
+                    Solo se permiten letras y espacios.
+                  </div>
+      
+                </div>
+      
+            </div>
+
+            <div class="row mt-2 mb-2">
+                <H5>VALORES DE REFERENCIA</H5>
+            </div>
+
+            <div class="row mt-2">
+
+                <div class="col-lg-3">  
+                  <label for="tipoResultado" class="col-form-label">Tipo Resultado</label>
+                </div>
+                <div class="col-lg-3">
+                  <select class="form-select" id="tipoResultado"
+                  formControlName="tipoResultado"
+                  [ngClass]="{
+                    'is-valid': myFormPruebaLab.get('tipoResultado')?.valid && formSubmitted,
+                    'is-invalid': myFormPruebaLab.get('tipoResultado')?.invalid && formSubmitted
+                  }">
+                    <option value="0">Seleccionar</option>
+                    <option value="1">Cualitativo</option>
+                    <option value="2">Cuantitativo</option>
+                  </select>
+      
+                  <!--
+                  <div *ngIf="myForm.get('sexoCliente')?.invalid && formSubmitted" class="invalid-feedback">
+                    Por favor seleccione sexo
+                  </div>-->
+                </div>
+      
+            </div>
+
+            <div class="row mt-2">
+
+                <div class="col-lg-3">
+                  <label for="valorRefCuali" class="col-form-label">Valor Referencia Cualitativo</label>
+                </div>
+                <div class="col-lg-4">
+                  <input type="text" id="valorRefCuali" class="form-control text-uppercase" 
+                      formControlName="valorRefCuali"
+                      [ngClass]="{
+                        'is-valid': myFormPruebaLab.get('valorRefCuali')?.valid && formSubmitted,
+                        'is-invalid': myFormPruebaLab.get('valorRefCuali')?.invalid && formSubmitted
+                      }">
+      
+                  <div *ngIf="myFormPruebaLab.get('valorRefCuali')?.invalid && formSubmitted" class="invalid-feedback">
+                    Por favor ingrese el nombre
+                  </div>
+                  <div *ngIf="myFormPruebaLab.get('valorRefCuali')?.errors?.['pattern']" class="invalid-feedback">
+                    Solo se permiten letras y espacios.
+                  </div>
+      
+                </div>
+      
+            </div>
+
+            <div class="row mt-2">
+
+                <div class="col-lg-3">
+                  <label for="valorRefCuantiLimInf" class="col-form-label">Valor Referencia - Límite Inferior</label>
+                </div>
+                <div class="col-lg-4">
+                  <input type="text" id="valorRefCuantiLimInf" class="form-control text-uppercase" 
+                      formControlName="valorRefCuantiLimInf"
+                      [ngClass]="{
+                        'is-valid': myFormPruebaLab.get('valorRefCuantiLimInf')?.valid && formSubmitted,
+                        'is-invalid': myFormPruebaLab.get('valorRefCuantiLimInf')?.invalid && formSubmitted
+                      }">
+      
+                  <div *ngIf="myFormPruebaLab.get('valorRefCuantiLimInf')?.invalid && formSubmitted" class="invalid-feedback">
+                    Por favor ingrese el nombre
+                  </div>
+                  <div *ngIf="myFormPruebaLab.get('valorRefCuantiLimInf')?.errors?.['pattern']" class="invalid-feedback">
+                    Solo se permiten letras y espacios.
+                  </div>
+      
+                </div>
+      
+            </div>
+
+            <div class="row mt-2">
+
+                <div class="col-lg-3">
+                  <label for="valorRefCuantiLimSup" class="col-form-label">Valor Referencia - Límite Superior</label>
+                </div>
+                <div class="col-lg-4">
+                  <input type="text" id="valorRefCuantiLimSup" class="form-control text-uppercase" 
+                      formControlName="valorRefCuantiLimSup"
+                      [ngClass]="{
+                        'is-valid': myFormPruebaLab.get('valorRefCuantiLimSup')?.valid && formSubmitted,
+                        'is-invalid': myFormPruebaLab.get('valorRefCuantiLimSup')?.invalid && formSubmitted
+                      }">
+      
+                  <div *ngIf="myFormPruebaLab.get('valorRefCuantiLimSup')?.invalid && formSubmitted" class="invalid-feedback">
+                    Por favor ingrese el nombre
+                  </div>
+                  <div *ngIf="myFormPruebaLab.get('valorRefCuantiLimSup')?.errors?.['pattern']" class="invalid-feedback">
+                    Solo se permiten letras y espacios.
+                  </div>
+      
+                </div>
+      
+            </div>
+
+            <div class="row mt-2">
+
+                <div class="col-lg-3">
+                  <label for="unidadesRef" class="col-form-label">Unidades</label>
+                </div>
+                <div class="col-lg-4">
+                  <input type="text" id="unidadesRef" class="form-control text-uppercase" 
+                      formControlName="unidadesRef"
+                      [ngClass]="{
+                        'is-valid': myFormPruebaLab.get('unidadesRef')?.valid && formSubmitted,
+                        'is-invalid': myFormPruebaLab.get('unidadesRef')?.invalid && formSubmitted
+                      }">
+      
+                  <div *ngIf="myFormPruebaLab.get('unidadesRef')?.invalid && formSubmitted" class="invalid-feedback">
+                    Por favor ingrese el nombre
+                  </div>
+                  <div *ngIf="myFormPruebaLab.get('unidadesRef')?.errors?.['pattern']" class="invalid-feedback">
+                    Solo se permiten letras y espacios.
+                  </div>
+      
+                </div>
+      
+            </div>
+
+            <div class="row mt-2">
+
+                <div class="col-lg-3">
+                  <label for="otrosValoresRef" class="col-form-label">Otro Valores</label>
+                </div>
+                <div class="col-lg-4">
+                    <textarea class="form-control text-uppercase" id="otrosValoresRef" rows="5"
+                        formControlName="otrosValoresRef"
+                        [ngClass]="{
+                            'is-valid': myFormPruebaLab.get('otrosValoresRef')?.valid && formSubmitted,
+                            'is-invalid': myFormPruebaLab.get('otrosValoresRef')?.invalid && formSubmitted
+                        }">
+
+                    </textarea>
+      
+                  <div *ngIf="myFormPruebaLab.get('otrosValoresRef')?.invalid && formSubmitted" class="invalid-feedback">
+                    Por favor ingrese el nombre
+                  </div>
+                  <div *ngIf="myFormPruebaLab.get('otrosValoresRef')?.errors?.['pattern']" class="invalid-feedback">
+                    Solo se permiten letras y espacios.
+                  </div>
+      
+                </div>
+      
+            </div>
+
+            <div class="row mt-2">
+
+                <div class="col-lg-3">
+                  <label for="unidadesRef" class="col-form-label">Precio</label>
+                </div>
+                <div class="col-lg-4">
+                  <input type="text" id="unidadesRef" class="form-control text-uppercase" 
+                      formControlName="unidadesRef"
+                      [ngClass]="{
+                        'is-valid': myFormPruebaLab.get('unidadesRef')?.valid && formSubmitted,
+                        'is-invalid': myFormPruebaLab.get('unidadesRef')?.invalid && formSubmitted
+                      }">
+      
+                  <div *ngIf="myFormPruebaLab.get('unidadesRef')?.invalid && formSubmitted" class="invalid-feedback">
+                    Por favor ingrese el nombre
+                  </div>
+                  <div *ngIf="myFormPruebaLab.get('unidadesRef')?.errors?.['pattern']" class="invalid-feedback">
+                    Solo se permiten letras y espacios.
+                  </div>
+      
+                </div>
+      
+            </div>
+
+            <div class="row mt-2">
+
+                <div class="col-lg-3">
+                  <label for="unidadesRef" class="col-form-label">Observaciones</label>
+                </div>
+                <div class="col-lg-4">
+                  <input type="text" id="unidadesRef" class="form-control text-uppercase" 
+                      formControlName="unidadesRef"
+                      [ngClass]="{
+                        'is-valid': myFormPruebaLab.get('unidadesRef')?.valid && formSubmitted,
+                        'is-invalid': myFormPruebaLab.get('unidadesRef')?.invalid && formSubmitted
+                      }">
+      
+                  <div *ngIf="myFormPruebaLab.get('unidadesRef')?.invalid && formSubmitted" class="invalid-feedback">
+                    Por favor ingrese el nombre
+                  </div>
+                  <div *ngIf="myFormPruebaLab.get('unidadesRef')?.errors?.['pattern']" class="invalid-feedback">
+                    Solo se permiten letras y espacios.
+                  </div>
+      
+                </div>
+      
+            </div>
+
+            <div class="row mt-2">
+
+                <div class="col-lg-3">  
+                  <label for="tipoResultado" class="col-form-label">Estado</label>
+                </div>
+                <div class="col-lg-3">
+                  <select class="form-select" id="tipoResultado"
+                  formControlName="tipoResultado"
+                  [ngClass]="{
+                    'is-valid': myFormPruebaLab.get('tipoResultado')?.valid && formSubmitted,
+                    'is-invalid': myFormPruebaLab.get('tipoResultado')?.invalid && formSubmitted
+                  }">
+                    <option value="0">Seleccionar</option>
+                    <option value="1">Cualitativo</option>
+                    <option value="2">Cuantitativo</option>
+                  </select>
+      
+                  <!--
+                  <div *ngIf="myForm.get('sexoCliente')?.invalid && formSubmitted" class="invalid-feedback">
+                    Por favor seleccione sexo
+                  </div>-->
+                </div>
+      
+            </div>
+
+        </form>
+        </div>
+    </div>
+
+</div>

@@ -8,7 +8,7 @@ import { UbigeosService } from '../services/ubigeos.service';
 import { PacienteService } from '../services/paciente.service';
 
 @Component({
-  selector: 'app-registrar-paciente',
+  selector: 'app-mant-paciente',
   templateUrl: './mant-paciente.component.html',
   styleUrl: './mant-paciente.component.scss'
 })
