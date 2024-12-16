@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { PagesComponent } from './pages.component';
-import { RegistrarPacienteComponent } from './registrar-paciente/registrar-paciente.component';
+import { MantPacienteComponent } from './mant-paciente/mant-paciente.component';
 
 const routes: Routes = [
 
@@ -11,7 +11,7 @@ const routes: Routes = [
     children: [
       {
         path: 'registrarPaciente',
-        component: RegistrarPacienteComponent,
+        component: MantPacienteComponent,
         /*canActivate: [PagesGuard]*/
       },
       /*{

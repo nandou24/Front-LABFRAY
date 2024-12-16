@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IPaciente } from '../models/pages.models';
 import Swal from 'sweetalert2';
@@ -9,10 +9,10 @@ import { PacienteService } from '../services/paciente.service';
 
 @Component({
   selector: 'app-registrar-paciente',
-  templateUrl: './registrar-paciente.component.html',
-  styleUrl: './registrar-paciente.component.scss'
+  templateUrl: './mant-paciente.component.html',
+  styleUrl: './mant-paciente.component.scss'
 })
-export class RegistrarPacienteComponent implements OnInit{
+export class MantPacienteComponent implements OnInit{
 
   constructor(
     private _fb: FormBuilder,
