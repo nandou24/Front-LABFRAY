@@ -77,28 +77,55 @@
             <div class="row mt-2">
 
                 <div class="col-lg-3">
-                  <label for="condPreAnaliticas" class="col-form-label">Condiciones Pre Analíticas</label>
+                  <label for="condPreAnalitPaciente" class="col-form-label">Condiciones Pre Analíticas - PACIENTE</label>
                 </div>
                 <div class="col-lg-4">
-                    <textarea class="form-control text-uppercase" id="condPreAnaliticas" rows="5"
-                        formControlName="condPreAnaliticas"
+                    <textarea class="form-control text-uppercase" id="condPreAnalitPaciente" rows="5"
+                        formControlName="condPreAnalitPaciente"
                         [ngClass]="{
-                            'is-valid': myFormPruebaLab.get('condPreAnaliticas')?.valid && formSubmitted,
-                            'is-invalid': myFormPruebaLab.get('condPreAnaliticas')?.invalid && formSubmitted
+                            'is-valid': myFormPruebaLab.get('condPreAnalitPaciente')?.valid && formSubmitted,
+                            'is-invalid': myFormPruebaLab.get('condPreAnalitPaciente')?.invalid && formSubmitted
                         }">
 
                     </textarea>
       
-                  <div *ngIf="myFormPruebaLab.get('condPreAnaliticas')?.invalid && formSubmitted" class="invalid-feedback">
+                  <div *ngIf="myFormPruebaLab.get('condPreAnalitPaciente')?.invalid && formSubmitted" class="invalid-feedback">
                     Por favor ingrese el nombre
                   </div>
-                  <div *ngIf="myFormPruebaLab.get('condPreAnaliticas')?.errors?.['pattern']" class="invalid-feedback">
+                  <div *ngIf="myFormPruebaLab.get('condPreAnalitPaciente')?.errors?.['pattern']" class="invalid-feedback">
                     Solo se permiten letras y espacios.
                   </div>
       
                 </div>
       
             </div>
+
+            <div class="row mt-2">
+
+              <div class="col-lg-3">
+                <label for="condPreAnalitRefer" class="col-form-label">Condiciones Pre Analíticas - REFERENCIAS</label>
+              </div>
+              <div class="col-lg-4">
+                  <textarea class="form-control text-uppercase" id="condPreAnalitRefer" rows="5"
+                      formControlName="condPreAnalitRefer"
+                      [ngClass]="{
+                          'is-valid': myFormPruebaLab.get('condPreAnalitRefer')?.valid && formSubmitted,
+                          'is-invalid': myFormPruebaLab.get('condPreAnalitRefer')?.invalid && formSubmitted
+                      }">
+
+                  </textarea>
+    
+                <div *ngIf="myFormPruebaLab.get('condPreAnalitRefer')?.invalid && formSubmitted" class="invalid-feedback">
+                  Por favor ingrese el nombre
+                </div>
+                <div *ngIf="myFormPruebaLab.get('condPreAnalitRefer')?.errors?.['pattern']" class="invalid-feedback">
+                  Solo se permiten letras y espacios.
+                </div>
+    
+              </div>
+    
+          </div>
+
 
             <div class="row mt-2">
 
@@ -146,6 +173,234 @@
                     Solo se permiten letras y espacios.
                   </div>
       
+                </div>
+      
+            </div>
+
+            <div class="row mt-2">
+
+              <div class="col-lg-3">  
+                <label for="tipoMuestra" class="col-form-label">Tipo de Muestra</label>
+              </div>
+              <div class="col-lg-3">
+                <select class="form-select" id="tipoMuestra"
+                formControlName="tipoMuestra"
+                [ngClass]="{
+                  'is-valid': myFormPruebaLab.get('tipoMuestra')?.valid && formSubmitted,
+                  'is-invalid': myFormPruebaLab.get('tipoMuestra')?.invalid && formSubmitted
+                }">
+                  <option value="0">Seleccionar</option>
+                  <option value="1">Suero</option>
+                  <option value="2">Sangre Total</option>
+                  <option value="3">Plasma Citratado</option>
+                  <option value="4">Orina aleatoria</option>
+                  <option value="5">Orina 24 horas</option>
+                  <option value="6">Heces</option>
+                  <option value="7">Esputo</option>
+                  <option value="8">Saliva</option>
+                  <option value="9">Raspado</option>
+                  <option value="10">Hisopado</option>
+                  <option value="11">Secreción</option>
+                  <option value="12">Cinta adhesiva</option>
+                  <option value="13">Otro</option>
+
+                </select>
+    
+                <!--
+                <div *ngIf="myForm.get('sexoCliente')?.invalid && formSubmitted" class="invalid-feedback">
+                  Por favor seleccione sexo
+                </div>-->
+              </div>
+    
+            </div>
+
+            <div formGroupName="tipoTuboEnvase">
+
+              <div class="row mt-2">
+
+                  <div class="col-lg-3">
+                    <label for="tipoRecipiente" class="col-form-label">Tipo de Tubo / Envase</label>
+                  </div>
+
+                  <div class="col-lg-4">
+                    
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="" id="checkTuboLila" formControlName="checkTuboLila">
+                      <label class="form-check-label" for="checkTuboLila">
+                        Tubo Lila (EDTA K2)
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="" id="checkTuboAmarillo">
+                      <label class="form-check-label" for="checkTuboAmarillo">
+                        Tubo Amarillo (Gel centrifugado)
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="" id="checkTuboCeleste">
+                      <label class="form-check-label" for="checkTuboCeleste">
+                        Tubo Celeste (Citrato)
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="" id="checkTuboPlomo">
+                      <label class="form-check-label" for="checkTuboPlomo">
+                        Tubo Plomo (Fluoruro)
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="" id="checkTuboVerde">
+                      <label class="form-check-label" for="checkTuboVerde">
+                        Tubo Verde (Heparina)
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="" id="checkCriovial">
+                      <label class="form-check-label" for="checkCriovial">
+                        Criovial
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="" id="checkFrascoEsteril">
+                      <label class="form-check-label" for="checkFrascoEsteril">
+                        Frasco estéril
+                      </label>
+                    </div>
+                    
+                  </div>
+
+                  <div class="col-lg-4">
+                    
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="" id="checkFrascoNoEstéril">
+                      <label class="form-check-label" for="checkFrascoNoEstéril">
+                        Frasco no estéril
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="" id="checkFrascoEspatula">
+                      <label class="form-check-label" for="checkFrascoEspatula">
+                        Frasco con espátula
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="" id="checkHemocultivo">
+                      <label class="form-check-label" for="checkHemocultivo">
+                        Frasco Hemocultivo
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="" id="checkMedioTransporte">
+                      <label class="form-check-label" for="checkMedioTransporte">
+                        Medio de Transporte (Cary-Blair)
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="" id="checkLamina">
+                      <label class="form-check-label" for="checkLamina">
+                        Lámina
+                      </label>
+                    </div>
+
+                  </div>
+      
+              </div>
+            </div>
+
+
+            <div class="row mt-2">
+
+              <div class="col-lg-3">
+                <label for="tiempoEntrega" class="col-form-label">Tiempo de Entrega (días) </label>
+              </div>
+              <div class="col-lg-4">
+                <input type="text" id="tiempoEntrega" class="form-control text-uppercase" 
+                    formControlName="tiempoEntrega"
+                    [ngClass]="{
+                      'is-valid': myFormPruebaLab.get('tiempoEntrega')?.valid && formSubmitted,
+                      'is-invalid': myFormPruebaLab.get('tiempoEntrega')?.invalid && formSubmitted
+                    }">
+    
+                <div *ngIf="myFormPruebaLab.get('tiempoEntrega')?.invalid && formSubmitted" class="invalid-feedback">
+                  Por favor ingrese el nombre
+                </div>
+                <div *ngIf="myFormPruebaLab.get('tiempoEntrega')?.errors?.['pattern']" class="invalid-feedback">
+                  Solo se permiten letras y espacios.
+                </div>
+    
+              </div>
+    
+            </div>
+
+            <div class="row mt-2">
+
+              <div class="col-lg-3">
+                <label for="precioPrueba" class="col-form-label">Precio Referencial (S/)</label>
+              </div>
+              <div class="col-lg-4">
+                <input type="text" id="precioPrueba" class="form-control text-uppercase" 
+                    formControlName="precioPrueba"
+                    [ngClass]="{
+                      'is-valid': myFormPruebaLab.get('precioPrueba')?.valid && formSubmitted,
+                      'is-invalid': myFormPruebaLab.get('precioPrueba')?.invalid && formSubmitted
+                    }">
+    
+                <div *ngIf="myFormPruebaLab.get('precioPrueba')?.invalid && formSubmitted" class="invalid-feedback">
+                  Por favor ingrese el nombre
+                </div>
+                <div *ngIf="myFormPruebaLab.get('precioPrueba')?.errors?.['pattern']" class="invalid-feedback">
+                  Solo se permiten letras y espacios.
+                </div>
+    
+              </div>
+    
+            </div>
+
+            <div class="row mt-2">
+
+                <div class="col-lg-3">
+                  <label for="observPruebas" class="col-form-label">Observaciones</label>
+                </div>
+                <div class="col-lg-4">
+                  <input type="text" id="observPruebas" class="form-control text-uppercase" 
+                      formControlName="observPruebas"
+                      [ngClass]="{
+                        'is-valid': myFormPruebaLab.get('observPruebas')?.valid && formSubmitted,
+                        'is-invalid': myFormPruebaLab.get('observPruebas')?.invalid && formSubmitted
+                      }">
+      
+                  <div *ngIf="myFormPruebaLab.get('observPruebas')?.invalid && formSubmitted" class="invalid-feedback">
+                    Por favor ingrese el nombre
+                  </div>
+                  <div *ngIf="myFormPruebaLab.get('observPruebas')?.errors?.['pattern']" class="invalid-feedback">
+                    Solo se permiten letras y espacios.
+                  </div>
+      
+                </div>
+      
+            </div>
+
+            <div class="row mt-2">
+
+                <div class="col-lg-3">  
+                  <label for="estadoPrueba" class="col-form-label">Estado</label>
+                </div>
+                <div class="col-lg-3">
+                  <select class="form-select" id="estadoPrueba"
+                  formControlName="estadoPrueba"
+                  [ngClass]="{
+                    'is-valid': myFormPruebaLab.get('estadoPrueba')?.valid && formSubmitted,
+                    'is-invalid': myFormPruebaLab.get('estadoPrueba')?.invalid && formSubmitted
+                  }">
+                    <option value="0">Seleccionar</option>
+                    <option value="1">Activo</option>
+                    <option value="2">Inactivo</option>
+                  </select>
+      
+                  <!--
+                  <div *ngIf="myForm.get('sexoCliente')?.invalid && formSubmitted" class="invalid-feedback">
+                    Por favor seleccione sexo
+                  </div>-->
                 </div>
       
             </div>
@@ -302,80 +557,78 @@
             </div>
 
             <div class="row mt-2">
-
-                <div class="col-lg-3">
-                  <label for="unidadesRef" class="col-form-label">Precio</label>
+          
+              <div class="col col-4 text-center">
+                <button class="btn btn-primary" type="button" (click)="nuevaPrueba()">NUEVA PRUEBA</button>
+              </div>
+    
+              <div class="col col-4 text-center">
+              <button class="btn btn-success" type="submit">CREAR PRUEBA</button>
+              </div>
+    
+              <div class="col col-4 text-center">
+                <button class="btn btn-warning" type="button" (click)="actualizarPrueba()">ACTUALIZAR PRUEBA</button>
                 </div>
-                <div class="col-lg-4">
-                  <input type="text" id="unidadesRef" class="form-control text-uppercase" 
-                      formControlName="unidadesRef"
-                      [ngClass]="{
-                        'is-valid': myFormPruebaLab.get('unidadesRef')?.valid && formSubmitted,
-                        'is-invalid': myFormPruebaLab.get('unidadesRef')?.invalid && formSubmitted
-                      }">
-      
-                  <div *ngIf="myFormPruebaLab.get('unidadesRef')?.invalid && formSubmitted" class="invalid-feedback">
-                    Por favor ingrese el nombre
-                  </div>
-                  <div *ngIf="myFormPruebaLab.get('unidadesRef')?.errors?.['pattern']" class="invalid-feedback">
-                    Solo se permiten letras y espacios.
-                  </div>
-      
-                </div>
-      
+    
             </div>
-
-            <div class="row mt-2">
-
-                <div class="col-lg-3">
-                  <label for="unidadesRef" class="col-form-label">Observaciones</label>
-                </div>
-                <div class="col-lg-4">
-                  <input type="text" id="unidadesRef" class="form-control text-uppercase" 
-                      formControlName="unidadesRef"
-                      [ngClass]="{
-                        'is-valid': myFormPruebaLab.get('unidadesRef')?.valid && formSubmitted,
-                        'is-invalid': myFormPruebaLab.get('unidadesRef')?.invalid && formSubmitted
-                      }">
-      
-                  <div *ngIf="myFormPruebaLab.get('unidadesRef')?.invalid && formSubmitted" class="invalid-feedback">
-                    Por favor ingrese el nombre
-                  </div>
-                  <div *ngIf="myFormPruebaLab.get('unidadesRef')?.errors?.['pattern']" class="invalid-feedback">
-                    Solo se permiten letras y espacios.
-                  </div>
-      
-                </div>
-      
-            </div>
-
-            <div class="row mt-2">
-
-                <div class="col-lg-3">  
-                  <label for="tipoResultado" class="col-form-label">Estado</label>
-                </div>
-                <div class="col-lg-3">
-                  <select class="form-select" id="tipoResultado"
-                  formControlName="tipoResultado"
-                  [ngClass]="{
-                    'is-valid': myFormPruebaLab.get('tipoResultado')?.valid && formSubmitted,
-                    'is-invalid': myFormPruebaLab.get('tipoResultado')?.invalid && formSubmitted
-                  }">
-                    <option value="0">Seleccionar</option>
-                    <option value="1">Cualitativo</option>
-                    <option value="2">Cuantitativo</option>
-                  </select>
-      
-                  <!--
-                  <div *ngIf="myForm.get('sexoCliente')?.invalid && formSubmitted" class="invalid-feedback">
-                    Por favor seleccione sexo
-                  </div>-->
-                </div>
-      
-            </div>
+            
 
         </form>
         </div>
+    </div>
+
+    <div class="col-12 col-lg-6">
+      <div class="container mt-4">
+        <!-- Campo de búsqueda -->
+        <div class="row mt-2 mb-2">
+          <div class="col-md-8">
+            <input type="text" class="form-control" placeholder="Ingrese busqueda..."
+            [(ngModel)]="terminoBusqueda"
+            (input)="buscarPruebas()"  />
+          </div>
+        </div>
+      
+        <!-- Tabla para listar los clientes -->
+        <div class="row">
+          <div class="col">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th scope="col">N°</th>
+                  <th scope="col">HC</th>
+                  <th scope="col">Apellido Paterno</th>
+                  <th scope="col">Apellido Materno</th>
+                  <th scope="col">Nombre</th>
+                  <th scope="col">Tipo Documento</th>
+                  <th scope="col">Nro. Documento</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let paciente of pruebas; let i = index"
+                    (click)="cargarPruebas(paciente); seleccionarFila(i)"
+                    [ngClass]="{'table-active': filaSeleccionada === i, 'table-hover-row': true}">
+                  <td>{{i+1}}</td>
+                  <td>{{ paciente.hc}}</td>
+                  <td>{{ paciente.apePatCliente }}</td>
+                  <td>{{ paciente.apeMatCliente }}</td>
+                  <td>{{ paciente.nombreCliente }}</td>
+                  <td>{{ paciente.tipoDoc === '0' ? 'DNI' : (paciente.tipoDoc === '1' ? 'CE' : 'PASAPORTE')}}</td>
+                  <td>{{ paciente.nroDoc }}</td>
+                  <!--
+                  <td>
+                    <button class="btn btn-info btn-sm" (click)="verDetalles(cliente)">Ver</button>
+                  </td>-->
+                </tr>
+                
+                <tr *ngIf="pruebas.length === 0">
+                  <td colspan="5" class="text-center">No se encontraron pacientes.</td>
+                </tr>
+              </tbody>
+             
+            </table>
+          </div>
+        </div>
+      </div>
     </div>
 
 </div>

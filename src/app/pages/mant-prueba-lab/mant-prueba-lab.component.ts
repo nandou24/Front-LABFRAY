@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { IPaciente } from '../models/pages.models';
 
 @Component({
   selector: 'app-mant-prueba-lab',
@@ -22,5 +23,31 @@ export class MantPruebaLabComponent {
   }
 
   formSubmitted = false;
+
+  nuevaPrueba(){
+
+  }
+
+  actualizarPrueba(){
+
+  }
+
+  terminoBusqueda: any;
+
+  buscarPruebas(){
+
+  }
+
+  pruebas: IPaciente[] = [];
+
+  cargarPruebas(paciente: IPaciente){
+
+  }
+
+  filaSeleccionada: number | null = null;
+
+  seleccionarFila(index: number): void {
+    this.filaSeleccionada = index; // Guarda el índice de la fila seleccionada
+  }
 
 }
