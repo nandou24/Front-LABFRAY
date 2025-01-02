@@ -84,8 +84,6 @@ export class MantPacienteComponent implements OnInit{
       distritoCliente: ['',[Validators.required]],
       direcCliente:[''],
       mailCliente: ['', [Validators.email]],
-      //phoneNumber:[''],
-      //descriptionPhone: [''],
       phones: this._fb.array([], Validators.required)
   });
 
@@ -214,7 +212,7 @@ export class MantPacienteComponent implements OnInit{
 
   registraPaciente(){
 
-       this.formSubmitted = true;
+      this.formSubmitted = true;
     
       if(this.myForm.valid && this.validarArrayTelefono()){
 

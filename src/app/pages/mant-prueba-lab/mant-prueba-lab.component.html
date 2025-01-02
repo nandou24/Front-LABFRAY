@@ -1,6 +1,6 @@
 <div class="row">
 
-    <div class="col-12 col-lg-6">
+    <div class="col-12 col-xxl-6">
         <div class="container">
           <form class="mt-4 mb-4" [formGroup]="myFormPruebaLab" (ngSubmit)="registraPruebaLab()">
             <div class="row mt-2 mb-2">
@@ -13,7 +13,7 @@
                   <label for="codPruebaLab" class="col-form-label">CÓDIGO</label>
                 </div>
                 <div class="col-lg-3">
-                  <input type="text" id="codPruebaLab" class="form-control readonly-style" formControlName="codPrueba" readonly>
+                  <input type="text" id="codPruebaLab" class="form-control readonly-style" formControlName="codPruebaLab" readonly>
                 </div>
       
             </div>
@@ -25,26 +25,26 @@
                 </div>
                 <div class="col-lg-3">
                   <select class="form-select" id="areaLab"
-                  formControlName="sexoCliente"
+                  formControlName="areaLab"
                   [ngClass]="{
-                    'is-valid': myFormPruebaLab.get('sexoCliente')?.valid && formSubmitted,
-                    'is-invalid': myFormPruebaLab.get('sexoCliente')?.invalid && formSubmitted
+                    'is-valid': myFormPruebaLab.get('areaLab')?.valid && formSubmitted,
+                    'is-invalid': myFormPruebaLab.get('areaLab')?.invalid && formSubmitted
                   }">
-                    <option value="0">Seleccionar</option>
-                    <option value="1">BIOQUÍMICA</option>
-                    <option value="2">HEMATOLOGÍA</option>
-                    <option value="3">INMUNOLOGÍA</option>
-                    <option value="4">MICROBIOLOGÍA</option>
-                    <option value="5">TOXICOLOGÍA</option>
-                    <option value="6">BIOLOGÍA MOLECULAR</option>
-                    <option value="7">OTROS</option>
+                    <option value="00">Seleccionar</option>
+                    <option value="01">BIOQUÍMICA</option>
+                    <option value="02">HEMATOLOGÍA</option>
+                    <option value="03">INMUNOLOGÍA</option>
+                    <option value="04">MICROBIOLOGÍA</option>
+                    <option value="05">TOXICOLOGÍA</option>
+                    <option value="06">BIOLOGÍA MOLECULAR</option>
+                    <option value="07">OTROS</option>
 
                   </select>
       
-                  <!--
-                  <div *ngIf="myForm.get('sexoCliente')?.invalid && formSubmitted" class="invalid-feedback">
-                    Por favor seleccione sexo
-                  </div>-->
+                  
+                  <div *ngIf="myFormPruebaLab.get('areaLab')?.invalid && formSubmitted" class="invalid-feedback">
+                    Por favor seleccione un área
+                  </div>
                 </div>
       
             </div>
@@ -80,7 +80,7 @@
                   <label for="condPreAnalitPaciente" class="col-form-label">Condiciones Pre Analíticas - PACIENTE</label>
                 </div>
                 <div class="col-lg-4">
-                    <textarea class="form-control text-uppercase" id="condPreAnalitPaciente" rows="5"
+                    <textarea class="form-control" id="condPreAnalitPaciente" rows="5"
                         formControlName="condPreAnalitPaciente"
                         [ngClass]="{
                             'is-valid': myFormPruebaLab.get('condPreAnalitPaciente')?.valid && formSubmitted,
@@ -90,7 +90,7 @@
                     </textarea>
       
                   <div *ngIf="myFormPruebaLab.get('condPreAnalitPaciente')?.invalid && formSubmitted" class="invalid-feedback">
-                    Por favor ingrese el nombre
+                    Por favor ingrese las condiciones Pre Analíticas para pacientes
                   </div>
                   <div *ngIf="myFormPruebaLab.get('condPreAnalitPaciente')?.errors?.['pattern']" class="invalid-feedback">
                     Solo se permiten letras y espacios.
@@ -106,7 +106,7 @@
                 <label for="condPreAnalitRefer" class="col-form-label">Condiciones Pre Analíticas - REFERENCIAS</label>
               </div>
               <div class="col-lg-4">
-                  <textarea class="form-control text-uppercase" id="condPreAnalitRefer" rows="5"
+                  <textarea class="form-control" id="condPreAnalitRefer" rows="5"
                       formControlName="condPreAnalitRefer"
                       [ngClass]="{
                           'is-valid': myFormPruebaLab.get('condPreAnalitRefer')?.valid && formSubmitted,
@@ -116,7 +116,7 @@
                   </textarea>
     
                 <div *ngIf="myFormPruebaLab.get('condPreAnalitRefer')?.invalid && formSubmitted" class="invalid-feedback">
-                  Por favor ingrese el nombre
+                  Por favor ingrese las condiciones Pre Analíticas para referencias
                 </div>
                 <div *ngIf="myFormPruebaLab.get('condPreAnalitRefer')?.errors?.['pattern']" class="invalid-feedback">
                   Solo se permiten letras y espacios.
@@ -124,33 +124,7 @@
     
               </div>
     
-          </div>
-
-
-            <div class="row mt-2">
-
-                <div class="col-lg-3">  
-                  <label for="compuestaPrueba" class="col-form-label">Compuesta</label>
-                </div>
-                <div class="col-lg-3">
-                  <select class="form-select" id="compuestaPrueba"
-                  formControlName="compuestaPrueba"
-                  [ngClass]="{
-                    'is-valid': myFormPruebaLab.get('compuestaPrueba')?.valid && formSubmitted,
-                    'is-invalid': myFormPruebaLab.get('compuestaPrueba')?.invalid && formSubmitted
-                  }">
-                    <option value="0">Seleccionar</option>
-                    <option value="1">SI</option>
-                    <option value="2">NO</option>
-                  </select>
-      
-                  <!--
-                  <div *ngIf="myForm.get('sexoCliente')?.invalid && formSubmitted" class="invalid-feedback">
-                    Por favor seleccione sexo
-                  </div>-->
-                </div>
-      
-            </div>            
+            </div> 
 
 
             <div class="row mt-2">
@@ -177,42 +151,107 @@
       
             </div>
 
-            <div class="row mt-2">
+            <div formGroupName="tipoMuestra">
+              
+              <div class="row mt-2">
+                
+                <div class="col-lg-3">
+                  <label for="tipoMuestra" class="col-form-label">Tipo de Muestra</label>
+                </div>
 
-              <div class="col-lg-3">  
-                <label for="tipoMuestra" class="col-form-label">Tipo de Muestra</label>
-              </div>
-              <div class="col-lg-3">
-                <select class="form-select" id="tipoMuestra"
-                formControlName="tipoMuestra"
-                [ngClass]="{
-                  'is-valid': myFormPruebaLab.get('tipoMuestra')?.valid && formSubmitted,
-                  'is-invalid': myFormPruebaLab.get('tipoMuestra')?.invalid && formSubmitted
-                }">
-                  <option value="0">Seleccionar</option>
-                  <option value="1">Suero</option>
-                  <option value="2">Sangre Total</option>
-                  <option value="3">Plasma Citratado</option>
-                  <option value="4">Orina aleatoria</option>
-                  <option value="5">Orina 24 horas</option>
-                  <option value="6">Heces</option>
-                  <option value="7">Esputo</option>
-                  <option value="8">Saliva</option>
-                  <option value="9">Raspado</option>
-                  <option value="10">Hisopado</option>
-                  <option value="11">Secreción</option>
-                  <option value="12">Cinta adhesiva</option>
-                  <option value="13">Otro</option>
+                <div class="col-lg-4">
+                  
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="checkSuero" formControlName="suero">
+                    <label class="form-check-label" for="checkSuero">
+                      Suero
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="checkSangreTotal" formControlName="sangreTotal">
+                    <label class="form-check-label" for="checkSangreTotal">
+                      Sangre Total
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="checkPlasmaCitratado" formControlName="plasmaCitratado">
+                    <label class="form-check-label" for="checkPlasmaCitratado">
+                      Plasma Citratado
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="checkOrinaAleatoria" formControlName="orinaAleatoria">
+                    <label class="form-check-label" for="checkOrinaAleatoria">
+                      Orina aleatoria
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="checkOrina24horas" formControlName="orina24Horas">
+                    <label class="form-check-label" for="checkOrina24horas">
+                      Orina 24 horas
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="checkHeces" formControlName="heces">
+                    <label class="form-check-label" for="checkHeces">
+                      Heces
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="checkEsputo" formControlName="esputo">
+                    <label class="form-check-label" for="checkEsputo">
+                      Esputo
+                    </label>
+                  </div>
+                  
+                </div>
 
-                </select>
-    
-                <!--
-                <div *ngIf="myForm.get('sexoCliente')?.invalid && formSubmitted" class="invalid-feedback">
-                  Por favor seleccione sexo
-                </div>-->
+                <div class="col-lg-4">
+                    
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="checkSaliva" formControlName="saliva">
+                    <label class="form-check-label" for="checkSaliva">
+                      Saliva
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="checkRaspado" formControlName="raspado">
+                    <label class="form-check-label" for="checkRaspado">
+                      Raspado
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="checkHisopado" formControlName="hisopado">
+                    <label class="form-check-label" for="checkHisopado">
+                      Hisopado
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="checkSecrecion" formControlName="secrecion">
+                    <label class="form-check-label" for="checkSecrecion">
+                      Secreción
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="checkCintaAdhesiva" formControlName="cintaAdhesiva">
+                    <label class="form-check-label" for="checkCintaAdhesiva">
+                      Cinta adhesiva
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="checkOtro" formControlName="otro">
+                    <label class="form-check-label" for="checkOtro">
+                      Otro
+                    </label>
+                  </div>
+
+                </div>
+
               </div>
-    
+
             </div>
+
+
 
             <div formGroupName="tipoTuboEnvase">
 
@@ -231,37 +270,37 @@
                       </label>
                     </div>
                     <div class="form-check">
-                      <input class="form-check-input" type="checkbox" value="" id="checkTuboAmarillo">
+                      <input class="form-check-input" type="checkbox" value="" id="checkTuboAmarillo" formControlName="checkTuboAmarillo">
                       <label class="form-check-label" for="checkTuboAmarillo">
                         Tubo Amarillo (Gel centrifugado)
                       </label>
                     </div>
                     <div class="form-check">
-                      <input class="form-check-input" type="checkbox" value="" id="checkTuboCeleste">
+                      <input class="form-check-input" type="checkbox" value="" id="checkTuboCeleste" formControlName="checkTuboCeleste">
                       <label class="form-check-label" for="checkTuboCeleste">
                         Tubo Celeste (Citrato)
                       </label>
                     </div>
                     <div class="form-check">
-                      <input class="form-check-input" type="checkbox" value="" id="checkTuboPlomo">
+                      <input class="form-check-input" type="checkbox" value="" id="checkTuboPlomo" formControlName="checkTuboPlomo">
                       <label class="form-check-label" for="checkTuboPlomo">
                         Tubo Plomo (Fluoruro)
                       </label>
                     </div>
                     <div class="form-check">
-                      <input class="form-check-input" type="checkbox" value="" id="checkTuboVerde">
+                      <input class="form-check-input" type="checkbox" value="" id="checkTuboVerde" formControlName="checkTuboVerde">
                       <label class="form-check-label" for="checkTuboVerde">
                         Tubo Verde (Heparina)
                       </label>
                     </div>
                     <div class="form-check">
-                      <input class="form-check-input" type="checkbox" value="" id="checkCriovial">
+                      <input class="form-check-input" type="checkbox" value="" id="checkCriovial" formControlName="checkCriovial">
                       <label class="form-check-label" for="checkCriovial">
                         Criovial
                       </label>
                     </div>
                     <div class="form-check">
-                      <input class="form-check-input" type="checkbox" value="" id="checkFrascoEsteril">
+                      <input class="form-check-input" type="checkbox" value="" id="checkFrascoEsteril" formControlName="checkFrascoEsteril">
                       <label class="form-check-label" for="checkFrascoEsteril">
                         Frasco estéril
                       </label>
@@ -272,31 +311,31 @@
                   <div class="col-lg-4">
                     
                     <div class="form-check">
-                      <input class="form-check-input" type="checkbox" value="" id="checkFrascoNoEstéril">
-                      <label class="form-check-label" for="checkFrascoNoEstéril">
+                      <input class="form-check-input" type="checkbox" value="" id="checkFrascoNoEsteril" formControlName="checkFrascoNoEsteril">
+                      <label class="form-check-label" for="checkFrascoNoEsteril">
                         Frasco no estéril
                       </label>
                     </div>
                     <div class="form-check">
-                      <input class="form-check-input" type="checkbox" value="" id="checkFrascoEspatula">
-                      <label class="form-check-label" for="checkFrascoEspatula">
+                      <input class="form-check-input" type="checkbox" value="" id="checkFrasconEspatula" formControlName="checkFrasconEspatula">
+                      <label class="form-check-label" for="checkFrasconEspatula">
                         Frasco con espátula
                       </label>
                     </div>
                     <div class="form-check">
-                      <input class="form-check-input" type="checkbox" value="" id="checkHemocultivo">
+                      <input class="form-check-input" type="checkbox" value="" id="checkHemocultivo" formControlName="checkHemocultivo">
                       <label class="form-check-label" for="checkHemocultivo">
                         Frasco Hemocultivo
                       </label>
                     </div>
                     <div class="form-check">
-                      <input class="form-check-input" type="checkbox" value="" id="checkMedioTransporte">
+                      <input class="form-check-input" type="checkbox" value="" id="checkMedioTransporte" formControlName="checkMedioTransporte">
                       <label class="form-check-label" for="checkMedioTransporte">
                         Medio de Transporte (Cary-Blair)
                       </label>
                     </div>
                     <div class="form-check">
-                      <input class="form-check-input" type="checkbox" value="" id="checkLamina">
+                      <input class="form-check-input" type="checkbox" value="" id="checkLamina" formControlName="checkLamina">
                       <label class="form-check-label" for="checkLamina">
                         Lámina
                       </label>
@@ -313,7 +352,7 @@
               <div class="col-lg-3">
                 <label for="tiempoEntrega" class="col-form-label">Tiempo de Entrega (días) </label>
               </div>
-              <div class="col-lg-4">
+              <div class="col-lg-2">
                 <input type="text" id="tiempoEntrega" class="form-control text-uppercase" 
                     formControlName="tiempoEntrega"
                     [ngClass]="{
@@ -322,10 +361,10 @@
                     }">
     
                 <div *ngIf="myFormPruebaLab.get('tiempoEntrega')?.invalid && formSubmitted" class="invalid-feedback">
-                  Por favor ingrese el nombre
+                  Por favor ingrese el tiempo de entrega del resultado
                 </div>
                 <div *ngIf="myFormPruebaLab.get('tiempoEntrega')?.errors?.['pattern']" class="invalid-feedback">
-                  Solo se permiten letras y espacios.
+                  Solo se permiten números, considere días
                 </div>
     
               </div>
@@ -337,7 +376,7 @@
               <div class="col-lg-3">
                 <label for="precioPrueba" class="col-form-label">Precio Referencial (S/)</label>
               </div>
-              <div class="col-lg-4">
+              <div class="col-lg-2">
                 <input type="text" id="precioPrueba" class="form-control text-uppercase" 
                     formControlName="precioPrueba"
                     [ngClass]="{
@@ -346,10 +385,10 @@
                     }">
     
                 <div *ngIf="myFormPruebaLab.get('precioPrueba')?.invalid && formSubmitted" class="invalid-feedback">
-                  Por favor ingrese el nombre
+                  Por favor ingrese el precio de la prueba
                 </div>
                 <div *ngIf="myFormPruebaLab.get('precioPrueba')?.errors?.['pattern']" class="invalid-feedback">
-                  Solo se permiten letras y espacios.
+                  Solo se permiten números
                 </div>
     
               </div>
@@ -385,7 +424,7 @@
                 <div class="col-lg-3">  
                   <label for="estadoPrueba" class="col-form-label">Estado</label>
                 </div>
-                <div class="col-lg-3">
+                <div class="col-lg-2">
                   <select class="form-select" id="estadoPrueba"
                   formControlName="estadoPrueba"
                   [ngClass]="{
@@ -397,24 +436,49 @@
                     <option value="2">Inactivo</option>
                   </select>
       
-                  <!--
-                  <div *ngIf="myForm.get('sexoCliente')?.invalid && formSubmitted" class="invalid-feedback">
-                    Por favor seleccione sexo
-                  </div>-->
+                  
+                  <div *ngIf="myFormPruebaLab.get('estadoPrueba')?.invalid && formSubmitted" class="invalid-feedback">
+                    Por favor seleccione el estado de la prueba
+                  </div>
                 </div>
       
+            </div>
+
+            <div class="row mt-2">
+
+              <div class="col-lg-3">  
+                <label for="compuestaPrueba" class="col-form-label">Compuesta</label>
+              </div>
+              <div class="col-lg-2">
+                <select class="form-select" id="compuestaPrueba"
+                formControlName="compuestaPrueba"
+                [ngClass]="{
+                  'is-valid': myFormPruebaLab.get('compuestaPrueba')?.valid && formSubmitted,
+                  'is-invalid': myFormPruebaLab.get('compuestaPrueba')?.invalid && formSubmitted
+                }">
+                  <option value="0">Seleccionar</option>
+                  <option value="1">SI</option>
+                  <option value="2">NO</option>
+                </select>
+    
+                
+                <div *ngIf="myFormPruebaLab.get('compuestaPrueba')?.invalid && formSubmitted" class="invalid-feedback">
+                  Por favor seleccione si es prueba compuesta o no
+                </div>
+              </div>
+    
             </div>
 
             <div class="row mt-2 mb-2">
                 <H5>VALORES DE REFERENCIA</H5>
             </div>
-
+                      
             <div class="row mt-2">
 
                 <div class="col-lg-3">  
                   <label for="tipoResultado" class="col-form-label">Tipo Resultado</label>
                 </div>
-                <div class="col-lg-3">
+                <div class="col-lg-2">
                   <select class="form-select" id="tipoResultado"
                   formControlName="tipoResultado"
                   [ngClass]="{
@@ -426,13 +490,40 @@
                     <option value="2">Cuantitativo</option>
                   </select>
       
-                  <!--
-                  <div *ngIf="myForm.get('sexoCliente')?.invalid && formSubmitted" class="invalid-feedback">
-                    Por favor seleccione sexo
-                  </div>-->
+                  
+                  <div *ngIf="myFormPruebaLab.get('tipoResultado')?.invalid && formSubmitted" class="invalid-feedback">
+                    Por favor seleccione el tipo de resultado
+                  </div>
                 </div>
       
             </div>
+
+            <div class="row mt-2">
+
+              <div class="col-lg-3">  
+                <label for="sexo" class="col-form-label">Sexo</label>
+              </div>
+              <div class="col-lg-2">
+                <select class="form-select" id="sexo"
+                formControlName="sexo"
+                [ngClass]="{
+                  'is-valid': myFormPruebaLab.get('sexo')?.valid && formSubmitted,
+                  'is-invalid': myFormPruebaLab.get('sexo')?.invalid && formSubmitted
+                }">
+                  <option value="0">Seleccionar</option>
+                  <option value="M">Masculino</option>
+                  <option value="F">Femenino</option>
+                  <option value="U">Unisex</option>
+                </select>
+    
+                
+                <div *ngIf="myFormPruebaLab.get('sexo')?.invalid && formSubmitted" class="invalid-feedback">
+                  Por favor seleccione el sexo
+                </div>
+              </div>
+    
+          </div>
+
 
             <div class="row mt-2">
 
@@ -512,7 +603,7 @@
                   <label for="unidadesRef" class="col-form-label">Unidades</label>
                 </div>
                 <div class="col-lg-4">
-                  <input type="text" id="unidadesRef" class="form-control text-uppercase" 
+                  <input type="text" id="unidadesRef" class="form-control" 
                       formControlName="unidadesRef"
                       [ngClass]="{
                         'is-valid': myFormPruebaLab.get('unidadesRef')?.valid && formSubmitted,
@@ -533,10 +624,10 @@
             <div class="row mt-2">
 
                 <div class="col-lg-3">
-                  <label for="otrosValoresRef" class="col-form-label">Otro Valores</label>
+                  <label for="otrosValoresRef" class="col-form-label">Otros Valores</label>
                 </div>
                 <div class="col-lg-4">
-                    <textarea class="form-control text-uppercase" id="otrosValoresRef" rows="5"
+                    <textarea class="form-control" id="otrosValoresRef" rows="5"
                         formControlName="otrosValoresRef"
                         [ngClass]="{
                             'is-valid': myFormPruebaLab.get('otrosValoresRef')?.valid && formSubmitted,
@@ -555,6 +646,44 @@
                 </div>
       
             </div>
+
+            <div class="row mt-2 form-group" id="referenciasTable" >
+              <table class="table table-sm">
+                  <thead>
+                    <tr>
+                      <th scope="col">Tipo</th>
+                      <th scope="col">Sexo</th>
+                      <th scope="col">Edad Min</th>
+                      <th scope="col">Edad Max</th>
+                      <th scope="col">Límite Inferior</th>
+                      <th scope="col">Límite Superior</th>
+                      <th scope="col">Unidades</th>
+                      <th scope="col">Opciones</th>
+                    </tr>
+                  </thead>
+    
+                  <tbody formArrayName="valoresReferencia">
+                    <tr *ngFor="let ref of valoresReferencia.controls; let i = index" [formGroupName]="i">
+                      <td>{{ ref.value.tipoResultado === '1' ? 'Cualitativo' : 'Cuantitativo' }}</td>
+                      <td>{{ ref.value.sexo }}</td>
+                      <td>{{ ref.value.edadMin || '-' }}</td>
+                      <td>{{ ref.value.edadMax || '-' }}</td>
+                      <td>{{ ref.value.limiteInferior || '-' }}</td>
+                      <td>{{ ref.value.limiteSuperior || '-' }}</td>
+                      <td>{{ ref.value.unidades || '-' }}</td>
+                      <td>
+                        <button type="button" class="btn btn-danger btn-sm" (click)="removerReferencia(i)">Eliminar</button>
+                      </td>
+                  </tbody>
+                  
+                </table>
+                <!--
+                <span class="text-danger" *ngIf="!validarArrayTelefono() && formSubmitted">
+                  Por favor ingrese al menos un número teléfono y descripción
+                </span> -->
+    
+            </div>
+
 
             <div class="row mt-2">
           
@@ -577,7 +706,7 @@
         </div>
     </div>
 
-    <div class="col-12 col-lg-6">
+    <div class="col-12 col-xxl-6">
       <div class="container mt-4">
         <!-- Campo de búsqueda -->
         <div class="row mt-2 mb-2">
@@ -595,25 +724,25 @@
               <thead>
                 <tr>
                   <th scope="col">N°</th>
-                  <th scope="col">HC</th>
-                  <th scope="col">Apellido Paterno</th>
-                  <th scope="col">Apellido Materno</th>
-                  <th scope="col">Nombre</th>
-                  <th scope="col">Tipo Documento</th>
-                  <th scope="col">Nro. Documento</th>
+                  <th scope="col">Código</th>
+                  <th scope="col">Prueba</th>
+                  <th scope="col">Precio</th>
+                  <th scope="col">Tiempo de respuesta</th>
+                  <th scope="col">Cond. Pre-Analíticas: Pacientes</th>
+                  <th scope="col">Muestra</th>
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let paciente of pruebas; let i = index"
-                    (click)="cargarPruebas(paciente); seleccionarFila(i)"
+                <tr *ngFor="let prueba of pruebas; let i = index"
+                    (click)="cargarPruebas(prueba); seleccionarFila(i)"
                     [ngClass]="{'table-active': filaSeleccionada === i, 'table-hover-row': true}">
                   <td>{{i+1}}</td>
-                  <td>{{ paciente.hc}}</td>
-                  <td>{{ paciente.apePatCliente }}</td>
-                  <td>{{ paciente.apeMatCliente }}</td>
-                  <td>{{ paciente.nombreCliente }}</td>
-                  <td>{{ paciente.tipoDoc === '0' ? 'DNI' : (paciente.tipoDoc === '1' ? 'CE' : 'PASAPORTE')}}</td>
-                  <td>{{ paciente.nroDoc }}</td>
+                  <td>{{ prueba.codPruebaLab}}</td>
+                  <td>{{ prueba.nombrePruebaLab}}</td>
+                  <td>{{ prueba.precioPrueba }}</td>
+                  <td>{{ prueba.tiempoEntrega }}</td>
+                  <td>{{ prueba.condPreAnalitPaciente}}</td>
+                  <td>{{ prueba.tipoMuestra }}</td>
                   <!--
                   <td>
                     <button class="btn btn-info btn-sm" (click)="verDetalles(cliente)">Ver</button>
@@ -621,7 +750,7 @@
                 </tr>
                 
                 <tr *ngIf="pruebas.length === 0">
-                  <td colspan="5" class="text-center">No se encontraron pacientes.</td>
+                  <td colspan="7" class="text-center">No se encontraron pruebas.</td>
                 </tr>
               </tbody>
              
