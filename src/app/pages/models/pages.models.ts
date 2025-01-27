@@ -33,20 +33,13 @@ export interface IPruebaLab {
     nombrePruebaLab: string,
     condPreAnalitPaciente: string,
     condPreAnalitRefer: string,
-    metodoPruebaLab: string,
     tipoMuestra: string[];
     tipoTuboEnvase: string[],
     tiempoEntrega: string,
     precioPrueba: string,
     observPruebas: string,
     estadoPrueba: string,
-    compuestaPrueba: string,
-    tipoResultado: string,
-    valorRefCuali: string,
-    valorRefCuantiLimInf: string,
-    valorRefCuantiLimSup: string,
-    unidadesRef: string,
-    otrosValoresRef: string 
+    itemsCompenentes: Array<any>[]
 }
 
 export interface IPruebaLabPostDTO {
@@ -59,4 +52,38 @@ export interface IGetLastPruebasLab {
     ok: boolean;
     search: String;
     pruebasLab: IPruebaLab[];
+}
+
+export interface IItemLab {
+    codItemLab: string,
+    nombreItemLab: string,
+    metodoItemLab: string,
+    plantillaValores: string,
+    unidadesRef: string,
+    observItem: string,
+    poseeValidacion: string,
+    paramValidacion: Array<any>[]
+}
+
+export interface IItemLabPostDTO {
+    ok: boolean;
+    msg?: string;
+    errors?: string;
+}
+
+export interface IGetLastItemsLab {
+    ok: boolean;
+    search: String;
+    itemsLab: IItemLab[];
+}
+
+export interface IExamenCotizado {
+    codPruebaLab: string,
+    nombrePruebaLab: string,
+    cantidad: number,
+    precioUnitario: number,
+    totalUnitario: number,
+    tipoDescuento: string,
+    descuento: number,
+    
 }

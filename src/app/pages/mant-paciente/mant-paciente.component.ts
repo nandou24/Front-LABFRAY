@@ -17,7 +17,7 @@ export class MantPacienteComponent implements OnInit{
   constructor(
     private _fb: FormBuilder,
     private _router: Router,
-    private _pagesService: PacienteService,
+    private _pacienteService: PacienteService,
     private _datePickerService:  DatepickerService,
     private _ubigeoService: UbigeosService
   ) { }
@@ -87,10 +87,11 @@ export class MantPacienteComponent implements OnInit{
       phones: this._fb.array([], Validators.required)
   });
 
+  /*
   public newPhone = {
     phoneNumber: '',        // Campo para el número de teléfono
     descriptionPhone: ''    // Campo para la descripción del teléfono
-  };
+  };*/
 
   get phones(): FormArray{
     return this.myForm.get('phones') as FormArray;
@@ -242,7 +243,7 @@ export class MantPacienteComponent implements OnInit{
             
             console.log("capturando valores en component.ts")
 
-            this._pagesService.registrarPaciente(body).subscribe((res) => {
+            this._pacienteService.registrarPaciente(body).subscribe((res) => {
               if (res !== 'ERROR') {
                 Swal.fire({
                   title: 'Confirmado',
@@ -251,8 +252,7 @@ export class MantPacienteComponent implements OnInit{
                   confirmButtonText: 'Ok',
                 });
                 this.ultimosClientes();
-                this.myForm.reset();
-                this.formSubmitted = false;
+                this.nuevoCliente();
                 //this._router.navigateByUrl('/auth/login');
               }else{
                 this.myForm.get('fechaNacimiento')?.setValue(fechaSeleccionada);
@@ -275,7 +275,7 @@ export class MantPacienteComponent implements OnInit{
   // Método para buscar clientes
   buscarClientes(): void {
     if (this.terminoBusqueda.length >= 3) { 
-      this._pagesService.getPatient(this.terminoBusqueda).subscribe((res: IPaciente[]) => {
+      this._pacienteService.getPatient(this.terminoBusqueda).subscribe((res: IPaciente[]) => {
         this.pacientes = res;
       });
     }if (this.terminoBusqueda.length > 0) {
@@ -287,7 +287,7 @@ export class MantPacienteComponent implements OnInit{
   
   // Método últimos 20* pacientes
   ultimosClientes(): void {
-    this._pagesService.getLastPatients().subscribe((res: IPaciente[]) => {
+    this._pacienteService.getLastPatients().subscribe((res: IPaciente[]) => {
       this.pacientes = res;
     });
   }
@@ -386,7 +386,7 @@ export class MantPacienteComponent implements OnInit{
 
         const body: IPaciente = this.myForm.value; //capturando los valores del component.ts
 
-        this._pagesService.actualizarPaciente(body.hc,body).subscribe((res) => {
+        this._pacienteService.actualizarPaciente(body.hc,body).subscribe((res) => {
           if (res !== 'ERROR') {
             Swal.fire({
               title: 'Confirmado',

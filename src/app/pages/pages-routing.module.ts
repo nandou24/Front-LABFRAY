@@ -3,6 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { PagesComponent } from './pages.component';
 import { MantPacienteComponent } from './mant-paciente/mant-paciente.component';
 import { MantPruebaLabComponent } from './mant-prueba-lab/mant-prueba-lab.component';
+import { MantItemLabComponent } from './mant-item-lab/mant-item-lab.component';
+import { GestCotizacionComponent } from './gest-cotizacion/gest-cotizacion.component';
 
 const routes: Routes = [
 
@@ -18,6 +20,16 @@ const routes: Routes = [
       {
         path: 'mantPruebaLab',
         component: MantPruebaLabComponent,
+        /*canActivate: [PagesGuard]*/
+      },
+      {
+        path: 'mantItemLab',
+        component: MantItemLabComponent,
+        /*canActivate: [PagesGuard]*/
+      },
+      {
+        path: 'cotizacion',
+        component: GestCotizacionComponent,
         /*canActivate: [PagesGuard]*/
       },
       /*{

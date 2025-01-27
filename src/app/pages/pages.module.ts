@@ -7,13 +7,17 @@ import { PagesComponent } from './pages.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { MantPruebaLabComponent } from './mant-prueba-lab/mant-prueba-lab.component';
+import { MantItemLabComponent } from './mant-item-lab/mant-item-lab.component';
+import { GestCotizacionComponent } from './gest-cotizacion/gest-cotizacion.component';
 
 
 @NgModule({
   declarations: [
     PagesComponent,
     MantPacienteComponent,
-    MantPruebaLabComponent
+    MantPruebaLabComponent,
+    MantItemLabComponent,
+    GestCotizacionComponent
   ],
   imports: [
     CommonModule,

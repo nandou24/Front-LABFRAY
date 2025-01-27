@@ -1,0 +1,418 @@
+<div class="row">
+
+    <div class="col-12 col-xxl-6">
+        <div class="container">
+          <form class="mt-4 mb-4" [formGroup]="myFormItemLab" (ngSubmit)="registraItemLab()">
+          
+            <div class="card mb-4">
+                
+                <div class="card-header bg-primary text-white">
+                  DATOS DEL ITEM DE LABORATORIO
+                </div>
+                
+                <div class="card-body">
+
+                    <div class="row mt-2"> 
+        
+                        <div class="col-lg-3">
+                        <label for="codItemLab" class="col-form-label">CÓDIGO ITEM</label>
+                        </div>
+                        <div class="col-lg-3">
+                        <input type="text" id="codItemLab" class="form-control readonly-style" formControlName="codItemLab" readonly>
+                        </div>
+            
+                    </div>
+
+
+                    <div class="row mt-2">
+    
+                        <div class="col-lg-3">
+                        <label for="nombreItemLab" class="col-form-label">Nombre de Item</label>
+                        </div>
+                        <div class="col-lg-4">
+                        <input type="text" id="nombreItemLab" class="form-control" 
+                            formControlName="nombreItemLab"
+                            [ngClass]="{
+                                'is-valid': myFormItemLab.get('nombreItemLab')?.valid && formSubmitted,
+                                'is-invalid': myFormItemLab.get('nombreItemLab')?.invalid && formSubmitted
+                            }">
+            
+                        <div *ngIf="myFormItemLab .get('nombreItemLab')?.invalid && formSubmitted" class="invalid-feedback">
+                            Por favor ingrese el nombre de la prueba
+                        </div>
+            
+                        </div>
+            
+                    </div>
+
+                    <div class="row mt-2">
+
+                        <div class="col-lg-3">
+                            <label for="metodoItemLab" class="col-form-label">Método</label>
+                        </div>
+                        <div class="col-lg-4">
+                            <input type="text" id="metodoItemLab" class="form-control" 
+                                formControlName="metodoItemLab"
+                                [ngClass]="{
+                                'is-valid': myFormItemLab.get('metodoItemLab')?.valid && formSubmitted,
+                                'is-invalid': myFormItemLab.get('metodoItemLab')?.invalid && formSubmitted
+                                }">
+                
+                            <div *ngIf="myFormItemLab.get('metodoItemLab')?.invalid && formSubmitted" class="invalid-feedback">
+                            Por favor ingrese el método de la prueba
+                            </div>
+                
+                        </div>
+            
+                    </div>
+
+                    <div class="row mt-2">
+
+                        <div class="col-lg-3">
+                          <label for="plantillaValores" class="col-form-label">Plantilla de Valores</label>
+                        </div>
+                        <div class="col-lg-4">
+                            <textarea class="form-control" id="plantillaValores" rows="4" formControlName="plantillaValores">
+                            </textarea>
+              
+                        </div>
+              
+                    </div> 
+          
+                    <div class="row mt-2">
+          
+                        <div class="col-lg-3">
+                          <label for="unidadesRef" class="col-form-label">Unidades</label>
+                        </div>
+                        <div class="col-lg-4">
+                          <input type="text" id="unidadesRef" class="form-control" formControlName="unidadesRef">
+              
+                        </div>
+              
+                    </div>
+
+                    <div class="row mt-2">
+          
+                        <div class="col-lg-3">
+                          <label for="observItem" class="col-form-label">Pertenece a</label>
+                        </div>
+                        <div class="col-lg-4">
+                          <input type="text" id="observItem" class="form-control" formControlName="observItem"
+                          [ngClass]="{
+                            'is-valid': myFormItemLab.get('observItem')?.valid && formSubmitted,
+                            'is-invalid': myFormItemLab.get('observItem')?.invalid && formSubmitted
+                            }">
+                        
+                            <div *ngIf="myFormItemLab.get('observItem')?.invalid && formSubmitted" class="invalid-feedback">
+                            Por favor ingrese a que prueba(s) pertenecería
+                            </div>
+                        </div>
+              
+                    </div>
+
+                    <div class="row mt-2">
+    
+                        <div class="col-lg-3">
+                          <label class="form-check-label" for="poseeValidacion">Posee validación</label>
+                        </div>
+          
+                        <div class="col-lg-2">
+          
+                          <div class="form-check form-switch">
+                            <input 
+                            class="form-check-input" 
+                            type="checkbox" 
+                            role="switch"
+                            id="poseeValidacion" 
+                            formControlName="poseeValidacion" />
+                          </div>
+          
+                        </div>
+          
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="card mb-4">
+
+                <div class="card-header bg-success text-white">
+                  PARÁMETROS DE VALIDACIÓN
+                </div>
+  
+                <div class="card-body">
+                  <!-- Contenido de datos para validación -->
+  
+                  <div class="row mt-2">
+      
+                    <div class="col-lg-3">
+                      <label for="descrValidacion" class="col-form-label">Descripción</label>
+                    </div>
+                    <div class="col-lg-4">
+                      <input type="text" id="descrValidacion" class="form-control" 
+                          [formControl]="descrValidacionControl"
+                          [ngClass]="{
+                            'is-valid': addValidator && descrValidacionControl.valid,
+                            'is-invalid': addValidator && !descrValidacionControl.valid
+                          }">
+          
+                      <div *ngIf="addValidator && !descrValidacionControl.valid" class="invalid-feedback">
+                        <ng-container *ngIf="descrValidacionControl.hasError('required')">
+                          Por favor ingrese una descripción.
+                        </ng-container>
+                      </div>
+          
+                    </div>
+          
+                  </div>
+  
+  
+                  <div class="row mt-2">
+  
+                    <div class="col-lg-3">  
+                      <label for="sexo" class="col-form-label">Sexo</label>
+                    </div>
+                    <div class="col-lg-2">
+                      <select class="form-select" id="sexo"
+                      [formControl]="sexo"
+                      [ngClass]="{
+                        'is-valid': addValidator && sexo.valid,
+                        'is-invalid': addValidator && sexo.invalid
+                      }">
+                        <option value="0">Seleccionar</option>
+                        <option value="M">Masculino</option>
+                        <option value="F">Femenino</option>
+                        <option value="U">Unisex</option>
+                      </select>                 
+                      
+                      <div *ngIf="addValidator && sexo.invalid" class="invalid-feedback">
+                        Por favor seleccione una opción
+                      </div>
+  
+                    </div>
+          
+                  </div>
+      
+                  <div class="row mt-2">
+      
+                    <div class="col-lg-3">
+                      <label class="form-check-label" for="edadIndistinta">Edad indistinta</label>
+                    </div>
+      
+                    <div class="col-lg-2">
+      
+                      <div class="form-check form-switch">
+                        <input 
+                        class="form-check-input" 
+                        type="checkbox" 
+                        role="switch"
+                        id="edadIndistinta"
+                        [formControl]="edadIndistinta"/>
+                      </div>
+      
+                    </div>
+      
+                  </div>
+                  
+                  <div class="row mt-2">
+      
+                    <div class="col-lg-3">
+                      <label for="edadMin" class="col-form-label">Edad mínima</label>
+                    </div>
+                    <div class="col-lg-4">
+                      <input type="text" id="edadMin" class="form-control text-uppercase"
+                          [formControl]="edadMin">
+  
+                    </div>
+          
+                  </div>
+      
+                  <div class="row mt-2">
+      
+                    <div class="col-lg-3">
+                      <label for="edadMax" class="col-form-label">Edad máxima</label>
+                    </div>
+                    <div class="col-lg-4">
+                      <input type="text" id="edadMax" class="form-control text-uppercase"
+                          [formControl]="edadMax" >
+          
+                    </div>
+          
+                  </div>
+  
+                  <div class="row mt-2">
+  
+                    <div class="col-lg-3">  
+                      <label for="descRegla" class="col-form-label">Descripción de Regla</label>
+                    </div>
+                    <div class="col-lg-2">
+                      <select class="form-select" id="descRegla"
+                      [formControl]="descRegla">
+                        <option value="0">Seleccionar</option>
+                        <option value="Igual a">Igual a</option>
+                        <option value="Entre">Entre</option>
+                        <option value="Mayor que">Mayor que</option>
+                        <option value="Menor que">Menor que</option>
+                        <option value="Mayor o igual que">Mayor o igual que</option>
+                        <option value="Menor o igual que">Menor o igual que</option>
+                      </select>
+          
+                      
+                      <!--
+                      <div *ngIf="myFormPruebaLab.get('descRegla')?.invalid && formSubmitted" class="invalid-feedback">
+                        Por favor seleccione el descRegla
+                      </div>-->
+                    </div>
+          
+                  </div>
+      
+      
+                  <div class="row mt-2">
+      
+                      <div class="col-lg-3">
+                        <label for="valor1" class="col-form-label">Valor 1</label>
+                      </div>
+                      <div class="col-lg-4">
+                        <input type="text" id="valor1" class="form-control text-uppercase"
+                            [formControl]="valor1" >
+            
+                      </div>
+            
+                  </div>
+      
+                  <div class="row mt-2">
+      
+                      <div class="col-lg-3">
+                        <label for="valor2" class="col-form-label">Valor 2</label>
+                      </div>
+                      <div class="col-lg-4">
+                        <input type="text" id="valor2" class="form-control text-uppercase"
+                            [formControl]="valor2">
+                      </div>
+            
+                  </div>
+                      
+      
+                  <div class="row mt-2">
+      
+                    <div class="col-lg-3">
+                      <button class="btn btn-primary" type="button" (click)="agregarReferencia()">Agregar Validación</button>
+                    </div>
+      
+                  </div>
+      
+      
+                  <div class="row mt-2 form-group" id="referenciasTable" >
+                    <table class="table table-sm">
+                        <thead>
+                          <tr>
+                            <th scope="col">N°</th>
+                            <th scope="col">Descripción</th>
+                            <th scope="col">Sexo</th>
+                            <th scope="col">Edad</th>
+                            <th scope="col">Regla</th>
+                            <th scope="col">Valor 1</th>
+                            <th scope="col">Valor 2</th>
+                            <th scope="col">Opciones</th>
+                          </tr>
+                        </thead>
+          
+                        <tbody formArrayName="paramValidacion">
+                          <tr *ngFor="let ref of paramValidacion.controls; let i = index" [formGroupName]="i">
+                            <td><span>{{i+1}}</span></td>
+                            <td>{{ ref.get('descrValidacion')?.value}}</td>
+                            <td>{{ ref.get('sexo')?.value}}</td>
+                            <td>
+                                <span *ngIf="ref.get('edadIndistinta')?.value">Indistinta</span>
+                                <span *ngIf="!ref.get('edadIndistinta')?.value"> {{ ref.get('edadMin')?.value}} - {{ ref.get('edadMax')?.value}}</span>
+                            </td>
+                            <td>{{ ref.get('descRegla')?.value || '-' }}</td>
+                            <td>{{ ref.get('valor1')?.value || '-' }}</td>
+                            <td>{{ ref.get('valor2')?.value || '-' }}</td>
+                            <td>
+                              <button type="button" class="btn btn-danger btn-sm" (click)="removerReferencia(i)">Eliminar</button>
+                            </td>
+  
+                        </tbody>
+                        
+                      </table>
+                      
+                      <span class="text-danger" *ngIf="!validarArrayValores() && formSubmitted">
+                        Por favor ingrese al menos una validación
+                      </span>
+          
+                  </div>
+                </div>
+            </div>
+
+
+            <div class="row mt-2">
+          
+                <div class="col col-4 text-center">
+                  <button class="btn btn-primary" type="button" (click)="nuevoItem()">NUEVO ITEM</button>
+                </div>
+      
+                <div class="col col-4 text-center">
+                <button class="btn btn-success" type="submit">CREAR ITEM</button>
+                </div>
+      
+                <div class="col col-4 text-center">
+                  <button class="btn btn-warning" type="button" (click)="actualizarItem()">ACTUALIZAR ITEM</button>
+                  </div>
+      
+              </div>
+
+          </form>
+        </div>
+    </div>
+
+    <div class="col-12 col-xxl-6">
+        <div class="container mt-4">
+            <!-- Campo de búsqueda -->
+            <div class="row mt-2 mb-2">
+            <div class="col-md-8">
+                <input type="text" class="form-control" placeholder="Ingrese busqueda..."
+                [(ngModel)]="terminoBusqueda"
+                (input)="buscarItems()"/>
+            </div>
+            </div>
+        
+            <!-- Tabla para listar los clientes -->
+            <div class="row">
+            <div class="col">
+                <table class="table table-hover">
+                <thead>
+                    <tr>
+                    <th scope="col">N°</th>
+                    <th scope="col">Código</th>
+                    <th scope="col">Item</th>
+                    <th scope="col">Método</th>
+                    <th scope="col">Validación</th>
+                    <th scope="col">Observación</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of items; let i = index"
+                        (click)="cargarItems(item); seleccionarFila(i)"
+                        [ngClass]="{'table-active': filaSeleccionada === i, 'table-hover-row': true}">
+                        <td>{{i+1}}</td>
+                        <td>{{ item.codItemLab}}</td>
+                        <td>{{ item.nombreItemLab}}</td>
+                        <td>{{ item.metodoItemLab }}</td>
+                        <td>{{ item.poseeValidacion ? 'Si' : 'No'}}</td>
+                        <td>{{ item.observItem }}</td>
+
+                    </tr>
+                    
+                    <tr *ngIf="items.length === 0">
+                    <td colspan="7" class="text-center">No se encontraron items.</td>
+                    </tr>
+                </tbody>
+                
+                </table>
+            </div>
+            </div>
+        </div>
+    </div>
+
+</div>
