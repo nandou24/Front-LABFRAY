@@ -27,6 +27,7 @@
                       <label for="areaLab" class="col-form-label">Area de Laboratorio</label>
                     </div>
                     <div class="col-lg-3">
+                      
                       <select class="form-select" id="areaLab"
                       formControlName="areaLab"
                       [ngClass]="{
@@ -372,29 +373,6 @@
         
                   </div>
   
-                  <div class="row mt-2">
-    
-                  <div class="col-lg-3">
-                    <label for="precioPrueba" class="col-form-label">Precio Referencial (S/)</label>
-                  </div>
-                  <div class="col-lg-2">
-                    <input type="text" id="precioPrueba" class="form-control text-uppercase" 
-                        formControlName="precioPrueba"
-                        [ngClass]="{
-                          'is-valid': myFormPruebaLab.get('precioPrueba')?.valid && formSubmitted,
-                          'is-invalid': myFormPruebaLab.get('precioPrueba')?.invalid && formSubmitted
-                        }">
-        
-                    <div *ngIf="myFormPruebaLab.get('precioPrueba')?.invalid && formSubmitted" class="invalid-feedback">
-                      Por favor ingrese el precio de la prueba
-                    </div>
-                    <div *ngIf="myFormPruebaLab.get('precioPrueba')?.errors?.['pattern']" class="invalid-feedback">
-                      Solo se permiten números mayor o igual a 1
-                    </div>
-        
-                  </div>
-        
-                  </div>
   
                   <div class="row mt-2">
     
@@ -575,7 +553,6 @@
                   <th scope="col">N°</th>
                   <th scope="col">Código</th>
                   <th scope="col">Prueba</th>
-                  <th scope="col">Precio</th>
                   <th scope="col">Tiempo de respuesta</th>
                   <th scope="col">Cond. Pre-Analíticas: Pacientes</th>
                   <th scope="col">Muestra</th>
@@ -588,7 +565,6 @@
                   <td>{{i+1}}</td>
                   <td>{{ prueba.codPruebaLab}}</td>
                   <td>{{ prueba.nombrePruebaLab}}</td>
-                  <td>{{ prueba.precioPrueba }}</td>
                   <td>{{ prueba.tiempoEntrega }}</td>
                   <td>{{ prueba.condPreAnalitPaciente}}</td>
                   <td>{{ prueba.tipoMuestra }}</td>

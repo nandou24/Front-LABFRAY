@@ -44,24 +44,24 @@ export class ItemLabService {
   }
   
   getLastItemsLab(cantidad:number): Observable<IItemLab[]> {
-      const params = new HttpParams().set('cant',cantidad) 
-      return this._http
-        .get<IGetLastItemsLab>(
-          `${environment.baseUrl}/api/itemLab/last30`,{params}
-        )
-        .pipe(map((data) => {
-          return data.itemsLab;
-        }));        
+    const params = new HttpParams().set('cant',cantidad) 
+    return this._http
+      .get<IGetLastItemsLab>(
+        `${environment.baseUrl}/api/itemLab/last30`,{params}
+      )
+      .pipe(map((data) => {
+        return data.itemsLab;
+      }));        
   }
 
   getItem(terminoBusqueda : any): Observable<IItemLab[]> {
-      const params = new HttpParams().set('search',terminoBusqueda)
-      return this._http
-        .get<IGetLastItemsLab>(
-          `${environment.baseUrl}/api/itemLab/findTerm`,{params}
-        )
-        .pipe(map((data) => data.itemsLab));
-    }
+    const params = new HttpParams().set('search',terminoBusqueda)
+    return this._http
+      .get<IGetLastItemsLab>(
+        `${environment.baseUrl}/api/itemLab/findTerm`,{params}
+      )
+      .pipe(map((data) => data.itemsLab));
+  }
   
     
   public actualizarItem(codigo: string, body: IItemLab){

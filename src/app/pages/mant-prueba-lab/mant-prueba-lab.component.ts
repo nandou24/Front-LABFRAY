@@ -59,7 +59,6 @@ export class MantPruebaLabComponent implements OnInit {
             checkLamina: [false]
           }),
           tiempoEntrega:['', [Validators.required, Validators.pattern('^[1-9][0-9]*$')]],
-          precioPrueba: ['', [Validators.required, Validators.pattern('^(?!0$)(?!0\\d)\\d+(\\.\\d{1,2})?$')]],
           observPruebas: [''],
           estadoPrueba: ['0', [Validators.required, Validators.pattern('^[12]$')]],
           itemsCompenentes: this._fb.array([])
@@ -71,7 +70,6 @@ export class MantPruebaLabComponent implements OnInit {
   }
 
 
-  //itemsSeleccionados: IItemLab[] = [];
   mostrarAlerta: boolean = false;
 
   agregarItem(item: any): void {
@@ -276,7 +274,7 @@ export class MantPruebaLabComponent implements OnInit {
 
       Swal.fire({
         title: '¿Estás seguro?',
-        text: '¿Deseas confirmar la actualización de este paciente?',
+        text: '¿Deseas confirmar la actualización de esta prueba?',
         icon: 'question',
         showCancelButton: true,
         confirmButtonText: 'Sí, confirmar',
@@ -362,7 +360,6 @@ export class MantPruebaLabComponent implements OnInit {
       condPreAnalitPaciente: prueba.condPreAnalitPaciente,
       condPreAnalitRefer: prueba.condPreAnalitRefer,
       tiempoEntrega: prueba.tiempoEntrega,
-      precioPrueba: prueba.precioPrueba,
       observPruebas: prueba.observPruebas,
       estadoPrueba: prueba.estadoPrueba
     });

@@ -1,0 +1,17 @@
+.readonly-style {
+    background-color: #e9ecef; /* Color de fondo similar a disabled */
+    color: #6c757d; /* Color de texto similar a disabled */
+    cursor: not-allowed; /* Cambia el cursor */
+  }
+
+.alertaValidacion {
+
+  font-size: 14px;
+}
+
+/* Eliminar las flechas en navegadores WebKit (Chrome, Safari, Edge) */
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none;
+    margin: 0;
+}

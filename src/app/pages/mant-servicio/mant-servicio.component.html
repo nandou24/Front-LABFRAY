@@ -1,0 +1,316 @@
+<div class="row">
+
+  <div class="col-12 col-xxl-6">
+      <div class="container">
+        <div class="row mt-2" style="align-items: center;">
+           <h5 class="text-center" style="font-weight: 500;">MANTENIMIENTO DE SERVICIOS</h5>
+        </div> 
+
+        <form class="mt-2 mb-4" [formGroup]="myFormServicio" (ngSubmit)="registrarServicio()">
+          
+            <div class="card mb-4">
+              <div class="card-header bg-primary text-white">
+                DATOS DEL SERVICIO
+              </div>
+
+              <div class="card-body">
+
+                  <div class="row mt-2"> 
+      
+                      <div class="col-lg-3">
+                        <label for="codServicio" class="col-form-label">CÓDIGO</label>
+                      </div>
+                      <div class="col-lg-3">
+                        <input type="text" id="codServicio" class="form-control readonly-style" formControlName="codServicio" readonly>
+                      </div>
+            
+                  </div>
+    
+                  <div class="row mt-2">
+      
+                      <div class="col-lg-3">  
+                        <label for="tipoServicio" class="col-form-label">Tipo de Servicio</label>
+                      </div>
+                      <div class="col-lg-3">
+                        <select class="form-select" id="tipoServicio"
+                        formControlName="tipoServicio"
+                        [ngClass]="{
+                          'is-valid': myFormServicio.get('tipoServicio')?.valid && formSubmitted,
+                          'is-invalid': myFormServicio.get('tipoServicio')?.invalid && formSubmitted
+                        }">
+                          <option value="0">Seleccionar</option>
+                          <option value="LAB">LABORATORIO</option>
+                          <option value="ECO">ECOGRAFIA</option>
+                          <option value="CON">CONSULTA MÉDICA</option>
+                          <option value="PRO">PROCEDIMIENTO</option>
+                          <option value="OTR">OTROS</option>
+      
+                        </select>
+            
+                        
+                        <div *ngIf="myFormServicio.get('tipoServicio')?.invalid && formSubmitted" class="invalid-feedback">
+                          Por favor seleccione un tipo
+                        </div>
+                      </div>
+            
+                  </div>
+
+                  <div class="row mt-2">
+
+                      <div class="col-lg-3">
+                        <label for="nombreServicio" class="col-form-label">Nombre de Servicio</label>
+                      </div>
+                      <div class="col-lg-6">
+                        <input type="text" id="nombreServicio" class="form-control" 
+                            formControlName="nombreServicio"
+                            [ngClass]="{
+                              'is-valid': myFormServicio.get('nombreServicio')?.valid && formSubmitted,
+                              'is-invalid': myFormServicio.get('nombreServicio')?.invalid && formSubmitted
+                            }">
+            
+                        <div *ngIf="myFormServicio.get('nombreServicio')?.invalid && formSubmitted" class="invalid-feedback">
+                          Por favor ingrese el nombre del servicio
+                        </div>
+            
+                      </div>
+            
+                  </div>
+
+                  <div class="row mt-2">
+
+                      <div class="col-lg-3">
+                        <label for="descripcionServicio" class="col-form-label">Descripción</label>
+                      </div>
+                      <div class="col-lg-6">
+                        <input type="text" id="descripcionServicio" class="form-control" 
+                            formControlName="descripcionServicio"
+                            [ngClass]="{
+                              'is-valid': myFormServicio.get('descripcionServicio')?.valid && formSubmitted,
+                              'is-invalid': myFormServicio.get('descripcionServicio')?.invalid && formSubmitted
+                            }">
+            
+                        <div *ngIf="myFormServicio.get('descripcionServicio')?.invalid && formSubmitted" class="invalid-feedback">
+                          Por favor ingrese una descripción del servicio
+                        </div>
+            
+                      </div>
+            
+                  </div>
+
+                  <div class="row mt-2">
+
+                      <div class="col-lg-3">
+                        <label for="precioServicio" class="col-form-label">Precio de referencia</label>
+                      </div>
+                      <div class="col-lg-2">
+                        <input type="number" id="precioServicio" class="form-control" 
+                            formControlName="precioServicio"
+                            [ngClass]="{
+                              'is-valid': myFormServicio.get('precioServicio')?.valid && formSubmitted,
+                              'is-invalid': myFormServicio.get('precioServicio')?.invalid && formSubmitted
+                            }">
+            
+                        <div *ngIf="myFormServicio.get('precioServicio')?.invalid && formSubmitted" class="invalid-feedback">
+                          Por favor ingrese el precio del servicio
+                        </div>
+            
+                      </div>
+            
+                  </div>
+
+                  <div class="row mt-2">
+    
+                      <div class="col-lg-3">
+                          <label class="form-check-label" for="estadoServicio">Estado</label>
+                      </div>
+          
+                      <div class="col-lg-2">
+          
+                          <div class="form-check form-switch">
+                          <input 
+                          class="form-check-input" 
+                          type="checkbox" 
+                          role="switch"
+                          id="estadoServicio"
+                          formControlName="estadoServicio"/>
+                          </div>
+          
+                      </div>
+      
+                  </div>
+
+
+              </div>
+
+            </div>
+
+            <div class="card mb-4">
+              <div class="card-header bg-primary text-white">
+                EXÁMENES
+              </div>
+              <div class="card-body">
+
+                <div class="row mt-2 mb-2">
+                  <div class="col-lg-6">
+                    <input type="text" class="form-control" placeholder="Ingrese busqueda de examen..."
+                    [(ngModel)]="terminoServicioBusqueda" [ngModelOptions]="{standalone: true}"
+                    (input)="buscarExamenes()"  />
+                  </div>
+                  
+                </div>
+
+                <div class="row mt-2">
+
+                  <div class="col-lg-6">
+                    <h5>Exámenes Disponibles</h5>
+
+                    <table class="table table-hover">
+                      <thead>
+                        <tr>
+                          <th scope="col">Código</th>
+                          <th scope="col">Examen</th>
+                          <th scope="col">Detalle</th>
+                          <th scope="col">Acción</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let examen of examenesFiltrados; let i = index"
+                            [ngClass]="{'table-hover-row': true}">
+                          <td class="align-middle">{{ examen.codExamen}}</td>
+                          <td class="align-middle">{{ examen.nombreExamen}}</td>
+                          <td class="align-middle">{{ examen.nombreExamen}}</td>
+                          <td class="align-middle">
+                            <i class="bi bi-eye-fill text-success me-3" (click)="verDetalle(examen)" title="Ver Detalle" style="cursor: pointer; font-size: 1.5rem;"></i>
+                            <i class="bi bi-plus-square-fill text-primary" (click)="agregarExamen(examen)" title="Agregar" style="cursor: pointer; font-size: 1.5rem;"></i>
+                          </td>
+                        </tr>
+                        
+                        <tr *ngIf="examenesFiltrados.length === 0">
+                          <td colspan="7" class="text-center">No se encontraron exámenes.</td>
+                        </tr>
+                      </tbody>
+
+
+                    </table>
+                  </div>
+
+                  <div class="col-lg-6">
+                    <h5>Exámenes Seleccionados</h5>
+
+                    <table class="table table-hover">
+                      <thead>
+                        <tr>
+                          <th scope="col">Código</th>
+                          <th scope="col">Examen</th>
+                          <th scope="col">Detalle</th>
+                          <th scope="col">Acción</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let examen of examenesServicio.controls; let i = index"
+                            [ngClass]="{'table-hover-row': true}"> 
+                          <td class="align-middle">{{ examen.value.codExamen}}</td>
+                          <td class="align-middle">{{ examen.value.nombreExamen}}</td>
+                          <td class="align-middle">{{ examen.value.nombreExamen}}</td>
+                          <td class="align-middle">
+                            <i class="bi bi-eye-fill text-success me-3" (click)="verDetalle(examen)" title="Ver Detalle" style="cursor: pointer; font-size: 1.5rem;"></i>
+                            <i class="bi bi-trash3-fill text-danger" (click)="removerExamen(i)" title="Remover" style="cursor: pointer; font-size: 1.5rem;"></i>
+                          </td>
+                        </tr>
+                        
+                        <tr *ngIf="examenesServicio.controls.length === 0">
+                          <td colspan="7" class="text-center">No se encontraron pruebas.</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                </div>
+
+                <!--
+                <div class="row mt-2">
+
+                  <span class="text-danger" *ngIf="!validarArrayExamenes() && formSubmitted">
+                    Por favor seleccione al menos un examen
+                  </span> 
+
+                </div>-->
+
+              </div>
+            </div>
+
+
+            <div class="row mt-2">
+        
+              <div class="col col-4 text-center">
+                <button class="btn btn-primary" type="button" (click)="nuevoServicio()">NUEVO SERVICIO</button>
+              </div>
+    
+              <div class="col col-4 text-center">
+              <button class="btn btn-success" type="submit" *ngIf="!pruebaSeleccionada">CREAR SERVICIO</button>
+              </div>
+    
+              <div class="col col-4 text-center">
+                <button class="btn btn-warning" type="button" (click)="actualizarServicio()">ACTUALIZAR SERVICIO</button>
+                </div>
+    
+            </div>
+
+
+        </form>
+      </div>
+  </div>
+
+  <div class="col-12 col-xxl-6">
+    <div class="container mt-4">
+      <!-- Campo de búsqueda -->
+      <div class="row mt-2 mb-2">
+        <div class="col-md-8">
+          <input type="text" class="form-control" placeholder="Ingrese busqueda de servicio..."
+          [(ngModel)]="terminoBusquedaServicio"
+          (input)="buscarServicio()"  />
+        </div>
+      </div>
+    
+      <!-- Tabla para listar los clientes -->
+      <div class="row">
+        <div class="col">
+          <table class="table table-hover">
+            <col style="width: 10%;">
+            <col style="width: 15%;">
+            <col style="width: 50%;">
+            <col style="width: 25%;">
+            <thead>
+              <tr>
+                <th class="text-center" scope="col">N°</th>
+                <th class="text-center" scope="col">Código Servicio</th>
+                <th class="text-center" scope="col">Nombre</th>
+                <th class="text-center" scope="col">Precio</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let servicio of servicios; let i = index"
+                  (click)="cargarServicios(servicio); seleccionarFilaPruebas(i)"
+                  [ngClass]="{'table-active': filaSeleccionadaServicios === i, 'table-hover-row': true}">
+                <td class="text-center">{{i+1}}</td>
+                <td class="text-center">{{ servicio.codServicio}}</td>
+                <td class="text-start">{{ servicio.nombreServicio}}</td>
+                <td class="text-center">S/ {{ servicio.precioServicio }}</td>
+                <!--
+                <td>
+                  <button class="btn btn-info btn-sm" (click)="verDetalles(cliente)">Ver</button>
+                </td>-->
+              </tr>
+              
+              <tr *ngIf="servicios.length === 0">
+                <td colspan="7" class="text-center">No se encontraron pruebas.</td>
+              </tr>
+            </tbody>
+            
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

@@ -1,3 +1,5 @@
+//PACIENTE
+
 export interface IPaciente {
     hc: string,
     tipoDoc: string,
@@ -27,6 +29,8 @@ export interface IGetLastPatients {
     pacientes: IPaciente[];
 }
 
+//PRUEBA LAB
+
 export interface IPruebaLab {
     codPruebaLab: string,
     areaLab: string,
@@ -36,7 +40,7 @@ export interface IPruebaLab {
     tipoMuestra: string[];
     tipoTuboEnvase: string[],
     tiempoEntrega: string,
-    precioPrueba: string,
+    //precioPrueba: string,
     observPruebas: string,
     estadoPrueba: string,
     itemsCompenentes: Array<any>[]
@@ -53,6 +57,8 @@ export interface IGetLastPruebasLab {
     search: String;
     pruebasLab: IPruebaLab[];
 }
+
+//ITEM LAB
 
 export interface IItemLab {
     codItemLab: string,
@@ -77,13 +83,70 @@ export interface IGetLastItemsLab {
     itemsLab: IItemLab[];
 }
 
-export interface IExamenCotizado {
-    codPruebaLab: string,
-    nombrePruebaLab: string,
-    cantidad: number,
-    precioUnitario: number,
-    totalUnitario: number,
-    tipoDescuento: string,
-    descuento: number,
-    
+//COTIZACIÓN
+
+export interface ICotizacion {
+    codCotizacion: string,
+    estadoRegistroPaciente: boolean,
+    codCliente: string,
+    nomCliente: string,
+    tipoDoc: string,
+    nroDoc: string,
+    estadoRegistroMedico: boolean,
+    codMedico: string,
+    nomMedico: string,
+    colegiatura: string,
+    nroRne: string,
+    aplicarPrecioGlobal: boolean,
+    aplicarDescuentoPorcentGlobal: boolean,
+    sumaTotalesPrecioLista: number,
+    listaMenosDescuento: number,
+    precioConDescGlobal: number,
+    descuentoPorcentaje: number,
+    subTotal: number,
+    igv: number,
+    total: number,
+    serviciosCotizacion: Array<any>[] 
+}
+
+export interface ICotizacionPostDTO {
+    ok: boolean;
+    msg?: string;
+    errors?: string;
+}
+
+export interface IGetLastCotizacion {
+    ok: boolean;
+    search: String;
+    cotizaciones: ICotizacion[];
+}
+
+//SERVICIO
+
+export interface IServicio {
+    codServicio: string,
+    tipoServicio: string,
+    nombreServicio: string,
+    descripcionServicio: string,
+    precioServicio: string,
+    estadoServicio: string,
+    examenesServicio: Array<any>[] 
+}
+
+export interface IServicioPostDTO {
+    ok: boolean;
+    msg?: string;
+    errors?: string;
+}
+
+export interface IGetLastServicio {
+    ok: boolean;
+    search: String;
+    servicios: IServicio[];
+}
+
+export interface IGetLastExamenes {
+    ok: boolean;
+    search: String;
+    examenes: Array<any>[]
 }

@@ -4,7 +4,8 @@ import { PagesComponent } from './pages.component';
 import { MantPacienteComponent } from './mant-paciente/mant-paciente.component';
 import { MantPruebaLabComponent } from './mant-prueba-lab/mant-prueba-lab.component';
 import { MantItemLabComponent } from './mant-item-lab/mant-item-lab.component';
-import { GestCotizacionComponent } from './gest-cotizacion/gest-cotizacion.component';
+import { MantServicioComponent } from './mant-servicio/mant-servicio.component';
+import { GestCotiPersonalComponent } from './gest-cotizacion/gest-coti-personal/gest-coti-personal.component';
 
 const routes: Routes = [
 
@@ -28,8 +29,13 @@ const routes: Routes = [
         /*canActivate: [PagesGuard]*/
       },
       {
-        path: 'cotizacion',
-        component: GestCotizacionComponent,
+        path: 'mantServicio',
+        component: MantServicioComponent,
+        /*canActivate: [PagesGuard]*/
+      },
+      {
+        path: 'gestCotiPersona',
+        component: GestCotiPersonalComponent,
         /*canActivate: [PagesGuard]*/
       },
       /*{

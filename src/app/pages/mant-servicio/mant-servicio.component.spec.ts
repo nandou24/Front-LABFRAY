@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { GestCotizacionComponent } from './gest-cotizacion.component';
+import { MantServicioComponent } from './mant-servicio.component';
 
-describe('GestCotizacionComponent', () => {
-  let component: GestCotizacionComponent;
-  let fixture: ComponentFixture<GestCotizacionComponent>;
+describe('MantServicioComponent', () => {
+  let component: MantServicioComponent;
+  let fixture: ComponentFixture<MantServicioComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [GestCotizacionComponent]
+      declarations: [MantServicioComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(GestCotizacionComponent);
+    fixture = TestBed.createComponent(MantServicioComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

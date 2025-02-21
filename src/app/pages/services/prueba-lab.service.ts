@@ -16,31 +16,31 @@ export class PruebaLabService {
 
 
   public registrarPruebaLab(body: IPruebaLab){
-      console.log("Enviando valores desde servicio")
-      
-      return this._http
-        .post<IPruebaLabPostDTO>(
-          `${environment.baseUrl}/api/pruebaLab/newPruebaLab`,body
-        )
-        .pipe(
-          map((data) => {
-            if (data.ok) {
-              return data.ok;
-            } else {
-              throw new Error('ERROR');
-            }
-          }),
-          catchError((err) => {
-            console.log(err.error.msg);
-            Swal.fire({
-              title: 'ERROR!',
-              text: err.error.msg,
-              icon: 'error',
-              confirmButtonText: 'Ok',
-            });
-            return of('ERROR');
-          })
-        );
+    console.log("Enviando valores desde servicio")
+    
+    return this._http
+      .post<IPruebaLabPostDTO>(
+        `${environment.baseUrl}/api/pruebaLab/newPruebaLab`,body
+      )
+      .pipe(
+        map((data) => {
+          if (data.ok) {
+            return data.ok;
+          } else {
+            throw new Error('ERROR');
+          }
+        }),
+        catchError((err) => {
+          console.log(err.error.msg);
+          Swal.fire({
+            title: 'ERROR!',
+            text: err.error.msg,
+            icon: 'error',
+            confirmButtonText: 'Ok',
+          });
+          return of('ERROR');
+        })
+      );
   }
 
   getLastPruebasLab(): Observable<IPruebaLab[]> {

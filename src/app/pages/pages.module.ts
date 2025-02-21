@@ -8,7 +8,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { MantPruebaLabComponent } from './mant-prueba-lab/mant-prueba-lab.component';
 import { MantItemLabComponent } from './mant-item-lab/mant-item-lab.component';
-import { GestCotizacionComponent } from './gest-cotizacion/gest-cotizacion.component';
+import { MantServicioComponent } from './mant-servicio/mant-servicio.component';
+import { GestCotiPersonalComponent } from './gest-cotizacion/gest-coti-personal/gest-coti-personal.component';
+import { GestCotiEmpresasComponent } from './gest-cotizacion/gest-coti-empresas/gest-coti-empresas.component';
+import { MantPersonalComponent } from './mant-personal/mant-personal.component';
 
 
 @NgModule({
@@ -17,7 +20,10 @@ import { GestCotizacionComponent } from './gest-cotizacion/gest-cotizacion.compo
     MantPacienteComponent,
     MantPruebaLabComponent,
     MantItemLabComponent,
-    GestCotizacionComponent
+    MantServicioComponent,
+    GestCotiPersonalComponent,
+    GestCotiEmpresasComponent,
+    MantPersonalComponent
   ],
   imports: [
     CommonModule,

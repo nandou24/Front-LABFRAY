@@ -1,86 +1,139 @@
-<aside id="sidebar">
-    <div class="d-flex">
-        <button class="toggle-btn" type="button">
-            <i class="bi bi-grid-3x3-gap-fill"></i>
-        </button>
-        <div class="sidebar-logo">
-            <a>LABFRAY</a>
+
+<!-- Botón para abrir el Sidebar -->
+<!--
+<button class="btn btn-lg" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar" aria-controls="offcanvasSidebar">
+    <i class="bi bi-list"></i>
+</button>-->
+
+<!-- Sidebar OffCanvas -->
+
+<!--
+<nav class="navbar">
+
+        <div class="offcanvas offcanvas-start text-bg-dark" tabindex="-1" id="offcanvasSidebar" aria-labelledby="offcanvasSidebarLabel">
+        
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasSidebarLabel">LAB FRAY</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Cerrar"></button>
+            </div>
+        
+            <div class="offcanvas-body">
+                <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+        
+                    <li class="nav-item">
+                        <a class="nav-link text-white" routerLink="/pages/mantPaciente" routerLinkActive="active">
+                            <i class="bi bi-person"></i> Pacientes
+                        </a>
+                    </li>
+        
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-white" data-bs-toggle="dropdown" role="button" aria-expanded="false">
+                            <i class="bi bi-receipt"></i> Cotizaciones
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark">
+                          <li><a class="dropdown-item" routerLink="/pages/cotizacion" routerLinkActive="active">Cotización Personas</a></li>
+                          <li><a class="dropdown-item" href="#" routerLinkActive="active">Cotización Empresas</a></li>
+                        </ul>
+                    </li>
+        
+                    <li class="nav-item">
+                        <a class="nav-link text-white" routerLink="/pages/mantServicio" routerLinkActive="active">
+                            <i class="bi bi-list-ul"></i> Servicios
+                        </a>
+                    </li>
+        
+                    <li class="nav-item">
+                        <a class="nav-link text-white" routerLink="/pages/mantServicio" routerLinkActive="active">
+                            <i class="bi bi-list-ul"></i> Médicos
+                        </a>
+                    </li>
+        
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-white" data-bs-toggle="dropdown" role="button" aria-expanded="false">
+                            <i class="bi bi-person"></i> Laboratorio
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark">
+                          <li><a class="dropdown-item" routerLink="/pages/mantPruebaLab" routerLinkActive="active">Pruebas de Laboratorio</a></li>
+                          <li><a class="dropdown-item" routerLink="/pages/mantItemLab" routerLinkActive="active">Mantenimiento de Ítems</a></li>
+                        </ul>
+                    </li>
+        
+                </ul>
+            </div>
         </div>
-    </div>
-    <ul class="sidebar-nav">
 
-        <li class="sidebar-item">
-            <a href="#" class="sidebar-link">
-                <i class="bi bi-person"></i>
-                <span>Perfil</span>
-            </a>
-        </li>
+</nav>-->
 
-        <li class="sidebar-item">
-            <a href="#" class="sidebar-link">
-                <i class="bi bi-list-ul"></i>
-                <span>Tareas</span>
-            </a>
-        </li>
 
-        <li class="sidebar-item">
-            <a class="sidebar-link has-dropdown collapsed" data-bs-toggle="collapse"
-                data-bs-target="#auth" aria-expanded="false" aria-controls="auth">
-                <i class="bi bi-shield-lock"></i>
-                <span>Auth</span>
-            </a>
-            <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-                <li class="sidebar-item">
-                    <a href="#" class="sidebar-link">Login</a>
-                </li>
-                <li class="sidebar-item">
-                    <a href="#" class="sidebar-link">Register</a>
-                </li>
-            </ul>
-        </li>
 
-        <li class="sidebar-item">
-            <a class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
-                data-bs-target="#multi" aria-expanded="false" aria-controls="multi">
-                <i class="bi bi-layout-text-window-reverse"></i>
-                <span>Multi Level</span>
-            </a>
-            <ul id="multi" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-                <li class="sidebar-item">
-                    <a href="#" class="sidebar-link collapsed" data-bs-toggle="collapse"
-                        data-bs-target="#multi-two" aria-expanded="false" aria-controls="multi-two">
-                        Two Links
+
+<!-- Botón para abrir el Sidebar -->
+<button class="btn btn-lg" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar" aria-controls="offcanvasSidebar">
+    <i class="bi bi-list"></i>
+</button>
+
+<!-- Sidebar OffCanvas -->
+<nav class="navbar">
+    <div class="offcanvas offcanvas-start text-bg-dark" tabindex="-1" id="offcanvasSidebar" aria-labelledby="offcanvasSidebarLabel">
+        
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasSidebarLabel">LAB FRAY</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Cerrar"></button>
+        </div>
+
+        <div class="offcanvas-body">
+            <ul class="navbar-nav justify-content-end flex-grow-1 pe-3" id="sidebarMenu">
+
+                <!-- Pacientes -->
+                <li class="nav-item">
+                    <a class="nav-link text-white" routerLink="/pages/mantPaciente" routerLinkActive="active">
+                        <i class="bi bi-person"></i>  Pacientes
                     </a>
-                    <ul id="multi-two" class="sidebar-dropdown list-unstyled collapse">
-                        <li class="sidebar-item">
-                            <a href="#" class="sidebar-link">Link 1</a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a href="#" class="sidebar-link">Link 2</a>
-                        </li>
+                </li>
+
+                <!-- Cotizaciones (Dropdown usando Collapse) -->
+                <li class="nav-item">
+                    <a class="nav-link text-white d-flex align-items-center" data-bs-toggle="collapse" href="#cotizacionesMenu" role="button">
+                        <i class="bi bi-file-ruled"></i>  Cotizaciones
+                        <i class="bi bi-chevron-down ms-auto"></i>
+                    </a>
+                    <ul class="collapse list-unstyled ms-3" id="cotizacionesMenu" data-bs-parent="#sidebarMenu">
+                        <li><a class="nav-link text-white" routerLink="/pages/cotizacion" routerLinkActive="active">Coti. Personas</a></li>
+                        <li><a class="nav-link text-white" href="#">Coti. Empresas</a></li>
                     </ul>
                 </li>
-            </ul>
-        </li>
 
-        <li class="sidebar-item">
-            <a href="#" class="sidebar-link">
-                <i class="bi bi-envelope"></i>
-                <span>Notificaciones</span>
-            </a>
-        </li>
-        
-        <li class="sidebar-item">
-            <a href="#" class="sidebar-link">
-                <i class="bi bi-gear"></i>
-                <span>Configuración</span>
-            </a>
-        </li>
-    </ul>
-    <div class="sidebar-footer">
-        <a href="#" class="sidebar-link">
-            <i class="bi bi-box-arrow-left"></i>
-            <span>Salir</span>
-        </a>
+                <!-- Servicios -->
+                <li class="nav-item">
+                    <a class="nav-link text-white" routerLink="/pages/mantServicio" routerLinkActive="active">
+                        <i class="bi bi-list-ul"></i> Servicios
+                    </a>
+                </li>
+
+                <!-- Médicos -->
+                <li class="nav-item">
+                    <a class="nav-link text-white" routerLink="/pages/mantMedicos" routerLinkActive="active">
+                        <i class="bi bi-person-vcard"></i> Médicos
+                    </a>
+                </li>
+
+
+                <!-- Laboratorio (Dropdown usando Collapse) -->
+                <li class="nav-item">
+                    <a class="nav-link text-white d-flex align-items-center" data-bs-toggle="collapse" href="#laboratorioMenu" role="button">
+                        <svg class="icon">
+                            <use xlink:href="/icons/sprite.svg#icon-flask"></use>
+                        </svg>
+                        <span class="ms-1">Laboratorio</span>
+                        <i class="bi bi-chevron-down ms-auto"></i>
+                    </a>
+                    <ul class="collapse list-unstyled ms-3" id="laboratorioMenu" data-bs-parent="#sidebarMenu">
+                        <li><a class="nav-link text-white" routerLink="/pages/mantPruebaLab" routerLinkActive="active">Pruebas de Laboratorio</a></li>
+                        <li><a class="nav-link text-white" routerLink="/pages/mantItemLab" routerLinkActive="active">Mantenimiento de Ítems</a></li>
+                    </ul>
+                </li>
+
+            </ul>
+        </div>
     </div>
-</aside>
+</nav>
