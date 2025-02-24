@@ -2,12 +2,12 @@
 
 <div class="row">
 
-  <div class="col-12 col-lg-6">
+  <div class="col-12 col-xxl-8">
     <div class="container">
 
       <div class="row mt-2" style="align-items: center;">
         <h5 class="text-center" style="font-weight: 500;">MANTENIMIENTO DE PACIENTES</h5>
-     </div> 
+      </div> 
 
       <form class="mt-2 mb-4" [formGroup]="myForm" (ngSubmit)="registraPaciente()">
 
@@ -309,10 +309,10 @@
                 </div>
               </div>
     
-              <div class="col-lg-1">
+              <div class="col-lg-2">
                 <label for="telfDes" class="col-form-label">Descripción</label>
               </div>
-              <div class="col-lg-4">
+              <div class="col-lg-3">
                 <input type="text" id="telfDes" class="form-control"
                   [formControl]="descriptionPhoneControl"
                   [ngClass]="{
@@ -328,7 +328,7 @@
     
               </div>
             
-              <div class="col-lg-2">
+              <div class="col-lg-3">
                 <button class="btn btn-primary" type="button" (click)="addPhoneItem()">Agregar Teléfono</button>
               </div>
     
@@ -393,7 +393,7 @@
     </div>
   </div>
 
-  <div class="col-12 col-lg-6">
+  <div class="col-12 col-xxl-4">
     <div class="container mt-4">
       <!-- Campo de búsqueda -->
       <div class="row mt-2 mb-2">

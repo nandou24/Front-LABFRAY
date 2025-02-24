@@ -137,7 +137,6 @@ export class MantPacienteComponent implements OnInit{
     this.phones.removeAt(index)
   }
 
-
   onFechaNacimientoInput(event: Event): void {
     const inputValue = event.target as HTMLInputElement;
     const fechaNacimiento = inputValue.value;  // Obtener el valor actual del input
@@ -207,7 +206,7 @@ export class MantPacienteComponent implements OnInit{
 
   }
 
-  public hc: string = '';
+  //public hc: string = '';
 
   public formSubmitted: boolean = false;
 

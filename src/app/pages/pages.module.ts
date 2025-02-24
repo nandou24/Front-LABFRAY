@@ -11,7 +11,7 @@ import { MantItemLabComponent } from './mant-item-lab/mant-item-lab.component';
 import { MantServicioComponent } from './mant-servicio/mant-servicio.component';
 import { GestCotiPersonalComponent } from './gest-cotizacion/gest-coti-personal/gest-coti-personal.component';
 import { GestCotiEmpresasComponent } from './gest-cotizacion/gest-coti-empresas/gest-coti-empresas.component';
-import { MantPersonalComponent } from './mant-personal/mant-personal.component';
+import { MantRecursoHumanoComponent } from './mant-recurso-humano/mant-recurso-humano.component';
 
 
 @NgModule({
@@ -23,7 +23,7 @@ import { MantPersonalComponent } from './mant-personal/mant-personal.component';
     MantServicioComponent,
     GestCotiPersonalComponent,
     GestCotiEmpresasComponent,
-    MantPersonalComponent
+    MantRecursoHumanoComponent
   ],
   imports: [
     CommonModule,

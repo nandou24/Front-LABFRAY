@@ -1,0 +1,22 @@
+.text-danger {
+    color: var(--red-error);
+    font-size: .875em;
+  }
+
+  .table-hover-row {
+    cursor: pointer;
+  }
+
+  .table-active {
+    --bs-table-bg-state: rgba(0, 102, 255, 0.61);
+  }
+
+  .readonly-style {
+    background-color: #e9ecef; /* Color de fondo similar a disabled */
+    color: #6c757d; /* Color de texto similar a disabled */
+    cursor: not-allowed; /* Cambia el cursor */
+  }
+
+  .text-uppercase {
+    text-transform: uppercase; /* Muestra el texto en mayúsculas */
+  }

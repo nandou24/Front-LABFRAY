@@ -6,6 +6,7 @@ import { MantPruebaLabComponent } from './mant-prueba-lab/mant-prueba-lab.compon
 import { MantItemLabComponent } from './mant-item-lab/mant-item-lab.component';
 import { MantServicioComponent } from './mant-servicio/mant-servicio.component';
 import { GestCotiPersonalComponent } from './gest-cotizacion/gest-coti-personal/gest-coti-personal.component';
+import { MantRecursoHumanoComponent } from './mant-recurso-humano/mant-recurso-humano.component';
 
 const routes: Routes = [
 
@@ -36,6 +37,11 @@ const routes: Routes = [
       {
         path: 'gestCotiPersona',
         component: GestCotiPersonalComponent,
+        /*canActivate: [PagesGuard]*/
+      },
+      {
+        path: 'mantRecursoHumano',
+        component: MantRecursoHumanoComponent,
         /*canActivate: [PagesGuard]*/
       },
       /*{
