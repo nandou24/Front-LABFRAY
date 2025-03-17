@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PacienteService } from '../../services/paciente.service';
-import { ICotizacion, IPaciente, IPruebaLab, IServicio } from '../../models/pages.models';
+import { ICotizacion, IPaciente, IPruebaLab, IRecHumano, IServicio } from '../../models/pages.models';
 import { ServiciosService } from '../../services/servicios.service';
 import Swal from 'sweetalert2';
 import { CotizacionService } from '../../services/cotizacion.service';
+import { RecursoHumanoService } from '../../services/recurso-humano.service';
 
 @Component({
   selector: 'app-gest-coti-personal',
@@ -16,27 +17,33 @@ export class GestCotiPersonalComponent implements OnInit {
   constructor(
     private _fb: FormBuilder,
     private _pacienteService: PacienteService,
+    private _recHumanoService: RecursoHumanoService,
     private _servicioService: ServiciosService,
     private _cotizacionService: CotizacionService,
   ) { }
 
   ngOnInit(): void {
     this.camnbioEstadoRegistroPaciente();
+    this.camnbioEstadoRegistroSolicitante();
     this.ultimosServicios(10);
+    this.ultimosPacientes(10);
+    this.ultimosRecursosSolicitantes(10);
+    this.listarServiciosFrecuentes();
   }
 
   public myFormCotizacion:FormGroup  = this._fb.group({
     codCotizacion: '',
     estadoRegistroPaciente: true,
-    codCliente: [ { value: '', disabled: true }, [Validators.required]],
+    codCliente: [ { value: '', disabled: true }],
     nomCliente: [''],
     tipoDoc: [''],
     nroDoc: [''],
-    estadoRegistroMedico: true,
-    codMedico: [ { value: '', disabled: true }, [Validators.required]],
-    nomMedico: [''],
+    estadoRegistroSolicitante: true,
+    codSolicitante: [ { value: '', disabled: true }],
+    nomSolicitante: [''],
+    profesionSolicitante: [''],
     colegiatura: [''],
-    nroRne: [''],
+    especialidadSolicitante: [''],
     aplicarPrecioGlobal: false,
     aplicarDescuentoPorcentGlobal:  false,
     sumaTotalesPrecioLista: 0,
@@ -64,6 +71,7 @@ export class GestCotiPersonalComponent implements OnInit {
       this.myFormCotizacion.get('nomCliente')?.disable();
       this.myFormCotizacion.get('tipoDoc')?.disable();
       this.myFormCotizacion.get('nroDoc')?.disable();
+
     } else {
       this.myFormCotizacion.get('codCliente')?.reset();
       this.myFormCotizacion.get('nomCliente')?.reset();
@@ -73,27 +81,38 @@ export class GestCotiPersonalComponent implements OnInit {
       this.myFormCotizacion.get('tipoDoc')?.enable();
       this.myFormCotizacion.get('nroDoc')?.enable();
     }
+
   }
 
-  camnbioEstadoRegistroMedico() {
-    const estado = this.myFormCotizacion.get('estadoRegistroPaciente')?.value;
+  camnbioEstadoRegistroSolicitante() {
+    const estado = this.myFormCotizacion.get('estadoRegistroSolicitante')?.value;
   
     if (estado) {
-      this.myFormCotizacion.get('codCliente')?.reset();
-      this.myFormCotizacion.get('nomCliente')?.reset();
-      this.myFormCotizacion.get('tipoDoc')?.setValue('0');
-      this.myFormCotizacion.get('nroDoc')?.reset();
-      this.myFormCotizacion.get('nomCliente')?.disable();
-      this.myFormCotizacion.get('tipoDoc')?.disable();
-      this.myFormCotizacion.get('nroDoc')?.disable();
+      this.myFormCotizacion.get('codSolicitante')?.reset();
+      this.myFormCotizacion.get('nomSolicitante')?.reset();
+      this.myFormCotizacion.get('profesionSolicitante')?.reset();
+      this.myFormCotizacion.get('colegiatura')?.reset();
+      this.myFormCotizacion.get('especialidadSolicitante')?.reset();
+      
+      this.myFormCotizacion.get('codSolicitante')?.disable();
+      this.myFormCotizacion.get('nomSolicitante')?.disable();
+      this.myFormCotizacion.get('profesionSolicitante')?.disable();
+      this.myFormCotizacion.get('colegiatura')?.disable();
+      this.myFormCotizacion.get('especialidadSolicitante')?.disable();
+
     } else {
-      this.myFormCotizacion.get('codCliente')?.reset();
-      this.myFormCotizacion.get('nomCliente')?.reset();
-      this.myFormCotizacion.get('tipoDoc')?.setValue('0');
-      this.myFormCotizacion.get('nroDoc')?.reset();
-      this.myFormCotizacion.get('nomCliente')?.enable();
-      this.myFormCotizacion.get('tipoDoc')?.enable();
-      this.myFormCotizacion.get('nroDoc')?.enable();
+      this.myFormCotizacion.get('codSolicitante')?.reset();
+      this.myFormCotizacion.get('nomSolicitante')?.reset();
+      this.myFormCotizacion.get('profesionSolicitante')?.reset();
+      this.myFormCotizacion.get('colegiatura')?.reset();
+      this.myFormCotizacion.get('especialidadSolicitante')?.reset();
+      
+      this.myFormCotizacion.get('codSolicitante')?.enable();
+      this.myFormCotizacion.get('nomSolicitante')?.enable();
+      this.myFormCotizacion.get('profesionSolicitante')?.enable();
+      this.myFormCotizacion.get('colegiatura')?.enable();
+      this.myFormCotizacion.get('especialidadSolicitante')?.enable();
+
     }
   }
 
@@ -103,13 +122,19 @@ export class GestCotiPersonalComponent implements OnInit {
   pacientes: IPaciente[] = [];
 
   buscarPaciente(){
-    if (this.terminoBusquedaPaciente.length >= 3) { 
-      this._pacienteService.getPatient(this.terminoBusquedaPaciente).subscribe((res: IPaciente[]) => {
-        this.pacientes = res;
-      });
-    }if (this.terminoBusquedaPaciente.length > 0) {
-      this.pacientes = [];
-    }
+
+    clearTimeout(this.timeoutBusqueda);
+    this.timeoutBusqueda = setTimeout(() => {
+      if (this.terminoBusquedaPaciente.length >= 3) { 
+        this._pacienteService.getPatientCotizacion(this.terminoBusquedaPaciente).subscribe((res: IPaciente[]) => {
+          this.pacientes = res;
+        });
+      }if (this.terminoBusquedaPaciente.length > 0) {
+        this.pacientes = [];
+      }else{
+        this.ultimosPacientes(5)
+      }
+    },400)
   }
 
   seleccionarPaciente(paciente: IPaciente){
@@ -120,51 +145,94 @@ export class GestCotiPersonalComponent implements OnInit {
       nroDoc: paciente.nroDoc
     });
   
-    const closeButton = document.querySelector('#modalClientes .btn-close') as HTMLElement;
-    if (closeButton) {
-      closeButton.click();
-    }
   }
 
-  //MEDICOS
+  // Método últimos pacientes
+  ultimosPacientes(cantidad:number): void {
+    this._pacienteService.getLastPatientsCotizacion(cantidad).subscribe({
+      next: (res: IPaciente[]) => {
+        this.pacientes = res;
+      },
+      error: (err) => {
+        console.error('Error al obtener los pacientes:', err);
+      },
+    });
+  }
+
+  //SOLICITANTES
 
   terminoBusquedaMedico: any;
-  medicos: IPaciente[] = [];
+  timeoutBusqueda: any;
+  solicitantes: IRecHumano[] = [];
 
-  buscarMedico(){
-    if (this.terminoBusquedaPaciente.length >= 3) { 
-      this._pacienteService.getPatient(this.terminoBusquedaPaciente).subscribe((res: IPaciente[]) => {
-        this.pacientes = res;
-      });
-    }if (this.terminoBusquedaPaciente.length > 0) {
-      this.pacientes = [];
-    }
+  buscarSolicitante(){
+
+    clearTimeout(this.timeoutBusqueda);
+
+    this.timeoutBusqueda = setTimeout(() => {
+      if (this.terminoBusquedaMedico.length >= 3) { 
+        this._recHumanoService.getSolicitante(this.terminoBusquedaMedico).subscribe((res: IRecHumano[]) => {
+          this.solicitantes = res;
+        });
+      }if (this.terminoBusquedaMedico.length > 0) {
+        this.solicitantes = [];
+      }else{
+        this.ultimosRecursosSolicitantes(10)
+      }
+    },400)
   }
 
-  seleccionarMedico(paciente: IPaciente){
+  seleccionarSolicitante(solicitante: IRecHumano){
     this.myFormCotizacion.patchValue({
-      codCliente: paciente.hc,
-      nomCliente: paciente.apePatCliente + " " + paciente.apeMatCliente + " " + paciente.nombreCliente,
-      tipoDoc: paciente.tipoDoc,
-      nroDoc: paciente.nroDoc
+      codSolicitante: solicitante.codRecHumano,
+      nomSolicitante: solicitante.apePatRecHumano + " " + solicitante.apeMatRecHumano + " " + solicitante.nombreRecHumano,
+      profesionSolicitante: solicitante.profesionSolicitante?.profesion,
+      colegiatura: solicitante.profesionSolicitante?.nroColegiatura,
+      especialidadSolicitante: this.getEspecialidadesTexto(solicitante)
     });
   
-    const closeButton = document.querySelector('#modalClientes .btn-close') as HTMLElement;
-    if (closeButton) {
-      closeButton.click();
-    }
+  }
+
+  // Método últimos recursos humanos que solicitan exámenes
+  ultimosRecursosSolicitantes(cantidad:number): void {
+    this._recHumanoService.getRecursosSolicitantes(cantidad).subscribe({
+      next: (res: IRecHumano[]) => {
+        this.solicitantes = res;
+      },
+      error: (err) => {
+        console.error('Error al obtener los solicitantes:', err);
+      },
+    });
+  }
+
+  getEspecialidadesTexto(solicitante: any): string {
+    return solicitante.especialidadesRecurso && solicitante.especialidadesRecurso.length>0
+      ? solicitante.especialidadesRecurso.map((e: any) => e.especialidad).join(', ')
+      : 'No tiene especialidad';
   }
 
   //SERVICIO
 
   terminoBusquedaServicio: any;
   servicios: IServicio[] = [];
+  serviciosFrecuentes: IServicio[] = [];
 
   // Método últimos 20* pacientes
   ultimosServicios(cantidad:number): void {
     this._servicioService.getLastServicio(cantidad).subscribe({
       next: (res: IServicio[]) => {
         this.servicios = res;
+      },
+      error: (err) => {
+        console.error('Error al obtener los servicios:', err);
+      },
+    });
+  }
+
+  listarServiciosFrecuentes(){
+    this._servicioService.getLastServicio(5).subscribe({
+      next: (res: IServicio[]) => {
+        this.serviciosFrecuentes = res;
       },
       error: (err) => {
         console.error('Error al obtener los servicios:', err);
@@ -179,7 +247,13 @@ export class GestCotiPersonalComponent implements OnInit {
       });
     }if (this.terminoBusquedaServicio.length > 0) {
       this.servicios = [];
+    }else{
+      this.ultimosServicios(5);
     }
+  }
+
+  verDetalle(servicio: IServicio){
+
   }
 
   servicioSeleccionado: any = null;
@@ -195,6 +269,9 @@ export class GestCotiPersonalComponent implements OnInit {
       console.log('El servicio ya está agregado');
       return;
     }
+
+    this.myFormCotizacion.get('aplicarPrecioGlobal')?.setValue(false);
+    this.myFormCotizacion.get('aplicarDescuentoPorcentGlobal')?.setValue(false);
 
     // Crear un nuevo FormGroup para el servicio seleccionado
     const servicioForm = this._fb.group({
@@ -212,15 +289,17 @@ export class GestCotiPersonalComponent implements OnInit {
     // Agregar al FormArray
     this.serviciosCotizacion.push(servicioForm);
 
+    Promise.resolve().then(() => {
+      this.cambioEstadoDescGlobal();
+      this.cambioEstadoDescPorcentajeGlobal();
+    });
+    
     console.log(this.serviciosCotizacion)
 
-    // Cerrar el modal después de seleccionar
-    const closeButton = document.querySelector('#modalServicios .btn-close') as HTMLElement;
-    if (closeButton) {
-      closeButton.click();
-    }
-
-    this.calcularTotalGeneral();
+    Promise.resolve().then(() => {
+      this.calcularTotalGeneral();
+    });
+    
 
   }
 
@@ -337,37 +416,23 @@ export class GestCotiPersonalComponent implements OnInit {
   }
 
   removerServicio(index: number) {
-    Swal.fire({
-      title: '¿Eliminar servicio?',
-      text: 'Este servicio será eliminado de la cotización.',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Sí, eliminar',
-      cancelButtonText: 'Cancelar'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.serviciosCotizacion.removeAt(index);
-        this.calcularTotalGeneral();
 
-        Promise.resolve().then(() => {
-          const serviciosArray = this.myFormCotizacion.get('serviciosCotizacion') as FormArray;
+    this.serviciosCotizacion.removeAt(index);
+    this.calcularTotalGeneral();
 
-          if (serviciosArray.length === 0) {
-            this.myFormCotizacion.get('aplicarPrecioGlobal')?.setValue(false);
-            this.myFormCotizacion.get('aplicarDescuentoPorcentGlobal')?.setValue(false);
-            this.myFormCotizacion.get('precioConDescGlobal')?.reset();
-            this.myFormCotizacion.get('precioConDescGlobal')?.disable();
-            this.myFormCotizacion.get('descuentoPorcentaje')?.reset();
-            this.myFormCotizacion.get('descuentoPorcentaje')?.disable();
-          }
-        });        
-        
-        Promise.resolve().then(() => {
-          this.switchDescuento();
-        });
+    Promise.resolve().then(() => {
+      const serviciosArray = this.myFormCotizacion.get('serviciosCotizacion') as FormArray;
 
+      if (serviciosArray.length === 0) {
+        this.myFormCotizacion.get('aplicarPrecioGlobal')?.setValue(false);
+        this.myFormCotizacion.get('aplicarDescuentoPorcentGlobal')?.setValue(false);
+        this.myFormCotizacion.get('precioConDescGlobal')?.reset();
+        this.myFormCotizacion.get('precioConDescGlobal')?.disable();
+        this.myFormCotizacion.get('descuentoPorcentaje')?.reset();
+        this.myFormCotizacion.get('descuentoPorcentaje')?.disable();
       }
-    });
+    });        
+    
   }
 
 
@@ -404,6 +469,9 @@ export class GestCotiPersonalComponent implements OnInit {
         this.calcularTotalUnitario(index);
       });
 
+      this.myFormCotizacion.get('precioConDescGlobal')?.setValue(0)
+      
+
     } else {
 
       this.myFormCotizacion.get('precioConDescGlobal')?.reset();
@@ -415,8 +483,6 @@ export class GestCotiPersonalComponent implements OnInit {
       });
 
     }
-
-    this.switchDescuento();
 
     // Asegurar que calcularTotalGeneral() se ejecute después de actualizar todos los valores
    
@@ -469,29 +535,12 @@ export class GestCotiPersonalComponent implements OnInit {
       });
     }
 
-    this.switchDescuento();
-
     // Asegurar que calcularTotalGeneral() se ejecute después de actualizar todos los valores
    
     Promise.resolve().then(() => {
       this.calcularTotalGeneral();
     });  
   }
-
-  switchDescuento(){
-
-    const estadoPrecioGlobal = this.myFormCotizacion.get('aplicarPrecioGlobal')?.value;
-    const estadoPorcentGlobal = this.myFormCotizacion.get('aplicarDescuentoPorcentGlobal')?.value;
-    const btnBuscarServicio = document.getElementById('btnBuscarServicio') as HTMLButtonElement;
-
-    if(estadoPrecioGlobal == false && estadoPorcentGlobal == false){
-      // Habilitar el botón "Buscar Servicio"
-      btnBuscarServicio.disabled = false;
-    }else{
-      btnBuscarServicio.disabled = true;
-    }
-  }
-
  
   // Calcular los totales generales
   calcularTotalGeneral() {
@@ -553,6 +602,42 @@ export class GestCotiPersonalComponent implements OnInit {
 
   nuevaCotizacionPersona(){
 
+    this.myFormCotizacion.reset(); // Reinicia todos los campos del formulario
+    this.formSubmitted = false; // Restablece el estado de validación del formulario
+    this.serviciosCotizacion.clear();
+    this.myFormCotizacion.patchValue({
+      estadoRegistroPaciente: true,
+      estadoRegistroSolicitante: true,
+      sumaTotalesPrecioLista: 0,
+      listaMenosDescuento: 0,
+      subTotal: 0,
+      igv: 0,
+      total: 0
+    });
+
+    this.resetearVariablesAuxiliares();
+
+    Promise.resolve().then(() => {
+      this.myFormCotizacion.get('precioConDescGlobal')?.disable();
+      this.myFormCotizacion.get('descuentoPorcentaje')?.disable();
+      this.camnbioEstadoRegistroPaciente();
+      this.camnbioEstadoRegistroSolicitante();
+    });  
+
+  }
+
+  private resetearVariablesAuxiliares(): void {
+    
+    this.terminoBusquedaPaciente = "";
+    this.ultimosPacientes(10);
+  
+    this.terminoBusquedaMedico = "";
+    this.timeoutBusqueda = null;
+    this.ultimosRecursosSolicitantes(10);
+  
+    this.terminoBusquedaServicio = "";
+    this.ultimosServicios(10);
+    this.servicioSeleccionado = null;
   }
 
   public formSubmitted: boolean = false;
@@ -575,11 +660,25 @@ export class GestCotiPersonalComponent implements OnInit {
             if (result.isConfirmed) {
     
               console.log('Procede registro coti')
-              const formValue  = this.myFormCotizacion.value;
+              const formValue  = this.myFormCotizacion.getRawValue();
+
+              console.log("formvalue aqui: ", formValue)
     
               const body: ICotizacion = {
-                ...formValue
+                ...formValue,
+                codCliente: formValue.estadoRegistroPaciente ? formValue.codCliente || null : null,
+                nomCliente: !formValue.estadoRegistroPaciente ? formValue.nomCliente || null : null,
+                tipoDoc: !formValue.estadoRegistroPaciente ? formValue.tipoDoc || null : null,
+                nroDoc: !formValue.estadoRegistroPaciente ? formValue.nroDoc || null : null,
+                codSolicitante: formValue.estadoRegistroSolicitante ? formValue.codSolicitante || null : null,
+                nomSolicitante: !formValue.estadoRegistroSolicitante ? formValue.nomSolicitante || null : null,
+                profesionSolicitante: !formValue.estadoRegistroSolicitante ? formValue.profesionSolicitante || null : null,
+                colegiatura: !formValue.estadoRegistroSolicitante ? formValue.colegiatura || null : null,
+                especialidadSolicitante: !formValue.estadoRegistroSolicitante ? formValue.especialidadSolicitante || null : null,
+              
               }
+
+              console.log("body aqui: ",body)
                               
               this._cotizacionService.generarCotizacion(body).subscribe((res) => {
                 if (res !== 'ERROR') {
@@ -589,7 +688,7 @@ export class GestCotiPersonalComponent implements OnInit {
                     icon: 'success',
                     confirmButtonText: 'Ok',
                   });
-                  this.ultimasCotizaciones(20);
+                  this.ultimasCotizaciones(10);
                   this.nuevaCotizacionPersona();
                   //this._router.navigateByUrl('/auth/login');
                 }else{
@@ -614,10 +713,13 @@ export class GestCotiPersonalComponent implements OnInit {
     this.cotizacionSeleccionada = true
   }
 
-  terminoBusquedaCotizacion: any;
-  cotizaciones: ICotizacion[] = [];
 
-  // Método últimos 20* servicios
+  
+
+  terminoBusquedaCotizacion: any;
+  cotizaciones: ICotizacion[] = [];  
+
+  // Método últimas cotizaciones
   ultimasCotizaciones(cantidad:number): void {
     this._cotizacionService.getLastCotizacion(cantidad).subscribe({
       next: (res: ICotizacion[]) => {

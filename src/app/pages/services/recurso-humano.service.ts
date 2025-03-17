@@ -55,6 +55,20 @@ export class RecursoHumanoService {
         })); 
     }
   
+    getRecursosSolicitantes(cantidad:number): Observable<IRecHumano[]> {
+      const params = new HttpParams().set('cant',cantidad) 
+      return this._http
+        .get<IGetLastRecHumano>(
+        `${environment.baseUrl}/api/recursoHumano/latestSolicitantes`,{params}
+        )
+        .pipe(map((data) => {
+          console.log(data)
+          return data.recHumanos;
+        })); ;
+        
+    }
+   
+
     getRecHumano(terminoBusqueda : any): Observable<IRecHumano[]> {
       const params = new HttpParams().set('search',terminoBusqueda)
       return this._http
@@ -64,12 +78,21 @@ export class RecursoHumanoService {
         .pipe(map((data) => data.recHumanos));
     }
   
+    getSolicitante(terminoBusqueda : any): Observable<IRecHumano[]> {
+      const params = new HttpParams().set('search',terminoBusqueda)
+      return this._http
+        .get<IGetLastRecHumano>(
+          `${environment.baseUrl}/api/recursoHumano/findTermSolicitante`,{params}
+        )
+        .pipe(map((data) => data.recHumanos));
+    }
+  
     
-    public actualizarRecHumano(nroHC: string, body: IRecHumano){
+    public actualizarRecHumano(codRecHumano: string, body: IRecHumano){
       
       return this._http
         .put<IRecHumanoPostDTO>(
-          `${environment.baseUrl}/api/recursoHumano/${nroHC}/updateRecHumano`,body
+          `${environment.baseUrl}/api/recursoHumano/${codRecHumano}/updateRecHumano`,body
         )
         .pipe(
           map((data) => {

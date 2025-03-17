@@ -286,7 +286,7 @@ export class MantPacienteComponent implements OnInit{
   
   // Método últimos 20* pacientes
   ultimosClientes(): void {
-    this._pacienteService.getLastPatients().subscribe((res: IPaciente[]) => {
+    this._pacienteService.getLastPatients(20).subscribe((res: IPaciente[]) => {
       this.pacientes = res;
     });
   }
@@ -346,6 +346,7 @@ export class MantPacienteComponent implements OnInit{
     this.myForm.reset(); // Reinicia todos los campos del formulario
     this.formSubmitted = false; // Restablece el estado de validación del formulario 
     this.phones.clear();// Limpia el FormArray de teléfonos, si es necesario
+    this.addPhone = false;
     this.myForm.patchValue({
       tipoDoc: '0',
       sexoCliente: '0',

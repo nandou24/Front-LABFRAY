@@ -19,7 +19,7 @@ export class CotizacionService {
       
       return this._http
         .post<ICotizacionPostDTO>(
-          `${environment.baseUrl}/api/cotizacion/newCotizacion`,body
+          `${environment.baseUrl}/api/cotizacion/newCotizacionPersona`,body
         )
         .pipe(
           map((data) => {

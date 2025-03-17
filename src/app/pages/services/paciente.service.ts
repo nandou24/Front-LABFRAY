@@ -44,12 +44,26 @@ export class PacienteService {
       );
   }
 
-  getLastPatients(): Observable<IPaciente[]> {
+  getLastPatients(cantidad:number): Observable<IPaciente[]> {
+    const params = new HttpParams().set('cant',cantidad) 
     return this._http
       .get<IGetLastPatients>(
-        `${environment.baseUrl}/api/paciente/last30`
+        `${environment.baseUrl}/api/paciente/latest`,{params}
       )
-      .pipe(map((data) => data.pacientes));
+      .pipe(map((data) => {
+        return data.pacientes;
+      }));        
+  }
+
+  getLastPatientsCotizacion(cantidad:number): Observable<IPaciente[]> {
+    const params = new HttpParams().set('cant',cantidad) 
+    return this._http
+      .get<IGetLastPatients>(
+        `${environment.baseUrl}/api/paciente/latestCotizacion`,{params}
+      )
+      .pipe(map((data) => {
+        return data.pacientes;
+      }));        
   }
 
   getPatient(terminoBusqueda : any): Observable<IPaciente[]> {
@@ -61,6 +75,14 @@ export class PacienteService {
       .pipe(map((data) => data.pacientes));
   }
 
+  getPatientCotizacion(terminoBusqueda : any): Observable<IPaciente[]> {
+    const params = new HttpParams().set('search',terminoBusqueda)
+    return this._http
+      .get<IGetLastPatients>(
+        `${environment.baseUrl}/api/paciente/findTermCotizacion`,{params}
+      )
+      .pipe(map((data) => data.pacientes));
+  }
   
   public actualizarPaciente(nroHC: string, body: IPaciente){
     

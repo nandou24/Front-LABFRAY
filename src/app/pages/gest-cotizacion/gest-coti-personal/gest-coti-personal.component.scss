@@ -43,3 +43,11 @@ input[type=number]::-webkit-outer-spin-button {
   font-weight: 500;
   font-style: normal;
 }
+
+.d-flex.flex-wrap {
+  max-height: 200px; /* Para limitar el tamaño y evitar que se extienda demasiado */
+  overflow-y: auto;  /* Agrega desplazamiento si hay demasiados */
+}
+.btn-sm {
+  min-width: 120px; /* Ajusta el tamaño de los botones */
+}
