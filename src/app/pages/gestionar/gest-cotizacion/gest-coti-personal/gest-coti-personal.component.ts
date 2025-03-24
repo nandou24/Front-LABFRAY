@@ -65,7 +65,7 @@ export class GestCotiPersonalComponent implements OnInit {
 
   get serviciosCotizacion(): FormArray{
       return this.myFormCotizacion.get('serviciosCotizacion') as FormArray;
-    }
+  }
 
   camnbioEstadoRegistroPaciente() {
     const estado = this.myFormCotizacion.get('estadoRegistroPaciente')?.value;
@@ -1422,11 +1422,6 @@ export class GestCotiPersonalComponent implements OnInit {
     doc.text('- Las tranferencias interbancarias deben ser inmediatas', inicioX, puntoRefMediosPago+45+alturaLineaCuentas);
     doc.text('- Compartir el pago realizado a través de yape o plin al 924870728, indicando el nombre del paciente', inicioX, puntoRefMediosPago+45+alturaLineaCuentas*2);
     doc.text('- Los pagos con tarjeta tienen un recargo del 5%, por favor priorice otro medio de pago', inicioX, puntoRefMediosPago+45+alturaLineaCuentas*3);
-
-
-    
-
-
 
     const pdfBlob = doc.output("blob");
     const pdfUrl = URL.createObjectURL(pdfBlob);

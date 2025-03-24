@@ -1,4 +1,147 @@
 
+<div class="row">
+
+    <div class="col-12 col-xxl-8">
+  
+            <div class="row mt-2" style="align-items: center;">
+  
+                <div class="col-lg-4">
+                    <h5 class="text-center" style="font-weight: 500;">REGITRAR PAGO</h5>
+                </div>
+
+            </div>
+
+            <div class="card mb-2 mt-2">
+
+                <div class="card-header bg-primary text-white">
+                  Detalles de la Cotización
+                </div>
+      
+                <div class="card-body"> 
+
+                    <form class="mt-2 mb-4" [formGroup]="myFormPagoPersona" (ngSubmit)="registraPago()">
+
+                        <div class="row mb-1">
+                            <div class="col-lg-1">
+                                N° Cotización:
+                            </div>
+                            
+                            <div class="col-lg-2">
+                                {{ myFormPagoPersona.get('codCotizacion')?.value }}
+                            </div>    
+                    
+                            <div class="col-lg-1">
+                                Versión
+                            </div>
+                
+                            <div class="col-lg-1">
+                                {{ myFormPagoPersona.get('version')?.value }}
+                            </div>
+
+                        </div>
+
+                        <div class="row mb-1">
+
+                                <div class="col-lg-1">
+                                    Paciente
+                                </div>
+                    
+                                <div class="col-lg-3">
+                                    {{ myFormPagoPersona.get('nomCliente')?.value }}
+                                </div>
+                    
+                                <div class="col-lg-1"> 
+                                    Documento
+                                </div>
+                        
+                                <div class="col-lg-2">
+                                  {{ myFormPagoPersona.get('tipoDoc')?.value }} {{ myFormPagoPersona.get('nroDoc')?.value }}
+                                </div>
+
+                        </div>
+
+                    </form>
+                
+                </div>
+
+            </div>
+
+    </div>
+
+    <div class="col-12 col-xxl-4">
+
+        <div class="card mb-4">
+      
+            <div class="card-header bg-primary text-white">
+              
+              <div class="row align-items-center"> 
+                
+                <div class="col-md-4">
+                  ULTIMAS COTIZACIONES
+                </div>         
+                
+                <div class="col-md-8">
+                  <input type="text" class="form-control form-control-sm" placeholder="Ingrese busqueda..."
+                  [(ngModel)]="terminoBusquedaCotizacion"
+                  (input)="buscarCotizaciones()"  />
+                </div>
+      
+              </div>
+      
+            </div>
+      
+            <div class="card-body">
+      
+              <!-- Tabla para listar los clientes -->
+              <div class="row">
+                <div class="col">
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th scope="col">N°</th>
+                        <th scope="col">Cod Coti</th>
+                        <th scope="col">Paciente</th>
+                        <th scope="col">Documento</th>
+                        <th scope="col">Versiones</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let cotizacion of cotizaciones; let i = index"
+                          (click)="cargarCotizacion(cotizacion); seleccionarFila(i)"
+                          [ngClass]="{'table-active': filaCotizacionSeleccionada === i, 'table-hover-row': true}">
+                        <td>{{i+1}}</td>
+                        <td>{{ cotizacion.codCotizacion}}</td>
+                        <td>{{ cotizacion.historial[cotizacion.historial.length - 1].nomCliente }}</td>
+                        <td>{{ cotizacion.historial[cotizacion.historial.length - 1].tipoDoc === '0' ? 'DNI' : 
+                                cotizacion.historial[cotizacion.historial.length - 1].tipoDoc === '1' ? 'CE' : 
+                                cotizacion.historial[cotizacion.historial.length - 1].tipoDoc === '2' ? 'PASAPORTE' : 'No especificado' }}
+                            {{ cotizacion.historial[cotizacion.historial.length - 1].nroDoc }}</td>
+                        <td class="text-center">{{ cotizacion.historial.length}}</td>
+                        <!--
+                        <td>
+                          <button class="btn btn-info btn-sm" (click)="verDetalles(cliente)">Ver</button>
+                        </td>-->
+                      </tr>
+                      
+                      <tr *ngIf="cotizaciones.length === 0">
+                        <td colspan="5" class="text-center">No se encontraron cotizaciones.</td>
+                      </tr>
+                    </tbody>
+                  
+                  </table>
+                </div>
+              </div>
+      
+            </div>
+          
+          </div>
+
+    </div>
+
+</div>
+
+
+<!--
 <div class="card mt-3">
     <div class="card-header bg-primary text-white">
       Registro de Pago
@@ -63,4 +206,4 @@
       </form>
     </div>
   </div>
-  
+  -->
