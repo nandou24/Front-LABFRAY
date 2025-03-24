@@ -1,0 +1,66 @@
+
+<div class="card mt-3">
+    <div class="card-header bg-primary text-white">
+      Registro de Pago
+    </div>
+    <div class="card-body">
+      <form >
+  
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label>N° Cotización</label>
+            <input type="text" class="form-control" formControlName="nroCotizacion" readonly>
+          </div>
+          <div class="col-md-6">
+            <label>Monto Total</label>
+            <input type="text" class="form-control"  readonly>
+          </div>
+        </div>
+  
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label>Monto Pagado</label>
+            <input type="number" class="form-control" formControlName="montoPagado">
+          </div>
+          <div class="col-md-6">
+            <label>Medio de Pago</label>
+            <select class="form-select" formControlName="medioPago">
+              <option value="EFECTIVO">Efectivo</option>
+              <option value="YAPE">Yape</option>
+              <option value="PLIN">Plin</option>
+              <option value="TRANSFERENCIA">Transferencia</option>
+              <option value="TARJETA">Tarjeta</option>
+            </select>
+          </div>
+        </div>
+  
+        <div class="mb-3">
+          <label>N° Operación</label>
+          <input type="text" class="form-control" formControlName="nroOperacion">
+        </div>
+  
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label>Fecha y Hora de Pago</label>
+            <input type="datetime-local" class="form-control" formControlName="fechaPago">
+          </div>
+          <div class="col-md-6">
+            <label>Comprobante Emitido</label>
+            <select class="form-select" formControlName="comprobante">
+              <option value="">Ninguno</option>
+              <option value="BOLETA">Boleta</option>
+              <option value="FACTURA">Factura</option>
+            </select>
+          </div>
+        </div>
+  
+        <div class="mb-3">
+          <label>Observaciones</label>
+          <textarea class="form-control" formControlName="observaciones" rows="2"></textarea>
+        </div>
+  
+        <button type="submit" class="btn btn-success" >Registrar Pago</button>
+      </form>
+    </div>
+  </div>
+  

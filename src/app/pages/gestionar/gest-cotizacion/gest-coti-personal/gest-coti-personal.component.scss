@@ -1,0 +1,53 @@
+.text-danger {
+  color: var(--red-error);
+  font-size: .875em;
+}
+
+.table-hover-row {
+  cursor: pointer;
+}
+
+.table-active {
+  --bs-table-bg-state: rgba(0, 102, 255, 0.61);
+}
+
+.readonly-style {
+  background-color: #e9ecef; /* Color de fondo similar a disabled */
+  color: #6c757d; /* Color de texto similar a disabled */
+  cursor: not-allowed; /* Cambia el cursor */
+}
+
+.text-uppercase {
+  text-transform: uppercase; /* Muestra el texto en mayúsculas */
+}
+
+/* Eliminar las flechas en navegadores WebKit (Chrome, Safari, Edge) */
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.quicksand-totales {
+  font-family: "Quicksand", serif;
+  font-optical-sizing: auto;
+  font-weight: 800;
+  font-style: normal;
+  font-size: 1.3rem;
+  color: #0128a7;
+}
+
+.quicksand-subtotal {
+  font-family: "Quicksand", serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+}
+
+.d-flex.flex-wrap {
+  max-height: 200px; /* Para limitar el tamaño y evitar que se extienda demasiado */
+  overflow-y: auto;  /* Agrega desplazamiento si hay demasiados */
+}
+.btn-sm {
+  min-width: 120px; /* Ajusta el tamaño de los botones */
+}

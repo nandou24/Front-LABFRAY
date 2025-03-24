@@ -128,27 +128,48 @@ export interface IGetLastItemsLab {
 
 export interface ICotizacion {
     codCotizacion: string,
+    historial: IHistorialCotizacion[];
+    estado: string
+}
+
+// 🔥 Estructura del historial de cotización
+export interface IHistorialCotizacion {
+    version: number;
+    fechaModificacion: Date | null;
     estadoRegistroPaciente: boolean,
-    codCliente: string | null,
-    nomCliente: string | null,
-    tipoDoc: string | null,
-    nroDoc: string | null,
-    estadoRegistroMedico: boolean,
-    codMedico: string | null,
-    nomMedico: string | null,
-    colegiatura: string | null,
-    nroRne: string | null,
-    especialidadSolicitante: string | null,
-    aplicarPrecioGlobal: boolean,
-    aplicarDescuentoPorcentGlobal: boolean,
-    sumaTotalesPrecioLista: number,
-    listaMenosDescuento: number,
-    precioConDescGlobal: number,
-    descuentoPorcentaje: number,
-    subTotal: number,
-    igv: number,
-    total: number,
-    serviciosCotizacion: Array<any>[] 
+    codCliente?: string;
+    nomCliente: string;
+    tipoDoc: string;
+    nroDoc: string;
+    estadoRegistroSolicitante: boolean;
+    codSolicitante?: string;
+    nomSolicitante?: string;
+    profesionSolicitante?: string;
+    colegiatura?: string;
+    especialidadSolicitante?: string;
+    aplicarPrecioGlobal: boolean;
+    aplicarDescuentoPorcentGlobal: boolean;
+    sumaTotalesPrecioLista: number;
+    descuentoTotal: number;
+    precioConDescGlobal?: number;
+    descuentoPorcentaje?: number;
+    subTotal: number;
+    igv: number;
+    total: number;
+    serviciosCotizacion: IServicioCotizacion[];
+}
+
+
+export interface IServicioCotizacion {
+    codServicio: string;
+    tipoServicio: string;
+    nombreServicio: string;
+    cantidad: number;
+    precioLista: number;
+    diferencia: number;
+    precioVenta: number;
+    descuentoPorcentaje: number;
+    totalUnitario: number;
 }
 
 export interface ICotizacionPostDTO {

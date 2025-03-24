@@ -1,12 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { PagesComponent } from './pages.component';
-import { MantPacienteComponent } from './mant-paciente/mant-paciente.component';
-import { MantPruebaLabComponent } from './mant-prueba-lab/mant-prueba-lab.component';
-import { MantItemLabComponent } from './mant-item-lab/mant-item-lab.component';
-import { MantServicioComponent } from './mant-servicio/mant-servicio.component';
-import { GestCotiPersonalComponent } from './gest-cotizacion/gest-coti-personal/gest-coti-personal.component';
-import { MantRecursoHumanoComponent } from './mant-recurso-humano/mant-recurso-humano.component';
+import { MantPacienteComponent } from './mantenimiento/mant-paciente/mant-paciente.component';
+import { MantPruebaLabComponent } from './mantenimiento/mant-prueba-lab/mant-prueba-lab.component';
+import { MantItemLabComponent } from './mantenimiento/mant-item-lab/mant-item-lab.component';
+import { MantServicioComponent } from './mantenimiento/mant-servicio/mant-servicio.component';
+import { GestCotiPersonalComponent } from './gestionar/gest-cotizacion/gest-coti-personal/gest-coti-personal.component';
+import { MantRecursoHumanoComponent } from './mantenimiento/mant-recurso-humano/mant-recurso-humano.component';
+import { GestPagoPersonasComponent } from './gestionar/gest-pagos/gest-pago-personas/gest-pago-personas.component';
 
 const routes: Routes = [
 
@@ -42,6 +43,11 @@ const routes: Routes = [
       {
         path: 'mantRecursoHumano',
         component: MantRecursoHumanoComponent,
+        /*canActivate: [PagesGuard]*/
+      },
+      {
+        path: 'gestPagoPersona',
+        component: GestPagoPersonasComponent,
         /*canActivate: [PagesGuard]*/
       },
       /*{

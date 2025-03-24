@@ -1,0 +1,443 @@
+
+
+<div class="row">
+
+  <div class="col-12 col-xxl-8">
+    <div class="container">
+
+      <div class="row mt-2" style="align-items: center;">
+        <h5 class="text-center" style="font-weight: 500;">MANTENIMIENTO DE PACIENTES</h5>
+      </div> 
+
+      <form class="mt-2 mb-4" [formGroup]="myForm" (ngSubmit)="registraPaciente()">
+
+        <div class="card mb-4">
+
+          <div class="card-header bg-primary text-white">
+            DATOS PERSONALES
+          </div>
+
+          <div class="card-body">
+
+            <div class="row mt-2">
+
+              <div class="col-lg-2">  
+                <label for="tipoDoc" class="col-form-label" >Tipo Documento</label>
+              </div>
+    
+              <div class="col-lg-2">
+                <select class="form-select" id="tipoDoc" formControlName="tipoDoc">
+                  <option value="0" selected>DNI</option>
+                  <option value="1" >CE</option>
+                  <option value="2">PASAPORTE</option>
+                </select>
+              </div>
+    
+              <div class="col-lg-2">
+                <label for="nroDoc" class="col-form-label">Nro. Documento</label>
+              </div>
+              
+              <div class="col-lg-2">
+                <input type="text" id="nroDoc" class="form-control"
+                formControlName="nroDoc"
+                [ngClass]="{
+                  'is-valid': myForm.get('nroDoc')?.valid && formSubmitted,
+                  'is-invalid': myForm.get('nroDoc')?.invalid && formSubmitted
+                }">
+                
+                <div *ngIf="myForm.get('nroDoc')?.invalid && formSubmitted" class="invalid-feedback">
+                  <!--//Número de documento es obligatorio-->
+                  <small *ngIf="myForm.get('nroDoc')?.errors?.['required']">El número de documento es obligatorio.</small>
+                  <small *ngIf="myForm.get('nroDoc')?.errors?.['invalidDNI']">
+                    El DNI debe tener exactamente 8 dígitos.
+                  </small>
+                  <small *ngIf="myForm.get('nroDoc')?.errors?.['invalidCE']">
+                    El CE debe tener un máximo de 13 caracteres alfanuméricos.
+                  </small>
+                  <small *ngIf="myForm.get('nroDoc')?.errors?.['invalidPasaporte']">
+                    El Pasaporte debe tener un máximo de 16 caracteres alfanuméricos.
+                  </small>
+    
+                </div>
+      
+              </div>
+    
+              <div class="col-lg-1">
+                <label for="codHC" class="col-form-label">HC</label>
+              </div>
+              <div class="col-lg-2">
+                <input type="text" id="codHC" class="form-control readonly-style" formControlName="hc" readonly>
+              </div>
+    
+            </div>
+    
+            <div class="row mt-2">
+    
+              <div class="col-lg-2">  
+                <label for="apePatPaciente" class="col-form-label">Apellido Paterno</label>
+              </div>
+              <div class="col-lg-4">
+                <input type="text" id="apePatPaciente" class="form-control text-uppercase"
+                formControlName="apePatCliente"
+                [ngClass]="{
+                  'is-valid': myForm.get('apePatCliente')?.valid && formSubmitted,
+                  'is-invalid': myForm.get('apePatCliente')?.invalid && formSubmitted
+                }">
+                
+                <div *ngIf="myForm.get('apePatCliente')?.invalid && formSubmitted" class="invalid-feedback">
+                  Por favor ingrese el apellido paterno
+                </div>
+                <div *ngIf="myForm.get('apePatCliente')?.errors?.['pattern']" class="invalid-feedback">
+                  Solo se permiten letras y espacios.
+                </div>
+              </div>
+    
+            </div>
+    
+            <div class="row mt-2">
+              
+              <div class="col-lg-2">  
+                <label for="apeMatPaciente" class="col-form-label">Apellido Materno</label>
+              </div>
+              <div class="col-lg-4">
+                <input type="text" id="apeMatPaciente" class="form-control text-uppercase"
+                formControlName="apeMatCliente"
+                [ngClass]="{
+                  'is-valid': myForm.get('apeMatCliente')?.valid && formSubmitted,
+                  'is-invalid': myForm.get('apeMatCliente')?.invalid && formSubmitted
+                }">
+    
+                <div *ngIf="myForm.get('apeMatCliente')?.invalid && formSubmitted" class="invalid-feedback">
+                  Por favor ingrese el apellido materno
+                </div>
+                <div *ngIf="myForm.get('apeMatCliente')?.errors?.['pattern']" class="invalid-feedback">
+                  Solo se permiten letras y espacios.
+                </div>
+              </div>
+    
+            </div>
+    
+            <div class="row mt-2">
+    
+              <div class="col-lg-2">
+                <label for="nombrePaciente" class="col-form-label">Nombres</label>
+              </div>
+              <div class="col-lg-4">
+                <input type="text" id="nombrePaciente" class="form-control text-uppercase" 
+                    formControlName="nombreCliente"
+                    [ngClass]="{
+                      'is-valid': myForm.get('nombreCliente')?.valid && formSubmitted,
+                      'is-invalid': myForm.get('nombreCliente')?.invalid && formSubmitted
+                    }">
+    
+                <div *ngIf="myForm.get('nombreCliente')?.invalid && formSubmitted" class="invalid-feedback">
+                  Por favor ingrese el nombre
+                </div>
+                <div *ngIf="myForm.get('nombreCliente')?.errors?.['pattern']" class="invalid-feedback">
+                  Solo se permiten letras y espacios.
+                </div>
+    
+              </div>
+    
+            </div>
+    
+            <div class="row mt-2">
+    
+              <div class="col-lg-2">  
+                <label for="fechaNac" class="col-form-label">Fecha nacimiento</label>
+              </div>
+              <div class="col-lg-3">
+    
+                <div class="input-group">
+                  <input type="text"
+                        class="datepicker_input form-control"
+                        id='fechaNac'
+                        formControlName="fechaNacimiento"
+                        (input)="onFechaNacimientoInput($event)"
+                        [ngClass]="{
+                          'is-valid': myForm.get('fechaNacimiento')?.valid && formSubmitted,
+                          'is-invalid': myForm.get('fechaNacimiento')?.invalid && formSubmitted
+                        }">
+                  <span class="input-group-text">
+                    <i class="bi bi-calendar"></i>
+                  </span>
+                  <div *ngIf="myForm.get('fechaNacimiento')?.invalid && formSubmitted" class="invalid-feedback">
+                    Por favor ingrese la fecha de nacimiento
+                  </div>
+                </div>
+              
+              </div>
+    
+              <div class="col-lg-1">  
+                <label for="edadCalculada" class="col-form-label">Edad</label>
+              </div>
+              <div class="col-lg-3">
+                <input type="text" id="edadCalculada" class="form-control" [value]="edad" disabled >
+              </div>
+    
+            </div>
+    
+            <div class="row mt-2">
+    
+              <div class="col-lg-2">  
+                <label for="Sexo" class="col-form-label">Sexo</label>
+              </div>
+              <div class="col-lg-2">
+                <select class="form-select" id="Sexo"
+                formControlName="sexoCliente"
+                [ngClass]="{
+                  'is-valid': myForm.get('sexoCliente')?.valid && formSubmitted,
+                  'is-invalid': myForm.get('sexoCliente')?.invalid && formSubmitted
+                }">
+                  <option value="0">Seleccionar</option>
+                  <option value="1">Masculino</option>
+                  <option value="2">Femenino</option>
+                </select>
+    
+                <div *ngIf="myForm.get('sexoCliente')?.invalid && formSubmitted" class="invalid-feedback">
+                  Por favor seleccione sexo
+                </div>
+              </div>
+    
+            </div>
+
+
+          </div>
+
+        </div>
+
+        <div class="card mb-4">
+
+          <div class="card-header bg-primary text-white">
+            DATOS DE CONTACTO
+          </div>
+
+          <div class="card-body">
+
+            <div class="row mt-2">
+
+              <div class="col-lg-2">  
+                <label for="departamentoCliente" class="col-form-label">Departamento</label>
+              </div>
+              <div class="col-lg-2">
+                <select class="form-select" id="departamentoCliente" formControlName="departamentoCliente" >
+                  <option *ngFor="let depart of departamentos" [value]="depart.id">{{depart.nombre}}</option>
+                </select>
+              </div>
+    
+              <div class="col-lg-1">  
+                <label for="provinciaCliente" class="col-form-label">Provincia</label>
+              </div>
+              <div class="col-lg-2">
+                <select class="form-select" id="provinciaCliente" formControlName="provinciaCliente">
+                  <option *ngFor="let provin of provincias" [value]="provin.id_Prov">{{provin.nombre}}</option>
+                </select>
+              </div>
+    
+              <div class="col-lg-1">  
+                <label for="distritoCliente" class="col-form-label">Distrito</label>
+              </div>
+              <div class="col-lg-3">
+                <select class="form-select" id="distritoCliente"
+                formControlName="distritoCliente"
+                [ngClass]="{
+                  'is-valid': myForm.get('distritoCliente')?.valid && formSubmitted,
+                  'is-invalid': myForm.get('distritoCliente')?.invalid && formSubmitted
+                }">
+                  <option *ngFor="let distri of distritos" [value]="distri.id_Ditrito">{{distri.nombre}}</option>
+                </select>
+    
+                <div *ngIf="myForm.get('distritoCliente')?.invalid && formSubmitted" class="invalid-feedback">
+                  Por favor seleccione distrito
+                </div>
+    
+              </div>
+    
+            </div>
+    
+            <div class="row mt-2">
+              
+              <div class="col-lg-2">  
+                <label for="direccionCliente" class="col-form-label">Dirección</label>
+              </div>
+              <div class="col-lg-6">
+                <input type="text" id="direccionCliente" class="form-control" placeholder="Ingrese calle / jirón / avenida" formControlName="direcCliente">
+              </div>
+    
+            </div>
+    
+            <div class="row mt-2">
+              
+              <div class="col-lg-2">  
+                <label for="correoCliente" class="col-form-label">e-mail</label>
+              </div>
+              <div class="col-lg-6">
+                <input type="text" id="correoCliente" class="form-control" formControlName="mailCliente"
+                [ngClass]="{
+                  'is-invalid': myForm.get('mailCliente')?.invalid && formSubmitted
+                }">
+                
+                <div *ngIf="myForm.get('mailCliente')?.invalid && formSubmitted" class="invalid-feedback">
+                  Por favor ingrese un e-mail correcto
+                </div>
+          
+              </div>
+    
+            </div>
+    
+    
+            <div class="row mt-4 mb-2">
+              <div class="col-lg-2">
+                <label for="telfPaciente" class="col-form-label">Teléfono</label>
+              </div>
+              <div class="col-lg-2">
+                <!--Se usan [form control] para que no haga conflicto con el form-->
+                <input type="text" id="telfPaciente" class="form-control"
+                  [formControl]="phoneNumberControl"
+                  [ngClass]="{
+                    'is-invalid': addPhone && !phoneNumberControl.valid,
+                    'is-valid': addPhone && phoneNumberControl.valid}"
+                  >
+                
+                <div *ngIf="addPhone && !phoneNumberControl.valid" class="invalid-feedback">
+                  <ng-container *ngIf="phoneNumberControl.hasError('required')">
+                    Por favor ingrese un teléfono.
+                  </ng-container>
+                  <ng-container *ngIf="phoneNumberControl.hasError('pattern')">
+                    Solo debe contener 9 - 11 números.
+                  </ng-container>
+                </div>
+              </div>
+    
+              <div class="col-lg-2">
+                <label for="telfDes" class="col-form-label">Descripción</label>
+              </div>
+              <div class="col-lg-3">
+                <input type="text" id="telfDes" class="form-control"
+                  [formControl]="descriptionPhoneControl"
+                  [ngClass]="{
+                    'is-invalid': addPhone && !descriptionPhoneControl.valid,
+                    'is-valid': addPhone && descriptionPhoneControl.valid}"
+                  >
+    
+                <div *ngIf="addPhone && !descriptionPhoneControl.valid" class="invalid-feedback">
+                  <ng-container *ngIf="descriptionPhoneControl.hasError('required')">
+                    Por favor ingrese una descripción (Ejemplo: Celular mamá, Trabajo hermano, etc)
+                  </ng-container>
+                </div>
+    
+              </div>
+            
+              <div class="col-lg-3">
+                <button class="btn btn-primary" type="button" (click)="addPhoneItem()">Agregar Teléfono</button>
+              </div>
+    
+            </div>
+            
+            <div class="row mt-2 form-group" id="phoneTable" >
+              <table class="table table-sm">
+                  <thead>
+                    <tr>
+                      <th scope="col">N°</th>
+                      <th scope="col">Número</th>
+                      <th scope="col">Descripción</th>
+                      <th scope="col">Opciones</th>
+                    </tr>
+                  </thead>
+    
+                  <tbody formArrayName="phones">
+                    <tr *ngFor="let item of phones.controls; let i = index" [formGroupName]="i">
+                      <td><span>{{i+1}}</span></td>
+                      <td><span>{{item.get('phoneNumber')?.value}}</span></td>
+                      <td><span>{{item.get('descriptionPhone')?.value}}</span></td>
+                      <td><button class="btn btn-danger" type="button" (click)="removeItem(i)">Eliminar</button></td>
+                    </tr>
+                  </tbody>
+                  
+                </table>
+              
+                <span class="text-danger" *ngIf="!validarArrayTelefono() && formSubmitted">
+                  Por favor ingrese al menos un número teléfono y descripción
+                </span> 
+    
+            </div>
+
+          </div>
+
+
+        </div>
+        
+        <div class="row mt-2">
+          
+          <div class="col col-4 text-center">
+            <button class="btn btn-primary" type="button" (click)="nuevoCliente()">NUEVO CLIENTE</button>
+          </div>
+
+          <div class="col col-4 text-center">
+          <button class="btn btn-success" type="submit">CREAR CLIENTE</button>
+          </div>
+
+          <div class="col col-4 text-center">
+            <button class="btn btn-warning" type="button" (click)="actualizarCliente()">ACTUALIZAR CLIENTE</button>
+            </div>
+
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="col-12 col-xxl-4">
+    <div class="container mt-4">
+      <!-- Campo de búsqueda -->
+      <div class="row mt-2 mb-2">
+        <div class="col-md-8">
+          <input type="text" class="form-control" placeholder="Ingrese busqueda..."
+          [(ngModel)]="terminoBusqueda"
+          (input)="buscarClientes()"  />
+        </div>
+      </div>
+    
+      <!-- Tabla para listar los clientes -->
+      <div class="row">
+        <div class="col">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th scope="col">N°</th>
+                <th scope="col">HC</th>
+                <th scope="col">Apellido Paterno</th>
+                <th scope="col">Apellido Materno</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Tipo Documento</th>
+                <th scope="col">Nro. Documento</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let paciente of pacientes; let i = index"
+                  (click)="cargarCliente(paciente); seleccionarFila(i)"
+                  [ngClass]="{'table-active': filaSeleccionada === i, 'table-hover-row': true}">
+                <td>{{i+1}}</td>
+                <td>{{ paciente.hc}}</td>
+                <td>{{ paciente.apePatCliente }}</td>
+                <td>{{ paciente.apeMatCliente }}</td>
+                <td>{{ paciente.nombreCliente }}</td>
+                <td>{{ paciente.tipoDoc === '0' ? 'DNI' : (paciente.tipoDoc === '1' ? 'CE' : 'PASAPORTE')}}</td>
+                <td>{{ paciente.nroDoc }}</td>
+                <!--
+                <td>
+                  <button class="btn btn-info btn-sm" (click)="verDetalles(cliente)">Ver</button>
+                </td>-->
+              </tr>
+              
+              <tr *ngIf="pacientes.length === 0">
+                <td colspan="5" class="text-center">No se encontraron pacientes.</td>
+              </tr>
+            </tbody>
+           
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
