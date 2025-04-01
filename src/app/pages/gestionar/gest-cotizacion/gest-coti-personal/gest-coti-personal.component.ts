@@ -9,6 +9,7 @@ import { RecursoHumanoService } from 'src/app/pages/services/mantenimiento/recur
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { NumbersService } from 'src/app/pages/services/utilitarios/numbers.service';
 
 
 @Component({
@@ -24,7 +25,8 @@ export class GestCotiPersonalComponent implements OnInit {
     private _recHumanoService: RecursoHumanoService,
     private _servicioService: ServiciosService,
     private _cotizacionService: CotizacionService,
-    private _sanitizer: DomSanitizer
+    private _sanitizer: DomSanitizer,
+    private _numbers: NumbersService
   ) { }
 
   ngOnInit(): void {
@@ -60,7 +62,8 @@ export class GestCotiPersonalComponent implements OnInit {
     subTotal: 0,
     igv: 0,
     total: 0,
-    serviciosCotizacion: this._fb.array([], Validators.required)
+    serviciosCotizacion: this._fb.array([], Validators.required),
+    estadoCotizacion: ''
   })
 
   get serviciosCotizacion(): FormArray{
@@ -311,71 +314,34 @@ export class GestCotiPersonalComponent implements OnInit {
   }
 
   validarEntradaEntero(event: KeyboardEvent) {
-    const key = event.key;
-    
-    // Permitir solo números (0-9) y evitar signos, letras o espacios
-    if (!/^\d$/.test(key)) {
-      event.preventDefault(); // Bloquea la tecla si no es un número
-    }
+
+    this._numbers.validarEntradaEntero(event);
+
   }
 
   corregirEntero(index: number, campo: string) {
+
     const control = this.serviciosCotizacion.controls[index].get(campo);
-    
     if (!control) return;
 
-    let valor = parseInt(control.value, 10) || 0; // Si es NaN, lo fuerza a 0
+    this._numbers.corregirEntero(control, campo);
 
-    // Ajustar los valores según el campo
-    if (campo === 'cantidad') {
-      control.setValue(Math.max(1, valor)); // Mínimo 1
-    } else if (campo === 'descuentoPorcentaje') {
-      control.setValue(Math.min(100, Math.max(0, valor))); // Rango entre 0 y 100
-    }
-
-    this.calcularTotalUnitario(index)
+    //this.calcularTotalUnitario(index)
 
   }
 
   validarDecimal(event: KeyboardEvent) {
-    const charCode = event.key;
-    const input = event.target as HTMLInputElement;
 
-    // Permitir solo números y un punto decimal
-    if (!/^\d$/.test(charCode) && charCode !== '.' && charCode !== 'Backspace') {
-      event.preventDefault();
-      return;
-    }
+    this._numbers.validarDecimal(event);
 
-    // Evitar más de un punto decimal
-    if (charCode === '.' && input.value.includes('.')) {
-      event.preventDefault();
-      return;
-    }
-
-    // Verificar si ya hay un punto y cuántos decimales tiene
-    /*
-    if (input.value.includes('.')) {
-      const partes = input.value.split('.');
-      if (partes[1].length >= 2 && charCode !== 'Backspace') {
-        event.preventDefault(); // Evitar que se escriban más de dos decimales
-      }
-    }*/
   }
 
   corregirDecimal(index: number, campo: string) {
     const control = this.serviciosCotizacion.controls[index].get(campo);
-    if (control) {
-      let valor = parseFloat(control.value);
-  
-      // Si el valor es NaN o menor a 0, lo forzamos a 0
-      if (isNaN(valor) || valor < 0) {
-        control.setValue(0);
-      } else {
-        // Redondeamos a dos decimales si tiene más
-        control.setValue(valor.toFixed(2));
-      }
-    }
+    if (!control) return;
+    
+    this._numbers.corregirDecimal(control);
+
   }
 
   calcularTotalUnitario(index: number) {
@@ -675,7 +641,7 @@ export class GestCotiPersonalComponent implements OnInit {
     
               const body: ICotizacion = {
                 codCotizacion: "",
-                estado:"Generada",
+                estadoCotizacion:"GENERADA",
                 historial:[{
                   version: 1,
                   fechaModificacion: new Date(),
@@ -788,7 +754,7 @@ export class GestCotiPersonalComponent implements OnInit {
         const nuevaCotizacion: ICotizacion = {
           
           codCotizacion: this.cotizacionCargada.codCotizacion, // Mismo código
-          estado: "modificada",
+          estadoCotizacion: "MODIFICADA",
           // Historial con la nueva versión agregada
           historial: [nuevaVersion]
         }
@@ -877,7 +843,7 @@ export class GestCotiPersonalComponent implements OnInit {
     this.myFormCotizacion.patchValue({
       codCotizacion: cotizacion.codCotizacion, 
       version: ultimaVersion.version,
-      estado: cotizacion.estado
+      estadoCotizacion: cotizacion.estadoCotizacion
 
     });
 

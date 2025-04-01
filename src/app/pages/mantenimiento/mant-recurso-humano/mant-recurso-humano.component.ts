@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
-import { DatepickerService } from '../../services/datepicker.service';
-import { UbigeosService } from '../../services/ubigeos.service';
+import { DatepickerService } from '../../services/utilitarios/datepicker.service';
+import { UbigeosService } from '../../services/utilitarios/ubigeos.service';
 import Swal from 'sweetalert2';
 import { RecursoHumanoService } from '../../services/mantenimiento/recurso-humano.service';
 import { IRecHumano } from '../../models/pages.models';

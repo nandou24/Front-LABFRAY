@@ -18,28 +18,28 @@ export class CotizacionService {
     console.log("Enviando valores desde cotizacion.service")
     
     return this._http
-      .post<ICotizacionPostDTO>(
-        `${environment.baseUrl}/api/cotizacion/newCotizacionPersona`,body
-      )
-      .pipe(
-        map((data) => {
-          if (data.ok) {
-            return data.ok;
-          } else {
-            throw new Error('ERROR');
-          }
-        }),
-        catchError((err) => {
-          console.log(err.error.msg);
-          Swal.fire({
-            title: 'ERROR!',
-            text: err.error.msg,
-            icon: 'error',
-            confirmButtonText: 'Ok',
-          });
-          return of('ERROR');
-        })
-      );
+    .post<ICotizacionPostDTO>(
+      `${environment.baseUrl}/api/cotizacion/newCotizacionPersona`,body
+    )
+    .pipe(
+      map((data) => {
+        if (data.ok) {
+          return data.ok;
+        } else {
+          throw new Error('ERROR');
+        }
+      }),
+      catchError((err) => {
+        console.log(err.error.msg);
+        Swal.fire({
+          title: 'ERROR!',
+          text: err.error.msg,
+          icon: 'error',
+          confirmButtonText: 'Ok',
+        });
+        return of('ERROR');
+      })
+    );
   }
 
   generarNuevaVersion(body: ICotizacion){
@@ -75,6 +75,28 @@ export class CotizacionService {
     return this._http
       .get<IGetLastCotizacion>(
         `${environment.baseUrl}/api/cotizacion/latest`,{params}
+      )
+      .pipe(map((data) => {
+        return data.cotizaciones;
+      }));        
+  }
+
+  getLatestCotizacioPorPagar(cantidad:number): Observable<ICotizacion[]> {
+    const params = new HttpParams().set('cant',cantidad) 
+    return this._http
+      .get<IGetLastCotizacion>(
+        `${environment.baseUrl}/api/cotizacion/latestPorPagar`,{params}
+      )
+      .pipe(map((data) => {
+        return data.cotizaciones;
+      }));        
+  }
+
+  getLatestCotizacioPagadas(cantidad:number): Observable<ICotizacion[]> {
+    const params = new HttpParams().set('cant',cantidad) 
+    return this._http
+      .get<IGetLastCotizacion>(
+        `${environment.baseUrl}/api/cotizacion/latestPagadas`,{params}
       )
       .pipe(map((data) => {
         return data.cotizaciones;

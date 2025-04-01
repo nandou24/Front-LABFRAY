@@ -129,7 +129,7 @@ export interface IGetLastItemsLab {
 export interface ICotizacion {
     codCotizacion: string,
     historial: IHistorialCotizacion[];
-    estado: string
+    estadoCotizacion: string
 }
 
 // 🔥 Estructura del historial de cotización
@@ -212,4 +212,56 @@ export interface IGetLastExamenes {
     ok: boolean;
     search: String;
     examenes: Array<any>[]
+}
+
+//PAGO
+
+export interface IPago {
+    codPago: string,
+    codCotizacion: string,
+    estadoCotizacion: string
+    version: string,
+    codCliente: string,
+    nomCliente: string,
+    tipoDoc: string,
+    nroDoc: string,
+    codSolicitante: string,
+    nomSolicitante: string,
+    profesionSolicitante: string,
+    colegiatura: string,
+    sumaTotalesPrecioLista: Number,
+    descuentoTotal: Number,
+    subTotal: Number,
+    igv: Number,
+    total: Number,
+    serviciosCotizacion: IServicioCotizacion[],
+    detallePagos: IDetallePago[],
+    faltaPagar: Number,
+    subTotalFacturar: Number,
+    igvFacturar: Number,
+    totalFacturar: Number,
+    estadoPago: string
+}
+
+export interface IDetallePago {
+    medioPago: string,
+    monto: Number,
+    montoConRecargo: Number,
+    numOperacion: string,
+    fechaPago: Date,
+    banco: string
+
+}
+
+export interface IPagoPostDTO {
+    ok: boolean;
+    msg?: string;
+    errors?: string[];
+    data?: any;
+}
+
+export interface IGetDetallePago {
+    ok: boolean;
+    search: String;
+    detallePago: IDetallePago[]
 }

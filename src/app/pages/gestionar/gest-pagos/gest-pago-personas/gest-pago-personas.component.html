@@ -1,13 +1,13 @@
 
 <div class="row">
 
-    <div class="col-12 col-xxl-8">
+    <div class="col-12 col-xxl-7">
   
             <div class="row mt-2" style="align-items: center;">
   
-                <div class="col-lg-4">
-                    <h5 class="text-center" style="font-weight: 500;">REGITRAR PAGO</h5>
-                </div>
+                <div class="col-lg-5">
+                    <h5 class="text-center" style="font-weight: 500;">PAGO DE COTIZACIONES - PACIENTES</h5>
+                </div>                
 
             </div>
 
@@ -17,20 +17,20 @@
                   Detalles de la Cotización
                 </div>
       
-                <div class="card-body"> 
+                <div class="card-body" style="font-size: 14px;"> 
 
-                    <form class="mt-2 mb-4" [formGroup]="myFormPagoPersona" (ngSubmit)="registraPago()">
+                    <form class="mt-2 mb-4" [formGroup]="myFormPagoPersona" (ngSubmit)="registrarPagos()">
 
                         <div class="row mb-1">
-                            <div class="col-lg-1">
-                                N° Cotización:
+                            <div class="col-lg-1" style="font-weight: bold;">
+                                N° Coti.:
                             </div>
                             
                             <div class="col-lg-2">
                                 {{ myFormPagoPersona.get('codCotizacion')?.value }}
                             </div>    
                     
-                            <div class="col-lg-1">
+                            <div class="col-lg-1" style="font-weight: bold;">
                                 Versión
                             </div>
                 
@@ -38,11 +38,27 @@
                                 {{ myFormPagoPersona.get('version')?.value }}
                             </div>
 
+                            <div class="col-lg-1" style="font-weight: bold;">
+                                Fecha
+                            </div>
+                
+                            <div class="col-lg-2">
+                                {{ myFormPagoPersona.get('fechaCotizacion')?.value }}
+                            </div>
+
+                            <div class="col-lg-2" style="font-weight: bold;">
+                                Estado de cotización:
+                            </div>
+                            
+                            <div class="col-lg-2">
+                                {{ myFormPagoPersona.get('estadoCotizacion')?.value }}
+                            </div>  
+
                         </div>
 
                         <div class="row mb-1">
 
-                                <div class="col-lg-1">
+                                <div class="col-lg-1" style="font-weight: bold;">
                                     Paciente
                                 </div>
                     
@@ -50,13 +66,393 @@
                                     {{ myFormPagoPersona.get('nomCliente')?.value }}
                                 </div>
                     
-                                <div class="col-lg-1"> 
+                                <div class="col-lg-1" style="font-weight: bold;"> 
                                     Documento
                                 </div>
                         
                                 <div class="col-lg-2">
                                   {{ myFormPagoPersona.get('tipoDoc')?.value }} {{ myFormPagoPersona.get('nroDoc')?.value }}
                                 </div>
+
+                                <div class="col-lg-1" style="font-weight: bold;"> 
+                                    HC
+                                </div>
+                        
+                                <div class="col-lg-2">
+                                  {{ myFormPagoPersona.get('codCliente')?.value }}
+                                </div>
+
+                        </div>
+
+                        <div class="row mb-3">
+
+                            <div class="col-lg-1" style="font-weight: bold;">
+                                Solicitante
+                            </div>
+                
+                            <div class="col-lg-3">
+                                {{ myFormPagoPersona.get('nomSolicitante')?.value }}
+                            </div>
+                
+                            <div class="col-lg-1" style="font-weight: bold;"> 
+                                Profesión
+                            </div>
+                    
+                            <div class="col-lg-2">
+                              {{ myFormPagoPersona.get('profesionSolicitante')?.value }}
+                            </div>
+
+                            <div class="col-lg-1" style="font-weight: bold;"> 
+                                Colegiatura
+                            </div>
+                    
+                            <div class="col-lg-2">
+                              {{ myFormPagoPersona.get('colegiatura')?.value }}
+                            </div>
+
+                        </div>
+
+                        <div class="table-responsive">
+
+                            <table class="table table-primary table-hover table-bordered table-sm text-center" formArrayName="serviciosCotizacion"
+                            style="font-size: 13px;">
+                                <thead>
+                                  <tr>
+                                    <th class="col-1" scope="col">Código</th>
+                                    <th class="col-1" scope="col">Tipo</th>
+                                    <th class="col-3" scope="col">Nombre</th>
+                                    <th class="col-1" scope="col">Cantidad</th>
+                                    <th class="col-1" scope="col">Precio Lista</th>
+                                    <th class="col-1" scope="col">Descuento</th>
+                                    <th class="col-1" scope="col">Precio Venta</th>
+                                    <th class="col-1" scope="col">Total Unitario</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+              
+                                  <tr *ngFor="let servicio of serviciosCotizacion.controls; let i = index"
+                                      [formGroupName]="i"
+                                      [ngClass]="{'table-hover-row': true}">
+              
+                                    <td class="col-1">{{ servicio.value.codServicio }}</td>
+                                    <td class="col-1">{{ servicio.value.tipoServicio }}</td>
+                                    <td class="col-3">{{ servicio.value.nombreServicio }}</td>
+                                    <td class="col-1">{{ servicio.value.cantidad }}</td>          
+                                    <!-- Precio Unitario -->
+                                    <td class="col-1">S/ {{ servicio.value.precioLista}}</td>          
+                                    <!-- Diferencia -->
+                                    <td class="col-1">S/ {{ servicio.value.diferencia}}</td>          
+                                    <!-- Precio Venta -->
+                                    <td class="col-1">S/ {{ servicio.value.precioVenta}}</td>  
+                                    <!-- Total Unitario -->
+                                    <td class="col-1">S/ {{ servicio.value.totalUnitario }}</td>
+              
+                                  </tr>
+                                
+                                  <tr *ngIf="serviciosCotizacion.controls.length === 0">
+                                    <td colspan="12" class="text-center">No se encontraron servicios.</td>
+                                  </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+                        
+
+                        <div class="row mb-3">
+
+                            <div class="col-lg-4">
+
+                                <div class="row mb-1">
+
+                                    <div class="col-lg-6" style="font-weight: bold;">
+                                        Total Precio Lista
+                                    </div>
+                        
+                                    <div class="col-lg-6">
+                                        S/ {{ myFormPagoPersona.get('sumaTotalesPrecioLista')?.value }}
+                                    </div>
+
+                                </div>
+
+                                <div class="row mb-1">
+
+                                    <div class="col-lg-6" style="font-weight: bold;"> 
+                                        Descuento Total
+                                    </div>
+                            
+                                    <div class="col-lg-6">
+                                        S/ {{ myFormPagoPersona.get('descuentoTotal')?.value }}
+                                    </div>
+                                    
+                                </div>
+
+                            </div>
+
+                            <div class="col-lg-4">
+
+                                <div class="row mb-1">
+
+                                    <div class="col-lg-6" style="font-weight: bold;"> 
+                                        Sub total
+                                    </div>
+                            
+                                    <div class="col-lg-6">
+                                        S/ {{ myFormPagoPersona.get('subTotal')?.value }}
+                                    </div>
+
+                                </div>
+
+                                <div class="row mb-1">
+
+                                    <div class="col-lg-6" style="font-weight: bold;"> 
+                                        IGV
+                                   </div>
+                           
+                                   <div class="col-lg-6">
+                                       S/ {{ myFormPagoPersona.get('igv')?.value }}
+                                   </div>
+                                    
+                                </div>
+
+                            </div>
+
+                            <div class="col-lg-4">
+
+                                <div class="row mb-1">
+
+                                    <div class="col-lg-8" style="font-weight: bold; font-size: 1.5rem; color: blue;"> 
+                                        Total Cotización
+                                    </div>
+                            
+                                    <div class="col-lg-4" style="font-weight: bold; font-size: 1.5rem; color: blue;">
+                                        S/ {{ myFormPagoPersona.get('total')?.value }}
+                                    </div>
+
+                                </div>                               
+
+                            </div>
+                            
+
+                        </div>
+
+
+                        <fieldset class="border p-3 rounded mb-3">
+                            <legend class="float-none w-auto px-2 fs-6 fw-bold">Detalle de Pagos</legend>
+                
+                            <div class="row mt-2">
+                
+                                <div class="col-lg-2">  
+                                    <label for="medioPago" class="col-form-label">Medio de pago</label>
+                                </div>
+                                <div class="col-lg-2">
+                                    <select class="form-select" id="medioPago"
+                                    [formControl]="medioPagoControl"
+                                    (change)="cambioMedioPago()"
+                                    [ngClass]="{
+                                    'is-invalid': addPago && !medioPagoControl.valid,
+                                    'is-valid': addPago && medioPagoControl.valid}">
+                                        <option value="0">Seleccionar</option>
+                                        <option value="Efectivo">Efectivo</option>
+                                        <option value="Transferencia">Transferencia</option>
+                                        <option value="Yape">Yape</option>
+                                        <option value="Plin">Plin</option>
+                                        <option value="Tarjeta Crédito">Tarjeta Crédito</option>
+                                        <option value="Tarjeta Débito">Tarjeta Débito</option>
+                                    </select>
+
+                                    <div *ngIf="addPago && !medioPagoControl.valid" class="invalid-feedback">
+                                        <ng-container *ngIf="medioPagoControl.hasError('pattern')">
+                                            Debe seleccionar un medio de pago
+                                        </ng-container>
+                                    </div>
+                        
+                                </div>
+
+                                <div class="col-lg-1">
+                                    <label for="montoPago" class="col-form-label">Monto</label>
+                                </div>
+                                
+                                <div class="col-lg-2">
+                                    <input type="text" id="montoPago" class="form-control"
+                                    [formControl]="montoControl"
+                                    [ngClass]="{
+                                        'is-invalid': addPago && !montoControl.valid,
+                                        'is-valid': addPago && montoControl.valid}"
+                                        (keypress)="validarDecimal($event)">
+                                    
+                                    <div *ngIf="addPago && !montoControl.valid" class="invalid-feedback">
+                                        <ng-container *ngIf="montoControl.hasError('required')">
+                                            Debe ingresar un monto
+                                        </ng-container>
+
+                                        <ng-container *ngIf="montoControl.hasError('min')">
+                                            Debe ingresar un monto mayor
+                                        </ng-container>
+                                    </div>
+                        
+                                </div>
+
+                                <div class="col-lg-1">  
+                                    <label for="fechaNac" class="col-form-label">Fecha</label>
+                                </div>
+
+                                <div class="col-lg-2">
+                    
+                                    <div class="input-group">
+                                        <input type="text"
+                                            class="datepicker_input form-control"
+                                            id='fechaNac'
+                                            [formControl]="fechaPagoControl"
+                                            [ngClass]="{
+                                                'is-valid': myFormPagoPersona.get('fechaPagoControl')?.valid && formSubmitted,
+                                                'is-invalid': myFormPagoPersona.get('fechaPagoControl')?.invalid && formSubmitted
+                                            }">
+                                        <span class="input-group-text">
+                                        <i class="bi bi-calendar"></i>
+                                        </span>
+                                        <div *ngIf="myFormPagoPersona.get('fechaPagoControl')?.invalid && formSubmitted" class="invalid-feedback">
+                                        Por favor ingrese la fecha de pago
+                                        </div>
+                                    </div>
+                                
+                                </div>
+
+                            </div>
+
+                            <div class="row mt-2">
+
+                                <div class="col-lg-2">
+                                    <label for="nroOperación" class="col-form-label">Nro Operación</label>
+                                </div>
+                                
+                                <div class="col-lg-2">
+                                    <input type="text" id="nroOperación" class="form-control"
+                                    [formControl]="numOperacionControl">   
+                        
+                                </div>
+
+                                <div class="col-lg-1">
+                                    <label for="banco" class="col-form-label">Banco</label>
+                                </div>
+                                
+                                <div class="col-lg-2">
+
+                                    <select class="form-select" id="medioPago"
+                                    [formControl]="bancoControl">
+                                        <option value="0">Seleccionar</option>
+                                        <option value="BCP">BCP</option>
+                                        <option value="BBVA">BBVA</option>
+                                    </select>
+
+                        
+                                </div>                          
+
+                                <div class="col-lg-2">
+                                    <button class="btn btn-primary" type="button" (click)="agregaPago()">Agregar Pago</button>
+                                </div>
+
+                                <!--
+                                <div class="col-lg-2" style="font-weight: bold; font-size: 1.5rem; color: red"> 
+                                    Falta pagar
+                                </div>
+                        
+                                
+                                <div class="col-lg-2" style="font-weight: bold; font-size: 1.5rem; color: red;">
+                                    S/ {{ myFormPagoPersona.get('faltaPagar')?.value }} 
+                                </div>-->
+
+                                <div class="col-lg-3"> 
+                                    <span 
+                                        [ngClass]="{
+                                        'text-danger fw-bold font-size: 1.5rem ': myFormPagoPersona.get('faltaPagar')?.value > 0,
+                                        'text-success fw-bold': myFormPagoPersona.get('faltaPagar')?.value === 0
+                                        }" style="font-size: 1.5rem; font-weight: bold;">
+                                        Falta pagar
+                                    </span>
+                                
+
+                                    <span 
+                                        [ngClass]="{
+                                        'text-danger fw-bold': myFormPagoPersona.get('faltaPagar')?.value > 0,
+                                        'text-success fw-bold': myFormPagoPersona.get('faltaPagar')?.value === 0
+                                        }" style="font-size: 1.5rem; font-weight: bold;">
+                                        S/ {{ myFormPagoPersona.get('faltaPagar')?.value | number:'1.2-2' }}
+                                    </span>
+                                    <span *ngIf="myFormPagoPersona.get('faltaPagar')?.value === 0" class="text-success d-flex align-items-center">
+                                        <i class="bi bi-check-circle-fill me-1"></i> Monto completado
+                                    </span>
+
+                                </div>
+                                
+                                
+
+                            </div>
+                          
+
+                            <div class="row mt-2 form-group" id="detallePagosTable" >
+                                <table class="table table-sm">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">N°</th>
+                                        <th scope="col">Medio Pago</th>
+                                        <th scope="col">Monto</th>
+                                        <th scope="col">Nro Operación</th>
+                                        <th scope="col">Banco</th>
+                                        <th scope="col">Fecha</th>
+                                        <th scope="col">Eliminar</th>
+                                    </tr>
+                                    </thead>
+                    
+                                    <tbody formArrayName="detallePagos">
+                                    <tr *ngFor="let item of detallePagos.controls; let i = index" [formGroupName]="i">
+                                        <td><span>{{i+1}}</span></td>
+                                        <td><span>{{item.get('medioPago')?.value}}</span></td>
+                                        <td><span>{{item.get('monto')?.value}}</span></td>
+                                        <td><span>{{item.get('numOperacion')?.value || "-"}}</span></td>
+                                        <td><span>{{item.get('banco')?.value || "-"}}</span></td>
+                                        <td><span>{{item.get('fechaPago')?.value || "-"}}</span></td>
+                                        <td class="align-middle">
+                                            <i class="bi bi-trash3-fill text-danger" (click)="removePago(i)" title="Remover" style="cursor: pointer; font-size: 1.5rem;"></i>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                    
+                                </table>
+                            
+                    
+                            </div>
+                            
+                        </fieldset>
+
+                        <div class="row mt-2 align-items-center">
+                            
+                            <div class="col-lg-1" style="font-weight: bold;"> 
+                                Sub total
+                            </div>
+                    
+                            <div class="col-lg-1">
+                                S/ {{ myFormPagoPersona.get('subTotalFacturar')?.value }}
+                            </div>
+
+                            <div class="col-lg-1" style="font-weight: bold;"> 
+                                IGV
+                            </div>
+                    
+                            <div class="col-lg-1">
+                                S/ {{ myFormPagoPersona.get('igvFacturar')?.value }}
+                            </div>
+                                
+                            <div class="col-lg-3" style="font-weight: bold; font-size: 1.5rem; color: green"> 
+                                Total a Facturar
+                            </div>
+                    
+                            <div class="col-lg-2" style="font-weight: bold; font-size: 1.5rem; color: green;">
+                                S/ {{ myFormPagoPersona.get('totalFacturar')?.value }}
+                            </div>
+
+                            <div class="col-lg-2 text-center">
+                                <button class="btn btn-primary" type="submit">Registrar Pagos</button>
+                            </div>
 
                         </div>
 
@@ -68,7 +464,7 @@
 
     </div>
 
-    <div class="col-12 col-xxl-4">
+    <div class="col-12 col-xxl-5">
 
         <div class="card mb-4">
       
@@ -77,7 +473,7 @@
               <div class="row align-items-center"> 
                 
                 <div class="col-md-4">
-                  ULTIMAS COTIZACIONES
+                  COTIZACIONES POR PAGAR
                 </div>         
                 
                 <div class="col-md-8">
@@ -95,115 +491,127 @@
               <!-- Tabla para listar los clientes -->
               <div class="row">
                 <div class="col">
-                  <table class="table table-hover">
-                    <thead>
-                      <tr>
-                        <th scope="col">N°</th>
-                        <th scope="col">Cod Coti</th>
-                        <th scope="col">Paciente</th>
-                        <th scope="col">Documento</th>
-                        <th scope="col">Versiones</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr *ngFor="let cotizacion of cotizaciones; let i = index"
-                          (click)="cargarCotizacion(cotizacion); seleccionarFila(i)"
-                          [ngClass]="{'table-active': filaCotizacionSeleccionada === i, 'table-hover-row': true}">
-                        <td>{{i+1}}</td>
-                        <td>{{ cotizacion.codCotizacion}}</td>
-                        <td>{{ cotizacion.historial[cotizacion.historial.length - 1].nomCliente }}</td>
-                        <td>{{ cotizacion.historial[cotizacion.historial.length - 1].tipoDoc === '0' ? 'DNI' : 
-                                cotizacion.historial[cotizacion.historial.length - 1].tipoDoc === '1' ? 'CE' : 
-                                cotizacion.historial[cotizacion.historial.length - 1].tipoDoc === '2' ? 'PASAPORTE' : 'No especificado' }}
-                            {{ cotizacion.historial[cotizacion.historial.length - 1].nroDoc }}</td>
-                        <td class="text-center">{{ cotizacion.historial.length}}</td>
-                        <!--
-                        <td>
-                          <button class="btn btn-info btn-sm" (click)="verDetalles(cliente)">Ver</button>
-                        </td>-->
-                      </tr>
-                      
-                      <tr *ngIf="cotizaciones.length === 0">
-                        <td colspan="5" class="text-center">No se encontraron cotizaciones.</td>
-                      </tr>
-                    </tbody>
+
+                    <div class="table-responsive">
+
+                        <table class="table table-sm table-hover">
+                            <thead class="text-center">
+                              <tr>
+                                <th scope="col">Cod Coti</th>
+                                <th scope="col">Fecha</th>
+                                <th scope="col">Paciente</th>
+                                <th scope="col">Documento</th>
+                                <th scope="col">Estado</th>
+                              </tr>
+                            </thead>
+                            <tbody style="font-size: 14px;">
+                              <tr *ngFor="let cotizacion of cotizaciones; let i = index"
+                                  (click)="cargarCotizacion(cotizacion); seleccionarFila(i)"
+                                  [ngClass]="{'table-active': filaCotizacionSeleccionada === i, 'table-hover-row': true}">
+                                <td>{{ cotizacion.codCotizacion}}</td>
+                                <td>{{ formatearFecha(cotizacion.historial[cotizacion.historial.length - 1].fechaModificacion) }}</td>
+                                <td>{{ cotizacion.historial[cotizacion.historial.length - 1].nomCliente }}</td>
+                                <td>{{ cotizacion.historial[cotizacion.historial.length - 1].tipoDoc === '0' ? 'DNI' : 
+                                        cotizacion.historial[cotizacion.historial.length - 1].tipoDoc === '1' ? 'CE' : 
+                                        cotizacion.historial[cotizacion.historial.length - 1].tipoDoc === '2' ? 'PASAPORTE' : 'No especificado' }}
+                                    {{ cotizacion.historial[cotizacion.historial.length - 1].nroDoc }}</td>
+                                <td>{{ cotizacion.estadoCotizacion }}</td>
+                                <!--
+                                <td>
+                                  <button class="btn btn-info btn-sm" (click)="verDetalles(cliente)">Ver</button>
+                                </td>-->
+                              </tr>
+                              
+                              <tr *ngIf="cotizaciones.length === 0">
+                                <td colspan="5" class="text-center">No se encontraron cotizaciones.</td>
+                              </tr>
+                            </tbody>
+                          
+                          </table>
+
+                    </div>
                   
-                  </table>
                 </div>
               </div>
       
             </div>
           
-          </div>
+        </div>
+
+        <div class="card mb-4">
+           
+            <div class="card-header bg-primary text-white">
+              
+                <div class="row align-items-center"> 
+                  
+                  <div class="col-md-4">
+                    COTIZACIONES PAGADAS
+                  </div>         
+                  
+                  <div class="col-md-8">
+                    <input type="text" class="form-control form-control-sm" placeholder="Ingrese busqueda..."
+                    [(ngModel)]="terminoBusquedaCotizacion"
+                    (input)="buscarCotizaciones()"  />
+                  </div>
+        
+                </div>
+        
+              </div>
+        
+              <div class="card-body">
+
+                <div class="row">
+                    <div class="col">
+    
+                        <div class="table-responsive">
+    
+                            <table class="table table-sm table-hover">
+                                <thead>
+                                  <tr>
+                                    <th scope="col">Cod Coti</th>
+                                    <th scope="col">Cod Pago</th>
+                                    <th scope="col">Fecha</th>
+                                    <th scope="col">Paciente</th>
+                                    <th scope="col">Documento</th>
+                                    <th scope="col">Estado</th>
+                                  </tr>
+                                </thead>
+                                <tbody style="font-size: 14px;">
+                                  <tr *ngFor="let cotizacion of cotizacionesPagadas; let i = index"
+                                      (click)="cargarCotizacion(cotizacion); seleccionarFila(i)"
+                                      [ngClass]="{'table-active': filaCotizacionSeleccionada === i, 'table-hover-row': true}">
+                                    <td>{{ cotizacion.codCotizacion}}</td>
+                                    <td>{{ cotizacion.codCotizacion}}</td>
+                                    <td>{{ formatearFecha(cotizacion.historial[cotizacion.historial.length - 1].fechaModificacion) }}</td>
+                                    <td>{{ cotizacion.historial[cotizacion.historial.length - 1].nomCliente }}</td>
+                                    <td>{{ cotizacion.historial[cotizacion.historial.length - 1].tipoDoc === '0' ? 'DNI' : 
+                                            cotizacion.historial[cotizacion.historial.length - 1].tipoDoc === '1' ? 'CE' : 
+                                            cotizacion.historial[cotizacion.historial.length - 1].tipoDoc === '2' ? 'PASAPORTE' : 'No especificado' }}
+                                        {{ cotizacion.historial[cotizacion.historial.length - 1].nroDoc }}</td>
+                                    <td>{{ cotizacion.estadoCotizacion }}</td>
+                                    <!--
+                                    <td>
+                                      <button class="btn btn-info btn-sm" (click)="verDetalles(cliente)">Ver</button>
+                                    </td>-->
+                                  </tr>
+                                  
+                                  <tr *ngIf="cotizaciones.length === 0">
+                                    <td colspan="5" class="text-center">No se encontraron cotizaciones.</td>
+                                  </tr>
+                                </tbody>
+                              
+                              </table>
+    
+                        </div>
+                      
+                    </div>
+                  </div>
+
+              </div>
+
+        </div>
 
     </div>
 
 </div>
 
-
-<!--
-<div class="card mt-3">
-    <div class="card-header bg-primary text-white">
-      Registro de Pago
-    </div>
-    <div class="card-body">
-      <form >
-  
-        <div class="row mb-3">
-          <div class="col-md-6">
-            <label>N° Cotización</label>
-            <input type="text" class="form-control" formControlName="nroCotizacion" readonly>
-          </div>
-          <div class="col-md-6">
-            <label>Monto Total</label>
-            <input type="text" class="form-control"  readonly>
-          </div>
-        </div>
-  
-        <div class="row mb-3">
-          <div class="col-md-6">
-            <label>Monto Pagado</label>
-            <input type="number" class="form-control" formControlName="montoPagado">
-          </div>
-          <div class="col-md-6">
-            <label>Medio de Pago</label>
-            <select class="form-select" formControlName="medioPago">
-              <option value="EFECTIVO">Efectivo</option>
-              <option value="YAPE">Yape</option>
-              <option value="PLIN">Plin</option>
-              <option value="TRANSFERENCIA">Transferencia</option>
-              <option value="TARJETA">Tarjeta</option>
-            </select>
-          </div>
-        </div>
-  
-        <div class="mb-3">
-          <label>N° Operación</label>
-          <input type="text" class="form-control" formControlName="nroOperacion">
-        </div>
-  
-        <div class="row mb-3">
-          <div class="col-md-6">
-            <label>Fecha y Hora de Pago</label>
-            <input type="datetime-local" class="form-control" formControlName="fechaPago">
-          </div>
-          <div class="col-md-6">
-            <label>Comprobante Emitido</label>
-            <select class="form-select" formControlName="comprobante">
-              <option value="">Ninguno</option>
-              <option value="BOLETA">Boleta</option>
-              <option value="FACTURA">Factura</option>
-            </select>
-          </div>
-        </div>
-  
-        <div class="mb-3">
-          <label>Observaciones</label>
-          <textarea class="form-control" formControlName="observaciones" rows="2"></textarea>
-        </div>
-  
-        <button type="submit" class="btn btn-success" >Registrar Pago</button>
-      </form>
-    </div>
-  </div>
-  -->

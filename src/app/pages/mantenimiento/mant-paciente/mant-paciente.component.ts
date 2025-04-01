@@ -3,8 +3,8 @@ import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Valida
 import { Router } from '@angular/router';
 import { IPaciente } from '../../models/pages.models';
 import Swal from 'sweetalert2';
-import { DatepickerService } from '../../services/datepicker.service';
-import { UbigeosService } from '../../services/ubigeos.service';
+import { DatepickerService } from '../../services/utilitarios/datepicker.service';
+import { UbigeosService } from '../../services/utilitarios/ubigeos.service';
 import { PacienteService } from '../../services/mantenimiento/paciente.service';
 
 @Component({
