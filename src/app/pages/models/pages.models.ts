@@ -240,7 +240,9 @@ export interface IPago {
     subTotalFacturar: Number,
     igvFacturar: Number,
     totalFacturar: Number,
-    estadoPago: string
+    estadoPago: string,
+    tienePagosAnteriores: string
+    
 }
 
 export interface IDetallePago {
@@ -249,8 +251,8 @@ export interface IDetallePago {
     montoConRecargo: Number,
     numOperacion: string,
     fechaPago: Date,
-    banco: string
-
+    banco: string,
+    esAntiguo: boolean
 }
 
 export interface IPagoPostDTO {

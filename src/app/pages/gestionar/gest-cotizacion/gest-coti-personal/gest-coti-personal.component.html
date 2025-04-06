@@ -2,9 +2,9 @@
 
   <div class="col-12 col-xxl-8">
 
-      <form class="mt-2 mb-4" [formGroup]="myFormCotizacion" (ngSubmit)="generarCotizacion()">
+      <form class="mb-4" [formGroup]="myFormCotizacion" (ngSubmit)="generarCotizacion()">
 
-        <div class="row mt-2" style="align-items: center;">
+        <div class="row" style="align-items: center;">
 
           <div class="col-lg-4">
             <h5 class="text-center" style="font-weight: 500;">COTIZACIÓN PACIENTE</h5>
@@ -15,7 +15,7 @@
           </div>
           
           <div class="col-lg-2">
-              <input type="text" id="codCotizacion" class="form-control readonly-style" formControlName="codCotizacion" readonly>
+              <input type="text" id="codCotizacion" class="form-control form-control-sm readonly-style" formControlName="codCotizacion" readonly>
           </div>    
   
           <div class="col-lg-1">
@@ -23,23 +23,23 @@
           </div>
 
           <div class="col-lg-2">
-            <div class="input-group">
-              <button class="btn btn-outline-secondary" type="button" (click)="cambiarVersion(-1)">
+            <div class="input-group input-group-sm">
+              <button class="btn btn-outline-secondary" type="button" (click)="cambiarVersion(-1)" *ngIf="!tienePagos" >
                 <i class="bi bi-arrow-left"></i>
               </button>
               <input type="text" class="form-control text-center" id="version" 
                     formControlName="version" readonly>
-              <button class="btn btn-outline-secondary" type="button" (click)="cambiarVersion(1)">
+              <button class="btn btn-outline-secondary" type="button" (click)="cambiarVersion(1)" *ngIf="!tienePagos" >
                 <i class="bi bi-arrow-right"></i>
               </button>
-              <button class="btn btn-outline-secondary" type="button" (click)="irUltimaVersion()">Vigente</button>
+              <button class="btn btn-outline-secondary" type="button" (click)="irUltimaVersion()" *ngIf="!tienePagos" >Vigente</button>
 
             </div>
           </div>
   
         </div> 
         
-        <div class="card mb-4 mt-2">
+        <div class="card border-primary mb-1 mt-1">
 
           <div class="card-header bg-primary text-white">
             DATOS DEL PACIENTE
@@ -97,7 +97,7 @@
               </div>
             </div>
 
-            <div class="row mt-2 align-items-center">
+            <div class="row align-items-center">
 
               <div class="col-lg-2">
                   <label for="estadoRegistroPaciente" class="col-form-label">¿Está registrado?</label>
@@ -120,7 +120,7 @@
               </div>            
 
               <div class="col-lg-2" *ngIf="myFormCotizacion.get('estadoRegistroPaciente')?.value">
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalClientes">
+                <button id="buscarPacienteModalBtn" type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modalClientes">
                   Buscar Paciente
                 </button>
               </div>
@@ -130,20 +130,20 @@
               </div>
               
               <div class="col-lg-2" *ngIf="myFormCotizacion.get('estadoRegistroPaciente')?.value">
-                  <input type="text" id="codCliente" class="form-control readonly-style" formControlName="codCliente" readonly>
+                  <input type="text" id="codCliente" class="form-control form-control-sm readonly-style" formControlName="codCliente" readonly>
               </div>              
 
             </div>
 
             
-            <div class="row mt-2">
+            <div class="row mt-1">
 
               <div class="col-lg-2">
                 <label for="nomCliente" class="col-form-label">Nombre de Cliente</label>
               </div>
 
               <div class="col-lg-4">
-                  <input type="text" id="nomCliente" class="form-control text-uppercase" formControlName="nomCliente">
+                  <input type="text" id="nomCliente" class="form-control form-control-sm text-uppercase" formControlName="nomCliente">
               </div>
 
               <div class="col-lg-1">  
@@ -151,7 +151,7 @@
               </div>
     
               <div class="col-lg-2">
-                <select class="form-select" id="tipoDoc" formControlName="tipoDoc">
+                <select class="form-select form-select-sm" id="tipoDoc" formControlName="tipoDoc">
                   <option value="0" selected>DNI</option>
                   <option value="1" >CE</option>
                   <option value="2">PASAPORTE</option>
@@ -164,7 +164,7 @@
               
               <div class="col-lg-2">
 
-                <input type="text" id="nroDoc" class="form-control"
+                <input type="text" id="nroDoc" class="form-control form-control-sm"
                 formControlName="nroDoc"
                 [ngClass]="{
                   'is-valid': myFormCotizacion.get('nroDoc')?.valid && formSubmitted,
@@ -194,7 +194,7 @@
 
         </div>
 
-        <div class="card mb-4">
+        <div class="card border-primary mb-1 mt-1">
 
           <div class="card-header bg-primary text-white">
             SOLICITANTE
@@ -254,7 +254,7 @@
               </div>
             </div>
 
-            <div class="row mt-2 align-items-center">
+            <div class="row align-items-center">
 
               <div class="col-lg-2">
                   <label for="estadoRegistroSolicitante" class="col-form-label"> ¿Está registrado?</label>
@@ -277,7 +277,7 @@
               </div>            
 
               <div class="col-lg-2" *ngIf="myFormCotizacion.get('estadoRegistroSolicitante')?.value" >
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalIndicacion">
+                <button id= "buscarSolicitanteModalBtn"type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modalIndicacion">
                   Buscar Solicitante
                 </button>
               </div>
@@ -287,7 +287,7 @@
               </div>
               
               <div class="col-lg-2" *ngIf="myFormCotizacion.get('estadoRegistroSolicitante')?.value">
-                  <input type="text" id="codSolicitante" class="form-control readonly-style" formControlName="codSolicitante" readonly>
+                  <input type="text" id="codSolicitante" class="form-control form-control-sm readonly-style" formControlName="codSolicitante" readonly>
               </div>
 
               
@@ -296,21 +296,21 @@
               </div>
               
               <div class="col-lg-3" >
-                  <input type="text" id="especialidadSolicitante" class="form-control" formControlName="especialidadSolicitante">
+                  <input type="text" id="especialidadSolicitante" class="form-control form-control-sm" formControlName="especialidadSolicitante">
               </div>
               
 
             </div>
 
             
-            <div class="row mt-2">
+            <div class="row mt-1">
 
               <div class="col-lg-2">
                 <label for="nomSolicitante" class="col-form-label">Nombre</label>
               </div>
 
               <div class="col-lg-4">
-                  <input type="text" id="nomSolicitante" class="form-control text-uppercase" formControlName="nomSolicitante">
+                  <input type="text" id="nomSolicitante" class="form-control form-control-sm text-uppercase" formControlName="nomSolicitante">
               </div>
 
               <div class="col-lg-1">
@@ -318,7 +318,7 @@
               </div>
 
               <div class="col-lg-2">
-                  <input type="text" id="profesionSolicitante" class="form-control" formControlName="profesionSolicitante" >
+                  <input type="text" id="profesionSolicitante" class="form-control form-control-sm" formControlName="profesionSolicitante" >
               </div>
 
               <div class="col-lg-1">
@@ -326,10 +326,8 @@
               </div>
               
               <div class="col-lg-2" >
-                  <input type="text" id="colegiatura" class="form-control" formControlName="colegiatura">
+                  <input type="text" id="colegiatura" class="form-control form-control-sm" formControlName="colegiatura">
               </div>
-
-
 
             </div>
 
@@ -337,7 +335,7 @@
 
         </div>
 
-        <div class="card mb-4 mt-3">
+        <div class="card border-success mt-1">
 
           <div class="card-header bg-success text-white">
             SERVICIOS COTIZADOS
@@ -345,7 +343,7 @@
 
           <div class="card-body">
 
-            <div class="row mt-2">
+            <div class="row">
 
               <div class="col-lg-12 table-responsive"> 
 
@@ -433,7 +431,7 @@
             </div>
 
 
-            <div class="row justify-content-end mt-3">
+            <div class="row justify-content-end mt-1">
               <div class="col-lg-5">
                 <table class="table">
                   <tbody>
@@ -512,7 +510,7 @@
           </div>
 
           <div class="col col-3 text-center">
-            <button class="btn btn-warning" type="button" (click)="generarVersionCotizacionPersona()">GENERAR NUEVA VERSIÓN</button>
+            <button class="btn btn-warning" type="button" *ngIf="!tienePagos" (click)="generarVersionCotizacionPersona()">GENERAR NUEVA VERSIÓN</button>
           </div>
 
           <div class="col col-3 text-center">
@@ -546,7 +544,7 @@
 
   <div class="col-12 col-xxl-4">
 
-    <div class="card mb-4">
+    <div class="card border-primary mb-1">
       
       <div class="card-header bg-primary text-white">
         
@@ -569,9 +567,8 @@
       <div class="card-body">
 
         <!-- Tabla para listar los clientes -->
-        <div class="row">
-          <div class="col">
-            <table class="table table-hover">
+        <div class="row table-responsive">
+            <table class="table table-sm table-hover" style="font-size: 0.9rem;">
               <thead>
                 <tr>
                   <th scope="col">N°</th>
@@ -579,6 +576,7 @@
                   <th scope="col">Paciente</th>
                   <th scope="col">Documento</th>
                   <th scope="col">Versiones</th>
+                  <th scope="col">Estado</th>
                 </tr>
               </thead>
               <tbody>
@@ -593,6 +591,7 @@
                           cotizacion.historial[cotizacion.historial.length - 1].tipoDoc === '2' ? 'PASAPORTE' : 'No especificado' }}
                       {{ cotizacion.historial[cotizacion.historial.length - 1].nroDoc }}</td>
                   <td class="text-center">{{ cotizacion.historial.length}}</td>
+                  <td class="text-center">{{ cotizacion.estadoCotizacion}}</td>
                   <!--
                   <td>
                     <button class="btn btn-info btn-sm" (click)="verDetalles(cliente)">Ver</button>
@@ -605,14 +604,13 @@
               </tbody>
             
             </table>
-          </div>
         </div>
 
       </div>
     
     </div>
 
-    <div class="card mb-4">
+    <div class="card border-primary mb-1">
       
       <div class="card-header bg-primary text-white">
 
@@ -625,8 +623,7 @@
           <div class="col-md-8">
             <input type="text" class="form-control form-control-sm" placeholder="Ingrese busqueda de Servicio..." 
             [(ngModel)]="terminoBusquedaServicio"
-            (input)="buscarServicio()"
-            [ngModelOptions]="{standalone: true}">
+            (input)="buscarServicio()">
           </div>
 
         </div>
@@ -635,40 +632,38 @@
 
       <div class="card-body">
 
-        
-
-        <!-- Tabla con pacientes -->
-        <table class="table table-sm table-hover">
-          <thead>
-              <tr>
-                  <th scope="col">Código</th>
-                  <th scope="col">Nombre</th>
-                  <th scope="col">Tipo</th>
-                  <th scope="col">Acción</th>
-              </tr>
-          </thead>
-          <tbody>
-              <tr *ngFor="let servicio of servicios; let i = index">
-                  <td class="align-middle">{{ servicio.codServicio}}</td>
-                  <td class="align-middle">{{ servicio.tipoServicio}}</td>
-                  <td class="align-middle">{{ servicio.nombreServicio}}</td>
-                  <td class="align-middle">
-                    <i class="bi bi-eye-fill text-success me-3" (click)="verDetalle(servicio)" title="Ver Detalle" style="cursor: pointer; font-size: 1.5rem;"></i>
-                    <i class="bi bi-plus-square-fill text-primary" (click)="seleccionarServicio(servicio)" title="Agregar" style="cursor: pointer; font-size: 1.5rem;"></i>
-                  </td>
-              </tr>
-              
-              <tr *ngIf="servicios.length === 0">
-                  <td colspan="7" class="text-center">No se encontraron servicios.</td>
-              </tr>
-          </tbody>
-        </table>
-
+        <div>
+          <table class="table table-sm table-hover" style="font-size: 0.9rem;">
+            <thead>
+                <tr>
+                    <th scope="col">Código</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Tipo</th>
+                    <th scope="col">Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let servicio of servicios; let i = index">
+                    <td class="align-middle">{{ servicio.codServicio}}</td>
+                    <td class="align-middle">{{ servicio.nombreServicio}}</td>
+                    <td class="align-middle">{{ servicio.tipoServicio}}</td>
+                    <td class="align-middle">
+                      <i class="bi bi-eye-fill text-success me-3" (click)="verDetalle(servicio)" title="Ver Detalle" style="cursor: pointer; font-size: 1.1rem;"></i>
+                      <i class="bi bi-plus-square-fill text-primary" (click)="seleccionarServicio(servicio)" title="Agregar" style="cursor: pointer; font-size: 1.1rem;"></i>
+                    </td>
+                </tr>
+                
+                <tr *ngIf="servicios.length === 0">
+                    <td colspan="7" class="text-center">No se encontraron servicios.</td>
+                </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
 
     </div>
 
-    <div class="card">
+    <div class="card border-warning">
       <div class="card-header bg-warning text-dark">SERVICIOS FRECUENTES</div>
       <div class="card-body">
         <div class="d-flex flex-wrap gap-2">

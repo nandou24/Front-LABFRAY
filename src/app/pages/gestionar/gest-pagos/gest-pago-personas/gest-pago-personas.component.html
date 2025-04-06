@@ -245,7 +245,7 @@
                                     <label for="medioPago" class="col-form-label">Medio de pago</label>
                                 </div>
                                 <div class="col-lg-2">
-                                    <select class="form-select" id="medioPago"
+                                    <select class="form-select form-select-sm" id="medioPago"
                                     [formControl]="medioPagoControl"
                                     (change)="cambioMedioPago()"
                                     [ngClass]="{
@@ -273,7 +273,7 @@
                                 </div>
                                 
                                 <div class="col-lg-2">
-                                    <input type="text" id="montoPago" class="form-control"
+                                    <input type="text" id="montoPago" class="form-control form-control-sm"
                                     [formControl]="montoControl"
                                     [ngClass]="{
                                         'is-invalid': addPago && !montoControl.valid,
@@ -293,16 +293,17 @@
                                 </div>
 
                                 <div class="col-lg-1">  
-                                    <label for="fechaNac" class="col-form-label">Fecha</label>
+                                    <label for="fechaDetallePago" class="col-form-label">Fecha</label>
                                 </div>
 
                                 <div class="col-lg-2">
                     
-                                    <div class="input-group">
+                                    <div class="input-group input-group-sm">
                                         <input type="text"
                                             class="datepicker_input form-control"
-                                            id='fechaNac'
+                                            id='fechaDetallePago'
                                             [formControl]="fechaPagoControl"
+                                            (input)="onFechaDetallePago($event)"
                                             [ngClass]="{
                                                 'is-valid': myFormPagoPersona.get('fechaPagoControl')?.valid && formSubmitted,
                                                 'is-invalid': myFormPagoPersona.get('fechaPagoControl')?.invalid && formSubmitted
@@ -326,7 +327,7 @@
                                 </div>
                                 
                                 <div class="col-lg-2">
-                                    <input type="text" id="nroOperación" class="form-control"
+                                    <input type="text" id="nroOperación" class="form-control form-control-sm"
                                     [formControl]="numOperacionControl">   
                         
                                 </div>
@@ -337,7 +338,7 @@
                                 
                                 <div class="col-lg-2">
 
-                                    <select class="form-select" id="medioPago"
+                                    <select class="form-select form-select-sm" id="medioPago"
                                     [formControl]="bancoControl">
                                         <option value="0">Seleccionar</option>
                                         <option value="BCP">BCP</option>
@@ -348,18 +349,9 @@
                                 </div>                          
 
                                 <div class="col-lg-2">
-                                    <button class="btn btn-primary" type="button" (click)="agregaPago()">Agregar Pago</button>
+                                    <button class="btn btn-primary btn-sm" type="button" (click)="agregaPago()">Agregar Pago</button>
                                 </div>
 
-                                <!--
-                                <div class="col-lg-2" style="font-weight: bold; font-size: 1.5rem; color: red"> 
-                                    Falta pagar
-                                </div>
-                        
-                                
-                                <div class="col-lg-2" style="font-weight: bold; font-size: 1.5rem; color: red;">
-                                    S/ {{ myFormPagoPersona.get('faltaPagar')?.value }} 
-                                </div>-->
 
                                 <div class="col-lg-3"> 
                                     <span 
@@ -392,29 +384,35 @@
                             <div class="row mt-2 form-group" id="detallePagosTable" >
                                 <table class="table table-sm">
                                     <thead>
-                                    <tr>
-                                        <th scope="col">N°</th>
-                                        <th scope="col">Medio Pago</th>
-                                        <th scope="col">Monto</th>
-                                        <th scope="col">Nro Operación</th>
-                                        <th scope="col">Banco</th>
-                                        <th scope="col">Fecha</th>
-                                        <th scope="col">Eliminar</th>
-                                    </tr>
+                                        <tr class="text-center">
+                                            <th scope="col">N°</th>
+                                            <th scope="col">Medio Pago</th>
+                                            <th scope="col">Monto</th>
+                                            <th scope="col">Nro Operación</th>
+                                            <th scope="col">Banco</th>
+                                            <th scope="col">Fecha</th>
+                                            <th scope="col">Eliminar</th>
+                                        </tr>
                                     </thead>
                     
                                     <tbody formArrayName="detallePagos">
-                                    <tr *ngFor="let item of detallePagos.controls; let i = index" [formGroupName]="i">
-                                        <td><span>{{i+1}}</span></td>
-                                        <td><span>{{item.get('medioPago')?.value}}</span></td>
-                                        <td><span>{{item.get('monto')?.value}}</span></td>
-                                        <td><span>{{item.get('numOperacion')?.value || "-"}}</span></td>
-                                        <td><span>{{item.get('banco')?.value || "-"}}</span></td>
-                                        <td><span>{{item.get('fechaPago')?.value || "-"}}</span></td>
-                                        <td class="align-middle">
-                                            <i class="bi bi-trash3-fill text-danger" (click)="removePago(i)" title="Remover" style="cursor: pointer; font-size: 1.5rem;"></i>
-                                        </td>
-                                    </tr>
+                                        <tr *ngFor="let item of detallePagos.controls; let i = index" [formGroupName]="i"
+                                        class="align-middle text-center" >
+                                            <td><span>{{i+1}}</span></td>
+                                            <td><span>{{item.get('medioPago')?.value}}</span></td>
+                                            <td><span>{{item.get('monto')?.value}}</span></td>
+                                            <td><span>{{item.get('numOperacion')?.value || "-"}}</span></td>
+                                            <td><span>{{item.get('banco')?.value || "-"}}</span></td>
+                                            <td><span>{{item.get('fechaPago')?.value || "-"}}</span></td>
+                                            <td>
+                                                <i *ngIf="!item.get('esAntiguo')?.value"
+                                                class="bi bi-trash3-fill text-danger"
+                                                (click)="removePago(i)"
+                                                title="Remover"
+                                                style="cursor: pointer; font-size: 1.0rem;">
+                                                </i>
+                                            </td>
+                                        </tr>
                                     </tbody>
                                     
                                 </table>
@@ -442,7 +440,7 @@
                                 S/ {{ myFormPagoPersona.get('igvFacturar')?.value }}
                             </div>
                                 
-                            <div class="col-lg-3" style="font-weight: bold; font-size: 1.5rem; color: green"> 
+                            <div class="col-lg-2" style="font-weight: bold; font-size: 1.5rem; color: green"> 
                                 Total a Facturar
                             </div>
                     
@@ -451,7 +449,11 @@
                             </div>
 
                             <div class="col-lg-2 text-center">
-                                <button class="btn btn-primary" type="submit">Registrar Pagos</button>
+                                <button class="btn btn-primary" type="submit" *ngIf="!seSeleccionoCotizacion" >Registrar Pagos</button>
+                            </div>
+
+                            <div class="col-lg-2 text-center">
+                                <button class="btn btn-danger" type="submit" >Anular Pago</button>
                             </div>
 
                         </div>
@@ -506,8 +508,8 @@
                             </thead>
                             <tbody style="font-size: 14px;">
                               <tr *ngFor="let cotizacion of cotizaciones; let i = index"
-                                  (click)="cargarCotizacion(cotizacion); seleccionarFila(i)"
-                                  [ngClass]="{'table-active': filaCotizacionSeleccionada === i, 'table-hover-row': true}">
+                                  (click)="cargarCotizacion(cotizacion); seleccionarFilaCotiPorPagar(i)"
+                                  [ngClass]="{'table-active': filaCotizacionPorPagarSeleccionada === i, 'table-hover-row': true}">
                                 <td>{{ cotizacion.codCotizacion}}</td>
                                 <td>{{ formatearFecha(cotizacion.historial[cotizacion.historial.length - 1].fechaModificacion) }}</td>
                                 <td>{{ cotizacion.historial[cotizacion.historial.length - 1].nomCliente }}</td>
@@ -578,8 +580,8 @@
                                 </thead>
                                 <tbody style="font-size: 14px;">
                                   <tr *ngFor="let cotizacion of cotizacionesPagadas; let i = index"
-                                      (click)="cargarCotizacion(cotizacion); seleccionarFila(i)"
-                                      [ngClass]="{'table-active': filaCotizacionSeleccionada === i, 'table-hover-row': true}">
+                                      (click)="cargarCotizacion(cotizacion); seleccionarFilaCotisPagadas(i)"
+                                      [ngClass]="{'table-active': filaCotizacionPagadaSeleccionada === i, 'table-hover-row': true}">
                                     <td>{{ cotizacion.codCotizacion}}</td>
                                     <td>{{ cotizacion.codCotizacion}}</td>
                                     <td>{{ formatearFecha(cotizacion.historial[cotizacion.historial.length - 1].fechaModificacion) }}</td>

@@ -588,6 +588,7 @@ export class GestCotiPersonalComponent implements OnInit {
       total: 0
     });
     this.seSeleccionoCotizacion = false;
+    this.tienePagos = false;
     this.filaCotizacionSeleccionada = null;
 
     this.resetearVariablesAuxiliares();
@@ -817,6 +818,7 @@ export class GestCotiPersonalComponent implements OnInit {
   }
   
   seSeleccionoCotizacion = false;
+  tienePagos: boolean = false;
   filaCotizacionSeleccionada: number | null = null;
 
   seleccionarFila(index: number): void {
@@ -831,6 +833,13 @@ export class GestCotiPersonalComponent implements OnInit {
     
     this.seSeleccionoCotizacion = true
     this.cotizacionCargada = cotizacion;
+
+    console.log(cotizacion.estadoCotizacion)
+    if(cotizacion.estadoCotizacion === "PAGO PARCIAL" || cotizacion.estadoCotizacion === "PAGO TOTAL"){
+      this.tienePagos = true;
+    }else{
+      this.tienePagos = false;
+    }
     
     // Obtener todas las versiones de la cotización
     this.versionesDisponibles = cotizacion.historial.map(h => h.version as number).sort((a, b) => a - b);
@@ -884,21 +893,56 @@ export class GestCotiPersonalComponent implements OnInit {
       total: historialVersion.total
     });
 
-     // 📌 Cargar servicios
-    this.serviciosCotizacion.clear(); // Limpiar antes de cargar
-    historialVersion.serviciosCotizacion.forEach(servicio => {
-      this.serviciosCotizacion.push(this._fb.group({
-        codServicio: [servicio.codServicio, Validators.required],
-        tipoServicio: [servicio.tipoServicio, Validators.required],
-        nombreServicio: [servicio.nombreServicio, Validators.required],
-        cantidad: [servicio.cantidad, [Validators.required, Validators.min(1)]],
-        precioLista: [servicio.precioLista, [Validators.required, Validators.min(0)]],
-        diferencia: [servicio.diferencia, [Validators.min(0)]],
-        precioVenta: [servicio.precioVenta, [Validators.required, Validators.min(0)]],
-        descuentoPorcentaje: [servicio.descuentoPorcentaje, [Validators.min(0), Validators.max(100)]],
-        totalUnitario: [servicio.totalUnitario, [Validators.required, Validators.min(0)]]
-      }));
-    });
+    if(this.tienePagos === true){
+      this.myFormCotizacion.get('aplicarPrecioGlobal')?.disable();
+      this.myFormCotizacion.get('aplicarDescuentoPorcentGlobal')?.disable();
+      this.myFormCotizacion.get('estadoRegistroPaciente')?.disable();
+      this.myFormCotizacion.get('estadoRegistroSolicitante')?.disable();
+      document.getElementById('buscarPacienteModalBtn')?.setAttribute('disabled', 'true');
+      document.getElementById('buscarSolicitanteModalBtn')?.setAttribute('disabled', 'true');
+
+
+      this.serviciosCotizacion.clear(); // Limpiar antes de cargar
+      historialVersion.serviciosCotizacion.forEach(servicio => {
+        this.serviciosCotizacion.push(this._fb.group({
+          codServicio: [servicio.codServicio, Validators.required],
+          tipoServicio: [servicio.tipoServicio, Validators.required],
+          nombreServicio: [servicio.nombreServicio, Validators.required],
+          cantidad: [{value: servicio.cantidad, disabled: true}, [Validators.required, Validators.min(1)]],
+          precioLista: [servicio.precioLista, [Validators.required, Validators.min(0)]],
+          diferencia: [servicio.diferencia, [Validators.min(0)]],
+          precioVenta: [{value: servicio.precioVenta, disabled: true}, [Validators.required, Validators.min(0)]],
+          descuentoPorcentaje: [{value: servicio.descuentoPorcentaje, disabled: true}, [Validators.min(0), Validators.max(100)]],
+          totalUnitario: [servicio.totalUnitario, [Validators.required, Validators.min(0)]]
+        }));
+      });
+
+
+    }else{
+      this.myFormCotizacion.get('aplicarPrecioGlobal')?.enable();
+      this.myFormCotizacion.get('aplicarDescuentoPorcentGlobal')?.enable();
+      this.myFormCotizacion.get('estadoRegistroPaciente')?.enable();
+      this.myFormCotizacion.get('estadoRegistroSolicitante')?.enable();
+      // Habilitar los botones de búsqueda
+      document.getElementById('buscarPacienteModalBtn')?.removeAttribute('disabled');
+      document.getElementById('buscarSolicitanteModalBtn')?.removeAttribute('disabled');
+
+        // 📌 Cargar servicios
+      this.serviciosCotizacion.clear(); // Limpiar antes de cargar
+      historialVersion.serviciosCotizacion.forEach(servicio => {
+        this.serviciosCotizacion.push(this._fb.group({
+          codServicio: [servicio.codServicio, Validators.required],
+          tipoServicio: [servicio.tipoServicio, Validators.required],
+          nombreServicio: [servicio.nombreServicio, Validators.required],
+          cantidad: [servicio.cantidad, [Validators.required, Validators.min(1)]],
+          precioLista: [servicio.precioLista, [Validators.required, Validators.min(0)]],
+          diferencia: [servicio.diferencia, [Validators.min(0)]],
+          precioVenta: [servicio.precioVenta, [Validators.required, Validators.min(0)]],
+          descuentoPorcentaje: [servicio.descuentoPorcentaje, [Validators.min(0), Validators.max(100)]],
+          totalUnitario: [servicio.totalUnitario, [Validators.required, Validators.min(0)]]
+        }));
+      });
+    }
 
   }
 

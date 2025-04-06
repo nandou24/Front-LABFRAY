@@ -26,6 +26,10 @@ export class GestPagoPersonasComponent implements OnInit {
     this._datePickerService.loadScript();
     this.ultimasCotizacionesPorPagar(10);
     this.ultimasCotizacionesPagadas(10);
+    (window as any).setFechaPago = (fechaStr: string) => {
+      this.fechaPagoControl.setValue(fechaStr);
+    };
+
   }
 
   public myFormPagoPersona:FormGroup  = this._fb.group({
@@ -115,11 +119,18 @@ export class GestPagoPersonasComponent implements OnInit {
   }
 
   seSeleccionoCotizacion: boolean = false
-  filaCotizacionSeleccionada: number | null = null;
+  filaCotizacionPorPagarSeleccionada: number | null = null;
+  filaCotizacionPagadaSeleccionada: number | null = null;
   public ultimaVersion!: IHistorialCotizacion;
 
-  seleccionarFila(index: number): void {
-    this.filaCotizacionSeleccionada = index; // Guarda el índice de la fila seleccionada
+  seleccionarFilaCotiPorPagar(index: number): void {
+    this.filaCotizacionPagadaSeleccionada = null;
+    this.filaCotizacionPorPagarSeleccionada = index; // Guarda el índice de la fila seleccionada
+  }
+
+  seleccionarFilaCotisPagadas(index: number): void {
+    this.filaCotizacionPorPagarSeleccionada = null; 
+    this.filaCotizacionPagadaSeleccionada = index; // Guarda el índice de la fila seleccionada
   }
 
   cargarCotizacion(cotizacion: ICotizacion){
@@ -127,8 +138,12 @@ export class GestPagoPersonasComponent implements OnInit {
     //this.pagarNuevaCotizacion();
     this.myFormPagoPersona.reset(); // Reinicia todos los campos del formulario
     this.seSeleccionoCotizacion = true
-    
+    this.detallePagos.clear();
     // 📌 Obtener la última versión del historial
+    if(cotizacion.estadoCotizacion !== 'PAGO TOTAL'){
+      this.seSeleccionoCotizacion = false;
+    }
+
     const historial = cotizacion.historial;
     this.ultimaVersion = historial[historial.length - 1];
 
@@ -158,7 +173,6 @@ export class GestPagoPersonasComponent implements OnInit {
       this._pagoService.getDetallePago(cotizacion.codCotizacion).subscribe({
 
         next: (data) => {
-          this.detallePagos.clear();
           data.forEach((pago: any) => {
             this.detallePagos.push(this._fb.group({
               medioPago: [pago.medioPago, Validators.required],
@@ -166,7 +180,8 @@ export class GestPagoPersonasComponent implements OnInit {
               montoConRecargo: [pago.montoConRecargo],
               numOperacion: [pago.numOperacion],
               fechaPago: [this.formatearFecha(pago.fechaPago), Validators.required],
-              banco: [pago.banco]
+              banco: [pago.banco],
+              esAntiguo: [pago.esAntiguo]
             }));
           });
           this.actualizarTotalesPago();
@@ -215,14 +230,22 @@ export class GestPagoPersonasComponent implements OnInit {
     return `${dia}/${mes}/${anio}`;
   }
 
-  fechaPago: Date = new Date();
+  fechaPagoHoy: Date = new Date();
 
   public addPago: boolean = false;
   medioPagoControl = new FormControl({ value: '0', disabled: true}, [Validators.required, Validators.pattern('^(?!0).*$')]);
   montoControl = new FormControl({ value: 0, disabled: true}, [Validators.required, Validators.min(0.1)] );
   numOperacionControl = new FormControl({ value: '', disabled: true});
-  fechaPagoControl = new FormControl({value: this.formatearFecha(this.fechaPago), disabled:true }, [Validators.required]);
+  fechaPagoControl = new FormControl({value: this.formatearFecha(this.fechaPagoHoy), disabled:true }, [Validators.required]);
   bancoControl = new FormControl({ value: '', disabled: true});
+
+  onFechaDetallePago(event: Event): void {
+    const inputValue = event.target as HTMLInputElement;
+    const fechadetallePago = inputValue.value;  // Obtener el valor actual del input
+    //console.log('Valor del input cambiado:', fechaNacimiento);
+    // Aquí puedes realizar cualquier validación o transformación del valor de la fecha
+    this.fechaPagoControl.setValue(fechadetallePago)
+  }
 
   agregaPago(){
 
@@ -275,7 +298,7 @@ export class GestPagoPersonasComponent implements OnInit {
       this.numOperacionControl.reset();
       this.numOperacionControl.disable();
       this.fechaPagoControl.reset();
-      this.fechaPagoControl.setValue(this.formatearFecha(this.fechaPago));
+      this.fechaPagoControl.setValue(this.formatearFecha(this.fechaPagoHoy));
       this.bancoControl.reset();
       this.actualizarTotalesPago();
   
@@ -386,6 +409,7 @@ export class GestPagoPersonasComponent implements OnInit {
     }
 
     const falta = Number(this.myFormPagoPersona.get('faltaPagar')?.value || 0);
+    const tienePagosAnteriores = this.detallePagos.value.some((p: any) => p.esAntiguo);
 
     if (falta > 0) {
       Swal.fire({
@@ -398,7 +422,7 @@ export class GestPagoPersonasComponent implements OnInit {
         confirmButtonColor: '#f59e0b'
       }).then((result) => {
         if (result.isConfirmed) {
-          this.enviarVenta('PAGO PARCIAL');
+          this.enviarVenta('PAGO PARCIAL', tienePagosAnteriores);
         }
       });
     } else {
@@ -412,18 +436,19 @@ export class GestPagoPersonasComponent implements OnInit {
         confirmButtonColor: '#198754'
       }).then((result) => {
         if (result.isConfirmed) {
-          this.enviarVenta('PAGO TOTAL');
+          this.enviarVenta('PAGO TOTAL', tienePagosAnteriores);
         }
       });
     }
 
   }
 
-  enviarVenta(estado: 'PAGO TOTAL' | 'PAGO PARCIAL') {
+  enviarVenta(estado: 'PAGO TOTAL' | 'PAGO PARCIAL', tienePagosAnteriores: boolean) {
     const pago = this.myFormPagoPersona.getRawValue();
     pago.estadoCotizacion = estado;
     pago.estadoPago = 'REGISTRADO';
     pago.fechaPago = new Date();
+    pago.tienePagosAnteriores = tienePagosAnteriores;
 
     // 🔁 Formatear todas las fechas de los pagos a tipo Date
     pago.detallePagos = pago.detallePagos.map((p: any) => ({
@@ -461,7 +486,8 @@ export class GestPagoPersonasComponent implements OnInit {
     this.serviciosCotizacion.clear();
     this.addPago = false;
     this.seSeleccionoCotizacion = false;
-    this.filaCotizacionSeleccionada = null;
+    this.filaCotizacionPorPagarSeleccionada = null;
+    this.filaCotizacionPagadaSeleccionada = null;
     this.cotizaciones = [];
     this.terminoBusquedaCotizacion = '';
     this.ultimasCotizacionesPorPagar(5);

@@ -10,6 +10,7 @@ $(document).ready(function() {
     }).on('changeDate', function(e) {
       // Obtener la fecha seleccionada
       const selectedDate = e.format('dd/mm/yyyy');
+      window.setFechaPago(selectedDate);
       console.log('Fecha seleccionada:', selectedDate);
   
       // Calcular la edad
@@ -17,10 +18,15 @@ $(document).ready(function() {
       
       // Mostrar la edad en el elemento HTML
       //document.getElementById('edadCalculada').value = `${edad} años`;
-      document.getElementById('edadCalculada').value = `${edad.years} años, ${edad.months} meses, y ${edad.days} días`;
+      if(document.getElementById('edadCalculada')){
 
-      //borrar errores
-      window.clearFechaNacimientoError();
+        document.getElementById('edadCalculada').value = `${edad.years} años, ${edad.months} meses, y ${edad.days} días`;
+
+        //borrar errores
+        window.clearFechaNacimientoError();
+
+      }
+
     });
   
     // Función para calcular la edad
