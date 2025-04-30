@@ -2,24 +2,32 @@
 <div class="row">
 
     <div class="col-12 col-xxl-7">
+
+        <form [formGroup]="myFormPagoPersona" (ngSubmit)="registrarPagos()">
   
-            <div class="row mt-2" style="align-items: center;">
+            <div class="row" style="align-items: center; text-align: center;">
   
                 <div class="col-lg-5">
                     <h5 class="text-center" style="font-weight: 500;">PAGO DE COTIZACIONES - PACIENTES</h5>
-                </div>                
+                </div>
+                
+                <div class="col-lg-2">
+                    <label for="codPago" class="col-form-label" style="font-size: 1.2rem; font-weight: 500;">Nro Pago</label>
+                </div>
+                
+                <div class="col-lg-2">
+                    <input type="text" id="codPago" class="form-control form-control-sm readonly-style" formControlName="codPago" readonly>
+                </div>
 
             </div>
 
-            <div class="card mb-2 mt-2">
+            <div class="card mb-1 border-primary">
 
                 <div class="card-header bg-primary text-white">
                   Detalles de la Cotización
                 </div>
       
                 <div class="card-body" style="font-size: 14px;"> 
-
-                    <form class="mt-2 mb-4" [formGroup]="myFormPagoPersona" (ngSubmit)="registrarPagos()">
 
                         <div class="row mb-1">
                             <div class="col-lg-1" style="font-weight: bold;">
@@ -453,21 +461,86 @@
                             </div>
 
                             <div class="col-lg-2 text-center">
-                                <button class="btn btn-danger" type="submit" >Anular Pago</button>
+                                <button class="btn btn-danger" type="button" *ngIf="seSeleccionoPago" (click)="iniciarAnulacion()">Anular Pago</button>
                             </div>
 
                         </div>
-
-                    </form>
                 
                 </div>
 
             </div>
 
+            <div *ngIf="modoAnulacion" class="card border-danger mt-2">
+                <div class="card-header bg-danger text-white">
+                  Anulación de Pago - {{ myFormPagoPersona.get('codPago')?.value }}
+                </div>
+                <div class="card-body" style="font-size: 14px;">
+              
+                    <div class="row align-items-center">
+
+                        <div class="col-lg-3">
+                            <p><strong>Paciente:</strong> {{ myFormPagoPersona.get('nomCliente')?.value }}</p>
+                        </div>
+
+                        <div class="col-lg-3">
+                            <p><strong>Monto Abonado:</strong> S/ {{ myFormPagoPersona.get('totalFacturar')?.value }}</p>
+                        </div>
+
+                        <div class="col-lg-2">
+                            <label class="form-label">Motivo de anulación</label>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <select class="form-select form-select-sm" 
+                                [formControl]="motivoAnulacionControl"
+                                [ngClass]="{ 'is-invalid': motivoAnulacionControl.invalid && motivoAnulacionControl.touched }">
+                              <option value="0">Seleccione...</option>
+                              <option value="Error en monto">Error en monto</option>
+                              <option value="Datos incorrectos">Datos incorrectos</option>
+                              <option value="Solicitud del paciente">Solicitud del paciente</option>
+                              <option value="Otro">Otro</option>
+                            </select>
+
+                            <div *ngIf="motivoAnulacionControl.invalid && motivoAnulacionControl.touched" class="invalid-feedback">
+                              Debe seleccionar un motivo de anulación
+                            </div>
+                            
+
+                        </div>
+
+                    </div>
+
+                    <div class="row mb-1">
+                        <div>
+                            <label class="form-label">
+                              Observación
+                              <span [ngClass]="motivoAnulacionControl.value === 'Otro' ? 'text-danger fw-bold' : 'text-muted'">
+                                ({{ motivoAnulacionControl.value === 'Otro' ? 'obligatoria' : 'opcional' }})
+                              </span>
+                            </label>
+                            <textarea class="form-control" rows="2" [formControl]="observacionAnulacionControl"></textarea>
+                          </div>
+                      
+                    </div>
+                  
+                  <div class="text-end">
+                    <button class="btn btn-secondary me-2" type="button" (click)="cancelarAnulacion()">Cancelar</button>
+                    <button class="btn btn-danger" type="button" (click)="confirmarAnulacion()">Confirmar anulación</button>
+                  </div>
+              
+                </div>
+              </div>
+
+        </form>
+
     </div>
 
+    
+
+    <!-- Tablas -->
     <div class="col-12 col-xxl-5">
 
+        <!--
         <div class="card mb-4">
       
             <div class="card-header bg-primary text-white">
@@ -490,7 +563,7 @@
       
             <div class="card-body">
       
-              <!-- Tabla para listar los clientes -->
+              <!-- Tabla para listar los clientes ->
               <div class="row">
                 <div class="col">
 
@@ -521,7 +594,7 @@
                                 <!--
                                 <td>
                                   <button class="btn btn-info btn-sm" (click)="verDetalles(cliente)">Ver</button>
-                                </td>-->
+                                </td>->
                               </tr>
                               
                               <tr *ngIf="cotizaciones.length === 0">
@@ -538,7 +611,73 @@
       
             </div>
           
-        </div>
+        </div>-->
+
+        <mat-card class="mat-elevation-z3 mb-4">
+            <mat-card-header>
+                <mat-card-title class="text-primary">Cotizaciones por Pagar</mat-card-title>
+            </mat-card-header>
+
+            <mat-card-content>
+
+                <table mat-table [dataSource]="dataSourceCotizaciones" class="mat-elevation-z2 tabla-compacta" matSort>
+
+                    <!-- Código de Cotización -->
+                    <ng-container matColumnDef="codCotizacion">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Cod Coti </th>
+                        <td mat-cell *matCellDef="let cot"> {{ cot.codCotizacion }} </td>
+                    </ng-container>
+        
+                    <!-- Fecha -->
+                    <ng-container matColumnDef="fecha">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha </th>
+                        <td mat-cell *matCellDef="let cot"> {{ formatearFecha(cot.historial[cot.historial.length - 1].fechaModificacion) }} </td>
+                    </ng-container>
+        
+                    <!-- Paciente -->
+                    <ng-container matColumnDef="nomCliente">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Paciente </th>
+                        <td mat-cell *matCellDef="let cot"> {{ cot.historial[cot.historial.length - 1].nomCliente }} </td>
+                    </ng-container>
+        
+                    <!-- Documento -->
+                    <ng-container matColumnDef="documento">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Documento </th>
+                        <td mat-cell *matCellDef="let cot">
+                        {{ 
+                            cot.historial[cot.historial.length - 1].tipoDoc === '0' ? 'DNI' :
+                            cot.historial[cot.historial.length - 1].tipoDoc === '1' ? 'CE' :
+                            cot.historial[cot.historial.length - 1].tipoDoc === '2' ? 'PASAPORTE' :
+                            'No especificado'
+                        }}
+                        {{ cot.historial[cot.historial.length - 1].nroDoc }}
+                        </td>
+                    </ng-container>
+        
+                     <!-- Estado -->
+                    <ng-container matColumnDef="estadoCotizacion">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Estado </th>
+                        <td mat-cell *matCellDef="let cot"> {{ cot.estadoCotizacion }} </td>
+                    </ng-container>
+        
+                    <!-- Fila de encabezado -->
+                    <tr mat-header-row *matHeaderRowDef="displayedColumnsCotizaciones"></tr>
+                    <!-- Fila de datos -->
+                    <tr mat-row 
+                        *matRowDef="let row; columns: displayedColumnsCotizaciones;"
+                        (click)="cargarCotizacion(row); seleccionarFilaCotiPorPagar(row)"
+                        [class.table-active]="row === filaCotizacionPorPagarSeleccionada">
+                    </tr>
+        
+                </table>
+
+            </mat-card-content>
+
+
+
+        </mat-card>
+
+        
 
         <div class="card mb-4">
            
@@ -547,7 +686,7 @@
                 <div class="row align-items-center"> 
                   
                   <div class="col-md-4">
-                    COTIZACIONES PAGADAS
+                    PAGOS REALIZADOS
                   </div>         
                   
                   <div class="col-md-8">
@@ -579,18 +718,18 @@
                                   </tr>
                                 </thead>
                                 <tbody style="font-size: 14px;">
-                                  <tr *ngFor="let cotizacion of cotizacionesPagadas; let i = index"
-                                      (click)="cargarCotizacion(cotizacion); seleccionarFilaCotisPagadas(i)"
-                                      [ngClass]="{'table-active': filaCotizacionPagadaSeleccionada === i, 'table-hover-row': true}">
-                                    <td>{{ cotizacion.codCotizacion}}</td>
-                                    <td>{{ cotizacion.codCotizacion}}</td>
-                                    <td>{{ formatearFecha(cotizacion.historial[cotizacion.historial.length - 1].fechaModificacion) }}</td>
-                                    <td>{{ cotizacion.historial[cotizacion.historial.length - 1].nomCliente }}</td>
-                                    <td>{{ cotizacion.historial[cotizacion.historial.length - 1].tipoDoc === '0' ? 'DNI' : 
-                                            cotizacion.historial[cotizacion.historial.length - 1].tipoDoc === '1' ? 'CE' : 
-                                            cotizacion.historial[cotizacion.historial.length - 1].tipoDoc === '2' ? 'PASAPORTE' : 'No especificado' }}
-                                        {{ cotizacion.historial[cotizacion.historial.length - 1].nroDoc }}</td>
-                                    <td>{{ cotizacion.estadoCotizacion }}</td>
+                                  <tr *ngFor="let pago of pagos; let i = index"
+                                      (click)="cargarPagos(pago); seleccionarFilaPagos(i)"
+                                      [ngClass]="{'table-active': filaPagoSeleccionado === i, 'table-hover-row': true}">
+                                    <td>{{ pago.codCotizacion}}</td>
+                                    <td>{{ pago.codPago}}</td>
+                                    <td>{{ formatearFecha(pago.detallePagos[pago.detallePagos.length - 1].fechaPago) }}</td>
+                                    <td>{{ pago.nomCliente }}</td>
+                                    <td>{{ pago.tipoDoc === '0' ? 'DNI' : 
+                                            pago.tipoDoc === '1' ? 'CE' : 
+                                            pago.tipoDoc === '2' ? 'PASAPORTE' : 'No especificado' }}
+                                        {{ pago.nroDoc }}</td>
+                                    <td>{{ pago.estadoCotizacion}}</td>
                                     <!--
                                     <td>
                                       <button class="btn btn-info btn-sm" (click)="verDetalles(cliente)">Ver</button>

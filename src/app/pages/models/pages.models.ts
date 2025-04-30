@@ -229,17 +229,17 @@ export interface IPago {
     nomSolicitante: string,
     profesionSolicitante: string,
     colegiatura: string,
-    sumaTotalesPrecioLista: Number,
-    descuentoTotal: Number,
-    subTotal: Number,
-    igv: Number,
-    total: Number,
+    sumaTotalesPrecioLista: number,
+    descuentoTotal: number,
+    subTotal: number,
+    igv: number,
+    total: number,
     serviciosCotizacion: IServicioCotizacion[],
     detallePagos: IDetallePago[],
-    faltaPagar: Number,
-    subTotalFacturar: Number,
-    igvFacturar: Number,
-    totalFacturar: Number,
+    faltaPagar: number,
+    subTotalFacturar: number,
+    igvFacturar: number,
+    totalFacturar: number,
     estadoPago: string,
     tienePagosAnteriores: string
     
@@ -247,8 +247,8 @@ export interface IPago {
 
 export interface IDetallePago {
     medioPago: string,
-    monto: Number,
-    montoConRecargo: Number,
+    monto: number,
+    montoConRecargo: number,
     numOperacion: string,
     fechaPago: Date,
     banco: string,
@@ -260,6 +260,12 @@ export interface IPagoPostDTO {
     msg?: string;
     errors?: string[];
     data?: any;
+}
+
+export interface IGetLastPagos {
+    ok: boolean;
+    search: String;
+    pagos: IPago[];
 }
 
 export interface IGetDetallePago {

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { catchError, map, Observable, of, throwError } from 'rxjs';
 import { environment } from 'src/environments/enviroment';
 import Swal from 'sweetalert2';
-import { IDetallePago, IGetDetallePago, IPago, IPagoPostDTO } from '../../models/pages.models';
+import { IDetallePago, IGetDetallePago, IGetLastPagos, IPago, IPagoPostDTO } from '../../models/pages.models';
 import { HttpClient, HttpParams } from '@angular/common/http';
 
 @Injectable({
@@ -37,21 +37,34 @@ export class PagoService {
   }
 
   getDetallePago(codCoti:string): Observable<IDetallePago[]> {
-      const params = new HttpParams().set('codCoti',codCoti) 
-      return this._http
-        .get<IGetDetallePago>(
-          `${environment.baseUrl}/api/pagos/findPayDetail`,{params}
-        )
-        .pipe(
-          map((data) => {
-          return data.detallePago;
-        }),
-        catchError((err) => {
-          return throwError(() => err);
-        })
+    const params = new HttpParams().set('codCoti',codCoti) 
+    return this._http
+      .get<IGetDetallePago>(
+        `${environment.baseUrl}/api/pagos/findPayDetail`,{params}
+      )
+      .pipe(
+        map((data) => {
+        return data.detallePago;
+      }),
+      catchError((err) => {
+        return throwError(() => err);
+      })
 
-      );      
-    }
+    );      
+  }
+
+  getPagos(cantidad:number): Observable<IPago[]> {
+    const params = new HttpParams().set('cant',cantidad) 
+    return this._http
+      .get<IGetLastPagos>(
+        `${environment.baseUrl}/api/pagos/latest`,{params}
+      )
+      .pipe(
+        map((data) => {
+        return data.pagos;
+      })
+    );      
+  }
 
 }
 

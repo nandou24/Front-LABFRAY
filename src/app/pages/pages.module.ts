@@ -14,7 +14,10 @@ import { GestCotiEmpresasComponent } from './gestionar/gest-cotizacion/gest-coti
 import { MantRecursoHumanoComponent } from './mantenimiento/mant-recurso-humano/mant-recurso-humano.component';
 import { GestPagoPersonasComponent } from './gestionar/gest-pagos/gest-pago-personas/gest-pago-personas.component';
 import { GestPagoEmpresasComponent } from './gestionar/gest-pagos/gest-pago-empresas/gest-pago-empresas.component';
-
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
+import { MatCardModule } from '@angular/material/card';
 
 @NgModule({
   declarations: [
@@ -35,7 +38,12 @@ import { GestPagoEmpresasComponent } from './gestionar/gest-pagos/gest-pago-empr
     SharedModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatCardModule,
+    HttpClientModule,
+    
   ]
 })
 export class PagesModule { }

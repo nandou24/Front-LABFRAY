@@ -1,17 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ICotizacion, IHistorialCotizacion } from 'src/app/pages/models/pages.models';
+import { ICotizacion, IHistorialCotizacion, IPago } from 'src/app/pages/models/pages.models';
 import { DatepickerService } from 'src/app/pages/services/utilitarios/datepicker.service';
 import { CotizacionService } from 'src/app/pages/services/gestion/cotizacion.service';
 import Swal from 'sweetalert2';
 import { NumbersService } from 'src/app/pages/services/utilitarios/numbers.service';
 import { PagoService } from 'src/app/pages/services/gestion/pago.service';
+import { MatTableDataSource } from '@angular/material/table';
+
 
 @Component({
   selector: 'app-gest-pago-personas',
   templateUrl: './gest-pago-personas.component.html',
   styleUrl: './gest-pago-personas.component.scss'
 })
+
+
 export class GestPagoPersonasComponent implements OnInit {
 
   constructor(
@@ -25,11 +29,10 @@ export class GestPagoPersonasComponent implements OnInit {
   ngOnInit(): void {
     this._datePickerService.loadScript();
     this.ultimasCotizacionesPorPagar(10);
-    this.ultimasCotizacionesPagadas(10);
+    this.ultimosPagos(10);
     (window as any).setFechaPago = (fechaStr: string) => {
       this.fechaPagoControl.setValue(fechaStr);
     };
-
   }
 
   public myFormPagoPersona:FormGroup  = this._fb.group({
@@ -92,13 +95,18 @@ export class GestPagoPersonasComponent implements OnInit {
   
   terminoBusquedaCotizacion: any;
   cotizaciones: ICotizacion[] = [];
-  cotizacionesPagadas: ICotizacion[] = [];  
+  pagos: IPago[] = [];
+
+  //material table
+  displayedColumnsCotizaciones: string[] = ['codCotizacion', 'fecha', 'nomCliente', 'documento', 'estadoCotizacion'];
+  dataSourceCotizaciones = new MatTableDataSource<ICotizacion>();
   
   // Método últimas cotizaciones
   ultimasCotizacionesPorPagar(cantidad:number): void {
     this._cotizacionService.getLatestCotizacioPorPagar(cantidad).subscribe({
       next: (res: ICotizacion[]) => {
         this.cotizaciones = res;
+        this.dataSourceCotizaciones.data = this.cotizaciones;
       },
       error: (err) => {
         console.error('Error al obtener las cotizaciones:', err);
@@ -107,10 +115,10 @@ export class GestPagoPersonasComponent implements OnInit {
   }
 
   // Método últimas cotizaciones pagadas
-  ultimasCotizacionesPagadas(cantidad:number): void {
-    this._cotizacionService.getLatestCotizacioPagadas(cantidad).subscribe({
-      next: (res: ICotizacion[]) => {
-        this.cotizacionesPagadas = res;
+  ultimosPagos(cantidad:number): void {
+    this._pagoService.getPagos(cantidad).subscribe({
+      next: (res: IPago[]) => {
+        this.pagos = res;
       },
       error: (err) => {
         console.error('Error al obtener las cotizaciones:', err);
@@ -119,18 +127,19 @@ export class GestPagoPersonasComponent implements OnInit {
   }
 
   seSeleccionoCotizacion: boolean = false
-  filaCotizacionPorPagarSeleccionada: number | null = null;
-  filaCotizacionPagadaSeleccionada: number | null = null;
+  seSeleccionoPago: boolean = false
+  filaCotizacionPorPagarSeleccionada!: ICotizacion
+  filaPagoSeleccionado: number | null = null;
   public ultimaVersion!: IHistorialCotizacion;
 
-  seleccionarFilaCotiPorPagar(index: number): void {
-    this.filaCotizacionPagadaSeleccionada = null;
-    this.filaCotizacionPorPagarSeleccionada = index; // Guarda el índice de la fila seleccionada
+  seleccionarFilaCotiPorPagar(cot: ICotizacion): void {
+    this.filaPagoSeleccionado = null;
+    this.filaCotizacionPorPagarSeleccionada = cot; // Guarda el índice de la fila seleccionada
   }
 
-  seleccionarFilaCotisPagadas(index: number): void {
-    this.filaCotizacionPorPagarSeleccionada = null; 
-    this.filaCotizacionPagadaSeleccionada = index; // Guarda el índice de la fila seleccionada
+  seleccionarFilaPagos(index: number): void {
+    //this.filaCotizacionPorPagarSeleccionada = null; 
+    this.filaPagoSeleccionado = index; // Guarda el índice de la fila seleccionada
   }
 
   cargarCotizacion(cotizacion: ICotizacion){
@@ -138,6 +147,7 @@ export class GestPagoPersonasComponent implements OnInit {
     //this.pagarNuevaCotizacion();
     this.myFormPagoPersona.reset(); // Reinicia todos los campos del formulario
     this.seSeleccionoCotizacion = true
+    this.seSeleccionoPago = false
     this.detallePagos.clear();
     // 📌 Obtener la última versión del historial
     if(cotizacion.estadoCotizacion !== 'PAGO TOTAL'){
@@ -168,6 +178,7 @@ export class GestPagoPersonasComponent implements OnInit {
       estadoCotizacion: cotizacion.estadoCotizacion
     });
 
+    /*
     if(cotizacion.estadoCotizacion === 'PAGO PARCIAL' || cotizacion.estadoCotizacion === 'PAGO TOTAL'){
 
       this._pagoService.getDetallePago(cotizacion.codCotizacion).subscribe({
@@ -194,12 +205,13 @@ export class GestPagoPersonasComponent implements OnInit {
 
     }else{
       this.actualizarTotalesPago();
-    }
+    }*/
 
     this.montoControl.setValue(this.ultimaVersion.total);
     this.montoControl.enable();
     this.medioPagoControl.enable()
     this.fechaPagoControl.enable()
+    this.actualizarTotalesPago();
     
 
      // 📌 Cargar servicios
@@ -219,6 +231,78 @@ export class GestPagoPersonasComponent implements OnInit {
      });
 
   }
+
+  cargarPagos(pago: IPago){
+
+    this.myFormPagoPersona.reset(); // Reinicia todos los campos del formulario
+    this.seSeleccionoCotizacion = false
+    this.seSeleccionoPago = true
+    this.detallePagos.clear();
+    // 📌 Obtener la última versión del historial
+    if(pago.estadoCotizacion !== 'PAGO TOTAL'){
+      this.seSeleccionoCotizacion = false;
+    }
+    
+      // 📌 Cargar datos del paciente
+    this.myFormPagoPersona.patchValue({
+      codPago: pago.codPago,
+      codCotizacion: pago.codCotizacion, 
+      version: pago.version,
+      fechaCotizacion: this.formatearFecha(pago.detallePagos[pago.detallePagos.length - 1].fechaPago),
+      codCliente: pago.codCliente,
+      nomCliente: pago.nomCliente,
+      tipoDoc: pago.tipoDoc,
+      nroDoc: pago.nroDoc,
+      codSolicitante: pago.codSolicitante,
+      nomSolicitante: pago.nomSolicitante,
+      profesionSolicitante: pago.profesionSolicitante,
+      colegiatura: pago.colegiatura,
+      sumaTotalesPrecioLista: pago.sumaTotalesPrecioLista,
+      descuentoTotal: pago.descuentoTotal,
+      subTotal: pago.subTotal,
+      igv: pago.igv,
+      total: pago.total,
+      estadoCotizacion: pago.estadoCotizacion
+    });
+
+    this.detallePagos.clear(); // Limpiar antes de cargar
+    pago.detallePagos.forEach(detalle => {
+       this.detallePagos.push(this._fb.group({
+          medioPago: [detalle.medioPago, Validators.required],
+          monto: [detalle.monto, Validators.required],
+          montoConRecargo: [detalle.montoConRecargo],
+          numOperacion: [detalle.numOperacion],
+          fechaPago: [this.formatearFecha(detalle.fechaPago), Validators.required],
+          banco: [detalle.banco],
+          esAntiguo: [detalle.esAntiguo]
+       }));
+    });
+
+
+    this.montoControl.setValue(pago.total);
+    this.montoControl.enable();
+    this.medioPagoControl.enable()
+    this.fechaPagoControl.enable()
+    this.actualizarTotalesPago();
+    
+     // 📌 Cargar servicios
+     this.serviciosCotizacion.clear(); // Limpiar antes de cargar
+     pago.serviciosCotizacion.forEach(servicio => {
+       this.serviciosCotizacion.push(this._fb.group({
+         codServicio: [servicio.codServicio, Validators.required],
+         tipoServicio: [servicio.tipoServicio, Validators.required],
+         nombreServicio: [servicio.nombreServicio, Validators.required],
+         cantidad: [servicio.cantidad, [Validators.required, Validators.min(1)]],
+         precioLista: [servicio.precioLista, [Validators.required, Validators.min(0)]],
+         diferencia: [servicio.diferencia, [Validators.min(0)]],
+         precioVenta: [servicio.precioVenta, [Validators.required, Validators.min(0)]],
+         descuentoPorcentaje: [servicio.descuentoPorcentaje, [Validators.min(0), Validators.max(100)]],
+         totalUnitario: [servicio.totalUnitario, [Validators.required, Validators.min(0)]]
+       }));
+     });
+
+  }
+
 
   // Función para formatear la fecha en dd/mm/YYYY
   formatearFecha(fecha: Date | string | null): string {
@@ -337,15 +421,6 @@ export class GestPagoPersonasComponent implements OnInit {
       igvFacturar: igv,
       totalFacturar: totalConRecargo
     });
-  }
-
-  getFaltaPagar(): number {
-    const totalSinRecargo = this.detallePagos.value.reduce((acc: number, p: any) => acc + p.monto, 0);
-    return Math.max(0, this.myFormPagoPersona.get('total')?.value - totalSinRecargo);
-  }
-
-  getTotalFacturar(): number {
-    return this.detallePagos.value.reduce((acc: number, p: any) => acc + p.montoConRecargo, 0);
   }
 
   removePago(index: number){
@@ -486,12 +561,59 @@ export class GestPagoPersonasComponent implements OnInit {
     this.serviciosCotizacion.clear();
     this.addPago = false;
     this.seSeleccionoCotizacion = false;
-    this.filaCotizacionPorPagarSeleccionada = null;
-    this.filaCotizacionPagadaSeleccionada = null;
+    //this.filaCotizacionPorPagarSeleccionada = null;
+    this.filaPagoSeleccionado = null;
     this.cotizaciones = [];
     this.terminoBusquedaCotizacion = '';
-    this.ultimasCotizacionesPorPagar(5);
-    this.ultimasCotizacionesPagadas(5);
+    this.ultimasCotizacionesPorPagar(10);
+    this.ultimosPagos(10);
+
+  }
+
+  modoAnulacion = false;
+
+  iniciarAnulacion(){
+    this.modoAnulacion = true;
+  }
+
+  motivoAnulacionControl = new FormControl('', [
+    Validators.required,
+    Validators.pattern('^(?!0$).*') // Asegura que no esté vacío ni solo espacios
+  ]);
+  observacionAnulacionControl = new FormControl('');
+
+  confirmarAnulacion(){
+
+    const motivoAnula = this.motivoAnulacionControl;
+    const observacionAnula = this.observacionAnulacionControl;
+
+    console.log(motivoAnula, observacionAnula)
+
+    if (motivoAnula.invalid) {
+      this.motivoAnulacionControl.markAsTouched();
+      this.motivoAnulacionControl.updateValueAndValidity();
+    }else{
+      Swal.fire({
+        title: '¿Anular pago?',
+        text: 'Todos los abonos realizados serán eliminados y la cotización volverá a su estado anterior.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sí, anular pago',
+        cancelButtonText: 'Cancelar',
+        confirmButtonColor: '#dc3545',
+        allowOutsideClick: false,
+        allowEscapeKey: true  // 🔥 esto es importante
+      }).then((result) => {
+  
+        if (result.isConfirmed) {
+          
+        }
+      });
+    }
+
+  }
+
+  cancelarAnulacion(){
 
   }
 
